@@ -1,0 +1,24 @@
+{
+  "name": "project_l2t2",
+  "version": "1.0.0",
+  "description": "this is term project of cse216 dev by 48 and 60",
+  "main": "App.js",
+  "dependencies": {
+    "express": "^4.17.2",
+    "oracledb": "^5.3.0"
+  },
+  "scripts": {
+    "test": "node App.js",
+    "start": "node App.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shamim2601/TermProject.git"
+  },
+  "author": "Asif and Shamim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shamim2601/TermProject/issues"
+  },
+  "homepage": "https://github.com/Shamim2601/TermProject#readme"
+}

@@ -1,23 +1,16 @@
 //const oracledb = require('oracledb');
-var http = require('http');
-var url = require('url');
-var fs = require('fs');
+var express = require('express');   
+var app = new express(); 
+var port = 3000; 
+//Following function is starts sockets and start listen from particular port. In following code I have given call back which contains err. So when port willbe start and listen function will be fire then this function will be execute.   
+app.listen(port, function(err) {  
+    if (typeof(err) == "undefined") {  
+        console.log('Your application is running on : ' + port + ' port');  
+    }  
+}); 
 
-http.createServer(function (req, res) {
-  var q = url.parse(req.url, true);
-  var filename = "html" + q.pathname;
-  
-  fs.readFile(filename, function(err, data) {
-    if (err) {
-      res.writeHead(404, {'Content-Type': 'text/html'});
-      return res.end("404 Not Found");
-    } 
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(data);
-    return res.end();
-  });
-  
-}).listen(8080);
+app.use(express.static('public'));   
+app.use(express.static('src/html'));
 
 /*
 async function run() {
