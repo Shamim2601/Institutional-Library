@@ -81,7 +81,19 @@
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue">My Favourites List</button>
+            <button class="w3-btn w3-blue" onclick= '$("#favlist").css("display","block")'>My Favourites List</button>
+            <div id="favlist" class="w3-center" style="display: none;">        
+                <h5 style="color: blue;">Click on any Column heading to sort it</h5>
+                <div class="w3-panel w3-center">
+                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#favlist").css("display","none")'>X</button>
+                    <table class="w3-table-all w3-centered sortable">
+                        <tr>
+                            <th>Book Id</th><th>Book Name</th><th>Author</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
         </div>
         
         <div class="w3-center w3-panel">
