@@ -4,12 +4,15 @@
   "description": "this is term project of cse216 dev by 48 and 60",
   "main": "App.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2",
+    "express-promise-router": "^4.1.1",
+    "nodemon": "^2.0.15",
     "oracledb": "^5.3.0"
   },
   "scripts": {
     "test": "node App.js",
-    "start": "node App.js"
+    "start": "nodemon App.js"
   },
   "repository": {
     "type": "git",

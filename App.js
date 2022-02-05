@@ -1,70 +1,40 @@
-//const oracledb = require('oracledb');
-var express = require('express');   
+const oracledb = require('oracledb');
+oracledb.outFormat = oracledb.OBJECT ;
+const express = require('express'); 
+const router = express.Router(); //require('express-promise-router');
+const cors = require('cors');
+
+let connection = undefined;
+async function dbQuery(query, params){
+  if(connection===undefined){
+    connection = await oracledb.getConnection({ user: "C##INSLIB", password: "PROJECT", connectionString: "localhost/orcl" });
+  }
+  try{
+    let result = await connection.execute(query,params);
+    return result.rows;
+  }catch(error){
+    console.log(error);
+  }
+}
+
+router.get("https://localhost:8080/members.html", async function(req,res,next){
+  const query = "SELECT MEMBER_ID, MEMBER_NAME, TYPE, EMAIL, PHONE_NUMBER FROM MEMBER";
+  const params = [];
+  const result = await dbQuery(query,params);
+  res.status(200).json(result);
+});
+
 var app = new express(); 
 var port = 8080; 
-//Following function is starts sockets and start listen from particular port. In following code I have given call back which contains err. So when port willbe start and listen function will be fire then this function will be execute.   
+app.use(express.json());
+app.use(router);
+app.use(cors());
+app.options('*',cors());
+app.use(express.static('public'));   
+app.use(express.static('src/html'));
+
 app.listen(port, function(err) {  
     if (typeof(err) == "undefined") {  
         console.log('Your application is running on : ' + port + ' port');  
     }  
 }); 
-
-app.use(express.static('public'));   
-app.use(express.static('src/html'));
-
-/*
-async function run() {
-
-  let connection;
-
-  try {
-
-    connection = await oracledb.getConnection({ user: "C##INSLIB", password: "PROJECT", connectionString: "localhost/orcl" });
-
-    console.log("Successfully connected to Oracle Database");
-
-    // Insert some data
-
-    const sql = `insert into ADMIN (ADMIN_ID, ADMIN_PSW, NAME, EMAIL, PHONE_NUMBER) values(:1, :2, :3, :4, :5)`;
-
-    const rows =
-      [[05, 50604, "MAMUN", "shamim2601@gmail.com", '017*******']];
-
-    let result = await connection.executeMany(sql, rows);
-
-    console.log(result.rowsAffected, "Rows Inserted");
-
-    connection.commit();
-
-    // Now query the rows 
-    
-    result = await connection.execute(
-      `select ADMIN_ID, NAME, EMAIL, PHONE_NUMBER from ADMIN order by ADMIN_ID`,
-      [],
-      { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT });
-
-    const rs = result.resultSet;
-    let row;
-
-    console.log("ID"," ","NAME"," ","EMAIL"," ","PHONE")
-    while ((row = await rs.getRow())) {
-      console.log(row.ADMIN_ID, " ", row.NAME, " ", row.EMAIL, " ", row.PHONE_NUMBER);
-    }
-
-    await rs.close();
-
-  } catch (err) {
-    console.error(err);
-  } finally {
-    if (connection) {
-      try {
-        await connection.close();
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
-}
-
-run();
-*/

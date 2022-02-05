@@ -36,13 +36,27 @@
             <h5 style="color: blue;">Click on any Column heading to sort it</h5>
         </div>
         <div class="w3-panel w3-center">
-            <table class="w3-table-all w3-centered sortable">
+            <table id="memtable" class="w3-table-all w3-centered sortable">
                 <tr>
-                    <th>Member ID</th> <th>Name</th> <th>Blood Group</th>
-                    <th>Email</th> <th>Phone</th>
+                    <th>Member ID</th> <th>Name</th><th>Type</th>
+                    <th>Email</th> <th>Phone</th> <th>Blood Group</th>
                 </tr>
             </table>
         </div>
+        <script>
+            const getInfo = async ()=>{
+                const url = "https://localhost:8080/members.html";
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myJson = response.json();
+                for(let js of myJson){
+                    const trow = document.document.getElementById("memtable").insertRow(0);
+                    trow.innerHTML = '<td>${js.MEMBER_ID}</td> <td>${js.MEMBER_NAME}</td><td>${js.TYPE}</td><td>${js.EMAIL}</td><td>${js.PHONE_NUMBER}</td>';
+                }
+            }
+
+            document.onload(getInfo());
+        </script>
     </body>
 </html> 
 ​
