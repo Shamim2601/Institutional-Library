@@ -17,7 +17,7 @@ async function dbQuery(query, params){
   }
 }
 
-router.get("https://localhost:8080/members.html", async function(req,res,next){
+router.get("/members.html", async function(req,res,next){
   const query = "SELECT MEMBER_ID, MEMBER_NAME, TYPE, EMAIL, PHONE_NUMBER FROM MEMBER";
   const params = [];
   const result = await dbQuery(query,params);
