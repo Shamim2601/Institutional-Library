@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -17,7 +18,7 @@
                     <a href="Sign_up.html" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
                     <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
-                    <a href="suggestion.html" class="w3-btn w3-hover-grey"><h4>Suggestion/Complaint</h4></a>
+                    <a href="links.html" class="w3-btn w3-hover-grey"><h4>Links</h4></a>
                 </div>
                 <div class="w3-dropdown-hover w3-right:0">
                     <button class="w3-button"><h4>:::Menu</h4></button>
@@ -26,7 +27,7 @@
                       <a href="ac_books.html" class="w3-bar-item w3-button">Academic Books</a>
                       <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
                       <a href="members.html" class="w3-bar-item w3-button">Members</a>
-                      <a href="links.html" class="w3-bar-item w3-button">Links</a>
+                      <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
 
                     </div>
                 </div>
@@ -60,58 +61,60 @@
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">Bangla Literature</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                      <a href="#" class="w3-bar-item w3-button">Novel</a>
-                      <a href="#" class="w3-bar-item w3-button">Story</a>
-                      <a href="#" class="w3-bar-item w3-button">Poem</a>
-                      <a href="#" class="w3-bar-item w3-button">Drama</a>
-                      <a href="#" class="w3-bar-item w3-button">Translation</a>
-                      <a href="#" class="w3-bar-item w3-button">Misc</a>
+                      <button class="w3-bar-item w3-button">Novel</button>
+                      <button class="w3-bar-item w3-button">Story</button>
+                      <button class="w3-bar-item w3-button">Poem</button>
+                      <button class="w3-bar-item w3-button">Drama</button>
+                      <button class="w3-bar-item w3-button">Translation</button>
+                      <button class="w3-bar-item w3-button">Misc</button>
                     </div>
                 </div>
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">English Literature</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                        <a href="#" class="w3-bar-item w3-button">Novel</a>
-                        <a href="#" class="w3-bar-item w3-button">Story</a>
-                        <a href="#" class="w3-bar-item w3-button">Poem</a>
-                        <a href="#" class="w3-bar-item w3-button">Drama</a>
-                        <a href="#" class="w3-bar-item w3-button">Misc</a>
+                        <button class="w3-bar-item w3-button">Novel</button>
+                        <button class="w3-bar-item w3-button">Story</button>
+                        <button class="w3-bar-item w3-button">Poem</button>
+                        <button class="w3-bar-item w3-button">Drama</button>
+                        <button class="w3-bar-item w3-button">Misc</button>
                     </div>
                 </div>
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">Religious</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                      <a href="#" class="w3-bar-item w3-button">Islamic</a>
-                      <a href="#" class="w3-bar-item w3-button">Hinduism</a>
-                      <a href="#" class="w3-bar-item w3-button">Christianity</a>
-                      <a href="#" class="w3-bar-item w3-button">Buddhism</a>
-                      <a href="#" class="w3-bar-item w3-button">Misc</a>
+                      <button class="w3-bar-item w3-button">Islamic</button>
+                      <button class="w3-bar-item w3-button">Hinduism</button>
+                      <button class="w3-bar-item w3-button">Christianity</button>
+                      <button class="w3-bar-item w3-button">Buddhism</button>
+                      <button class="w3-bar-item w3-button">Misc</button>
                     </div>
                 </div>
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">Magazine/Others</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                      <a href="#" class="w3-bar-item w3-button">Bangla Magazine</a>
-                      <a href="#" class="w3-bar-item w3-button">English Magazine</a>
-                      <a href="#" class="w3-bar-item w3-button">Others</a>
+                      <button class="w3-bar-item w3-button">Bangla Magazine</button>
+                      <button class="w3-bar-item w3-button">English Magazine</button>
+                      <button class="w3-bar-item w3-button">Others</button>
                     </div>
+                </div>
+            </div>
+
+            <div id="listresult">
+                <div class="w3-center">        
+                    <h5 style="color: blue;">Click on any Column heading to sort it</h5>
+                </div>
+                <div class="w3-panel w3-center">
+                    <table class="w3-table-all w3-centered sortable">
+                        <tr>
+                            <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
+                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of page</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div id="searchresult">
-            <div class="w3-center">        
-                <h5 style="color: blue;">Click on any Column heading to sort it</h5>
-            </div>
-            <div class="w3-panel w3-center">
-                <table class="w3-table-all w3-centered sortable">
-                    <tr>
-                        <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
-                        <th>Language</th><th>Year</th><th>Edition</th><th>Num of page</th>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        
 
     </body>
 </html>

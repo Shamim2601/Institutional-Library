@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Member Login</title>
+        <title>Admin Page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -17,7 +19,7 @@
                     <a href="Sign_up.html" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
                     <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
-                    <a href="suggestion.html" class="w3-btn w3-hover-grey"><h4>Suggestion/Complaint</h4></a>
+                    <a href="links.html" class="w3-btn w3-hover-grey"><h4>Links</h4></a>
                 </div>
                 <div class="w3-dropdown-hover w3-right:0">
                     <button class="w3-button"><h4>:::Menu</h4></button>
@@ -26,11 +28,16 @@
                       <a href="ac_books.html" class="w3-bar-item w3-button">Academic Books</a>
                       <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
                       <a href="members.html" class="w3-bar-item w3-button">Members</a>
-                      <a href="links.html" class="w3-bar-item w3-button">Links</a>
+                      <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
 
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="w3-center w3-card-4" style="width: 200px; margin-left: 485px;">
+            <i class="w3-xxlarge fa fa-user"></i>
+            <h4>Admin ID</h4>
         </div>
 
         <div class="w3-center w3-panel">
@@ -191,27 +198,27 @@
                             <label class="w3-text-blue"><b>Number of page</b></label>
                             <input class="w3-input w3-border" name="numop" type="number" placeholder="">
                          </p>
-                         <p style="margin-left: 2%;">      
+                         <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Type</b></label>
                                 <input class="w3-input w3-border" name="type" type="text" placeholder="Academic/Others">
                          </p>
-                         <p style="margin-left: 2%;">      
+                         <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Department</b></label>
                                 <input class="w3-input w3-border" name="dept" type="text" placeholder="">
                          </p>
-                         <p style="margin-left: 2%;">      
+                         <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Subject</b></label>
                                 <input class="w3-input w3-border" name="sub" type="text" placeholder="">
                          </p>
-                         <p style="margin-left: 2%;">      
+                         <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Topic</b></label>
                                 <input class="w3-input w3-border" name="topic" type="text" placeholder="">
                          </p>
-                         <p style="margin-left: 2%;">      
+                         <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Category</b></label>
                                 <input class="w3-input w3-border" name="cat" type="text" placeholder="">
                          </p>
-                         <p style="margin-left: 2%;">      
+                         <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Genre</b></label>
                                 <input class="w3-input w3-border" name="genre" type="text" placeholder="">
                          </p>                         
@@ -333,6 +340,41 @@
                         <p>      
                             <label class="w3-text-blue"><b>Description</b></label>
                             <input class="w3-input w3-border" name="descr" type="text" placeholder="">
+                        </p>
+                        <input type="submit" value="Add" class="w3-btn w3-blue">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-panel w3-center">
+            <button class="w3-btn w3-blue" onclick='$("#admin").css("display","block")'>Add new Admin</button>
+            <div id="admin" class="w3-display-container" style="display: none;">
+                <div class="w3-display-topright">
+                    <button class="w3-btn w3-red" onclick='$("#admin").css("display","none")'>X</button>
+                </div>
+                <div>
+                    <form class="w3-container w3-card-4" method="post" action="">
+                        <h2 class="w3-text-blue">Admin info</h2>
+                        <p>      
+                            <label class="w3-text-blue"><b>Name</b></label>
+                            <input class="w3-input w3-border" name="name" type="text" placeholder="">
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>ID</b></label>
+                            <input class="w3-input w3-border" name="id" type="text" placeholder="">
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Password</b></label>
+                            <input class="w3-input w3-border" name="psw" type="text" placeholder="">
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Email</b></label>
+                            <input class="w3-input w3-border" name="email" type="text" placeholder="">
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Phone Number</b></label>
+                            <input class="w3-input w3-border" name="phone" type="text" placeholder="">
                         </p>
                         <input type="submit" value="Add" class="w3-btn w3-blue">
                     </form>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Useful Links</title>
+        <title>Book Reviews</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -16,7 +17,8 @@
                     <a href="Sign_up.html" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
                     <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
-                    <a href="links.html" class="w3-btn w3-hover-grey"><h4>Useful Links</h4></a>
+                    <a href="links.html" class="w3-bar-item w3-button">Links</a>
+
                 </div>
                 <div class="w3-dropdown-hover w3-right:0">
                     <button class="w3-button"><h4>:::Menu</h4></button>
@@ -31,14 +33,16 @@
                 </div>
             </div>
         </div>
-
-        <div class="w3-center">        
+        <div class="w3-center"> 
+            <form>
+                <label style="color: darkmagenta;">Search by Book ID</label> <input name="id" type="text" placeholder="id"><input type="submit" value="Search">
+            </form>       
             <h5 style="color: blue;">Click on any Column heading to sort it</h5>
         </div>
         <div class="w3-panel w3-center">
-            <table class="w3-table-all w3-centered sortable">
+            <table id="revtable" class="w3-table-all w3-centered sortable">
                 <tr>
-                    <th>Link Name</th> <th>Link URL</th>
+                    <th>Book ID</th> <th>Name</th><th>Review</th>
                 </tr>
             </table>
         </div>
