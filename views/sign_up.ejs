@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sign up form</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    </head>
+    <body>
+        <div class="w3-panel w3-black w3-border w3-bottombar">
+            <div class="w3-header w3-center">
+                <h1>Institutional Library</h1>
+            </div>
+            <div class="w3-center">
+                <div class="w3-left" style="margin-left: 100px;">
+                    <a href="memberLogin.html" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
+                    <a href="Sign_up.html" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
+                    <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
+                    <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
+                    <a href="links.html" class="w3-bar-item w3-button">Links</a>
+
+                </div>
+                <div class="w3-dropdown-hover w3-right:0">
+                    <button class="w3-button"><h4>:::Menu</h4></button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                      <a href="index.html" class="w3-bar-item w3-button">Home</a>
+                      <a href="ac_books.html" class="w3-bar-item w3-button">Academic Books</a>
+                      <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
+                      <a href="members.html" class="w3-bar-item w3-button">Members</a>
+                      <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="w3-container w3-card-4" action="/sign_up" method="POST">
+            <h2 class="w3-text-blue w3-center">Membership Application Form</h2>
+            <p>      
+               <label for="name" class="w3-text-blue"><b>Name</b></label>
+               <input class="w3-input w3-border" id="name" name="name" type="text">
+            </p>
+
+            <p>      
+                <label for="designation" class="w3-text-blue"><b>Designation</b></label>
+                <input class="w3-input w3-border" id="designation" name="designation" type="text" placeholder="teacher/student/other">
+            </p>
+
+            <p>      
+                <label for="department" class="w3-text-blue"><b>Department</b></label>
+                <input class="w3-input w3-border" id="department" name="department" type="text">
+            </p>
+
+            <p>      
+                <label for="id" class="w3-text-blue"><b>ID</b></label>
+                <input class="w3-input w3-border" id="id" name="id" type="text" placeholder="teacher/student id">
+            </p>
+
+            <p>      
+                <label for="dob" class="w3-text-blue"><b>Date_of_birth</b></label>
+                <input class="w3-input w3-border" id="dob" name="dob" type="text">
+            </p>
+
+            <p>      
+                <label for="address" class="w3-text-blue"><b>Address</b></label>
+                <input class="w3-input w3-border" id="address" name="address" type="text">
+            </p>
+
+            <p>      
+                <label for="email" class="w3-text-blue"><b>Email</b></label>
+                <input class="w3-input w3-border" id="email" name="email" type="email">
+            </p>
+
+            <p>      
+                <label for="phone" class="w3-text-blue"><b>Phone</b></label>
+                <input class="w3-input w3-border" id="phone" name="phone" type="text">
+            </p>
+
+            <p>      
+                <label for="blood_group" class="w3-text-blue"><b>Blood Group</b></label>
+                <input class="w3-input w3-border" id="blood_group" name="blood_group" type="text">
+            </p>
+
+            <p>      
+                <label for="residence" class="w3-text-blue"><b>Residence</b></label>
+                <input class="w3-input w3-border" id="residence" name="residence" type="text">
+            </p>
+
+            <p>      
+                <label for="password" class="w3-text-blue"><b>Password</b></label>
+                <input class="w3-input w3-border" id="password" name="password" type="password" placeholder="choose a strong password">
+            </p>
+
+            <p>      
+                 <button class="w3-btn w3-blue w3-center" onclick="alert('Your member id will be mailed to you soon. You can login using that member id and password provided by you')">Register</button></p>
+        </form>
+​
+    </body>
+</html> 
+​
