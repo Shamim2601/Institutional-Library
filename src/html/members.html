@@ -4,7 +4,7 @@
         <title>Library Members</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -33,11 +33,14 @@
                 </div>
             </div>
         </div>
-        <div class="w3-center">        
-            <h5 style="color: blue;">Click on any Column heading to sort it</h5>
+
+        <div class="w3-center">  
+            <h4 style="color: green;">Library Member List</h4>
+            <button id="idbtn" class="w3-btn w3-blue" onclick="getInfoID()">Fill and Order by ID</button><button id="bgbtn" style="margin-left: 20px;" class="w3-btn w3-blue" onclick="getInfobg()">Fill and Order by Blood Group</button>     
         </div>
+
         <div class="w3-panel w3-center">
-            <table id="memtable" class="w3-table-all w3-centered sortable">
+            <table id="memtable" class="w3-table-all w3-centered">
                 <tr>
                     <th>Member ID</th> <th>Name</th><th>Type</th>
                     <th>Email</th> <th>Phone</th> <th>Blood Group</th>
@@ -45,18 +48,51 @@
             </table>
         </div>
         <script>
-            const getInfo = async ()=>{
-                const url = "https://localhost:8080/members.html";
+            const getInfobg =async ()=>{
+                const url = 'http://localhost:8080/members.html/bg';
                 const options = {method: 'GET'};
                 const response = await fetch(url,options);
-                const myJson = response.json();
-                for(let js of myJson){
-                    const trow = document.document.getElementById("memtable").insertRow(0);
-                    trow.innerHTML = '<td>${js.MEMBER_ID}</td> <td>${js.MEMBER_NAME}</td><td>${js.TYPE}</td><td>${js.EMAIL}</td><td>${js.PHONE_NUMBER}</td>';
+                const myjs = await response.json();
+                var table = document.getElementById("memtable");
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    cell1.innerHTML = myjs[i].MEMBER_ID;
+                    cell2.innerHTML = myjs[i].MEMBER_NAME;
+                    cell3.innerHTML = myjs[i].TYPE;
+                    cell4.innerHTML = myjs[i].EMAIL;
+                    cell5.innerHTML = myjs[i].PHONE_NUMBER;
+                    cell6.innerHTML = myjs[i].BLOOD_GROUP;
                 }
             }
 
-            document.onload(getInfo());
+            const getInfoID =async ()=>{
+                const url = 'http://localhost:8080/members.html/id';
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myjs = await response.json();
+                var table = document.getElementById("memtable");
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    cell1.innerHTML = myjs[i].MEMBER_ID;
+                    cell2.innerHTML = myjs[i].MEMBER_NAME;
+                    cell3.innerHTML = myjs[i].TYPE;
+                    cell4.innerHTML = myjs[i].EMAIL;
+                    cell5.innerHTML = myjs[i].PHONE_NUMBER;
+                    cell6.innerHTML = myjs[i].BLOOD_GROUP;
+                }
+            }
         </script>
     </body>
 </html> 
