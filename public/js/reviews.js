@@ -24,7 +24,7 @@ revtablerouter.get("/Reviews.html/list", async (req,res)=>{
   });
 
   revtablerouter.get("/links.html/fill", async (req,res)=>{
-    const query = "SELECT LINK_NAME,LINK_TEXT FROM LINKS ORDER BY ADD_DATE DESC";
+    const query = "SELECT LINK_NAME,LINK_TEXT FROM LINKS ORDER BY LINK_NAME";
     const params = [];
     const result = await dbQuery(query,params);
     res.status(200).json(result);
