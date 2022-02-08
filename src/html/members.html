@@ -36,7 +36,7 @@
 
         <div class="w3-center">  
             <h4 style="color: green;">Library Member List</h4>
-            <button id="idbtn" class="w3-btn w3-blue" onclick="getInfoID()">Fill and Order by ID</button><button id="bgbtn" style="margin-left: 20px;" class="w3-btn w3-blue" onclick="getInfobg()">Fill and Order by Blood Group</button>     
+            <button id="idbtn" class="w3-btn w3-blue" onclick="getInfo('id')">Order by ID</button><button id="bgbtn" style="margin-left: 20px;" class="w3-btn w3-blue" onclick="getInfo('bg')">Order by Blood Group</button>     
         </div>
 
         <div class="w3-panel w3-center">
@@ -47,36 +47,17 @@
                 </tr>
             </table>
         </div>
-        <script>
-            const getInfobg =async ()=>{
-                const url = 'http://localhost:8080/members.html/bg';
-                const options = {method: 'GET'};
-                const response = await fetch(url,options);
-                const myjs = await response.json();
-                var table = document.getElementById("memtable");
-                for(let i =0;i<myjs.length;i++){
-                    var row = table.insertRow();
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-                    var cell4 = row.insertCell(3);
-                    var cell5 = row.insertCell(4);
-                    var cell6 = row.insertCell(5);
-                    cell1.innerHTML = myjs[i].MEMBER_ID;
-                    cell2.innerHTML = myjs[i].MEMBER_NAME;
-                    cell3.innerHTML = myjs[i].TYPE;
-                    cell4.innerHTML = myjs[i].EMAIL;
-                    cell5.innerHTML = myjs[i].PHONE_NUMBER;
-                    cell6.innerHTML = myjs[i].BLOOD_GROUP;
-                }
-            }
 
-            const getInfoID =async ()=>{
-                const url = 'http://localhost:8080/members.html/id';
+        <script>
+            const getInfo =async (inp)=>{
+                var table = document.getElementById("memtable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                const url = 'http://localhost:8080/members.html/'+inp;
                 const options = {method: 'GET'};
                 const response = await fetch(url,options);
                 const myjs = await response.json();
-                var table = document.getElementById("memtable");
                 for(let i =0;i<myjs.length;i++){
                     var row = table.insertRow();
                     var cell1 = row.insertCell(0);
@@ -94,6 +75,7 @@
                 }
             }
         </script>
+
     </body>
 </html> 
 ​

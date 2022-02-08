@@ -32,16 +32,35 @@
             </div>
         </div>
 
-        <div class="w3-center">        
-            <h5 style="color: blue;">Click on any Column heading to sort it</h5>
+        <div class="w3-center">  
+            <button class="w3-btn w3-blue" onclick="getInfo('fill')">Show Links</button>      
         </div>
         <div class="w3-panel w3-center">
-            <table class="w3-table-all w3-centered sortable">
+            <table id="linktable" class="w3-table-all w3-centered">
                 <tr>
                     <th>Link Name</th> <th>Link URL</th>
                 </tr>
             </table>
         </div>
+        <script>
+            const getInfo =async (inp)=>{
+                var table = document.getElementById("linktable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                const url = 'http://localhost:8080/links.html/'+inp;
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myjs = await response.json();
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = myjs[i].LINK_NAME;
+                    cell2.innerHTML = myjs[i].LINK_TEXT;
+                }    
+            }
+        </script>
     </body>
 </html> 
 ​

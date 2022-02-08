@@ -3,6 +3,7 @@ oracledb.outFormat = oracledb.OBJECT ;
 const express = require('express'); 
 const router = express.Router();
 const memtablerouter = require('./public/js/member_table');
+const revtablerouter = require('./public/js/reviews');
 
 var app = new express(); 
 var port = 8080; 
@@ -11,6 +12,7 @@ app.use(router);
 app.use(express.static('public'));   
 app.use(express.static('src/html'));
 app.use(memtablerouter);
+app.use(revtablerouter);
 
 app.listen(port, function(err) {  
     if (typeof(err) == "undefined") {  
