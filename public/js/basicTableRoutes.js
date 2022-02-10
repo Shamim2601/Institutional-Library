@@ -42,6 +42,13 @@ tablerouter.post('/searchRevByBookName', async (req,res)=>{
     res.redirect('/');
 });
 
+tablerouter.get("/news_events.html/fill", async (req,res)=>{
+  const query = "SELECT IMAGE,TITLE,TO_CHAR(NEWS_DATE, 'DD.MM.YYYY') AS NEWS_DATE,DESCRIPTION FROM NEWS_AND_EVENTS ORDER BY NEWS_DATE DESC";
+  const params = [];
+  const result = await dbQuery(query,params);
+  res.status(200).json(result);
+});
+
 tablerouter.get("/links.html/fill", async (req,res)=>{
     const query = "SELECT LINK_NAME,LINK_TEXT FROM LINKS ORDER BY LINK_NAME";
     const params = [];

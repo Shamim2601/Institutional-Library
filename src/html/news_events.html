@@ -4,6 +4,8 @@
         <title>News and Events</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -32,6 +34,27 @@
                 </div>
             </div>
         </div>
+
+        <div id="news" class="w3-panel">
+        </div>
+        <script>
+            const getInfo =async (inp)=>{
+                const url = 'http://localhost:8080/news_events.html/'+inp;
+                const options = {method: 'GET'};
+                const response = await fetch(url,options); 
+                const myjs = await response.json();
+                var mydiv = $("#news");
+                mydiv.empty();
+                let i=0;
+                while(i<myjs.length){
+                    mydiv.append('<div class="w3-panel w3-section"><div class="w3-center w3-card-4" style="float: left; width: 300px; height: 250px;padding-top: 7px">'+
+                    '<img src='+myjs[i].IMAGE+' height="200px" width="170px"> <p><b>'+myjs[i].NEWS_DATE+'</b></p> </div>'+
+                    '<div class="w3-card-4 w3-center" style="overflow-y: scroll; float: left; width: 800px; height: 250px; padding-top: 7px"><h4><u>'+myjs[i].TITLE+'</u></h4><p>'+myjs[i].DESCRIPTION+'</p></div></div>');
+                    i=i+1;
+                }      
+            }
+            $(document).ready(getInfo('fill'));
+        </script>
     </body>
 </html> 
 ​
