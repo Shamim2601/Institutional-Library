@@ -4,6 +4,7 @@
         <title>Book Reviews</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
@@ -17,7 +18,7 @@
                     <a href="Sign_up.html" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
                     <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
-                    <a href="links.html" class="w3-bar-item w3-button">Links</a>
+                    <a href="links.html" class="w3-bar-item w3-button"><h4>Useful Links</h4></a>
 
                 </div>
                 <div class="w3-dropdown-hover w3-right:0">
@@ -28,46 +29,45 @@
                       <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
                       <a href="members.html" class="w3-bar-item w3-button">Members</a>
                       <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
-
+                      <a href="Authors.html" class="w3-bar-item w3-button">Authors</a>
+                      <a href="Publishers.html" class="w3-bar-item w3-button">Publishers</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="w3-center"> 
-            <form>
-                <label style="color: darkmagenta;">Search by Book ID</label> <input name="id" type="text" placeholder="id"><input type="submit" value="Search">
-            </form>     <br>  
-            <button class="w3-btn w3-blue" onclick="getInfo('list')">Show All Review</button>
+            <form action="/searchRevByBookName " method="post">
+                <input name="Book-Name" type="text" placeholder="Search by Book-Name"><input type="submit" value="Search">
+            </form><br>  
+            <a href="memberLogin.html" class="w3-btn w3-blue">Add Review</a>
         </div>
-        <div class="w3-panel w3-center">
-            <table id="revtable" class="w3-table-all w3-centered sortable">
-                <tr>
-                    <th>Book ID</th> <th>Name</th><th>Member ID</th><th>Review</th>
-                </tr>
-            </table>
+        <div id="revs" class="w3-panel">
         </div>
         <script>
             const getInfo =async (inp)=>{
-                var table = document.getElementById("revtable");
-                while (table.rows.length > 1) {
-                    table.deleteRow(1);
-                }
                 const url = 'http://localhost:8080/Reviews.html/'+inp;
                 const options = {method: 'GET'};
-                const response = await fetch(url,options);
+                const response = await fetch(url,options); 
                 const myjs = await response.json();
-                for(let i =0;i<myjs.length;i++){
-                    var row = table.insertRow();
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-                    var cell4 = row.insertCell(3);
-                    cell1.innerHTML = myjs[i].BOOK_ID;
-                    cell2.innerHTML = myjs[i].BOOK_NAME;
-                    cell3.innerHTML = myjs[i].MEMBER_ID;
-                    cell4.innerHTML = myjs[i].REVIEW_TEXT;
-                }    
+                var mydiv = $("#revs");
+                mydiv.empty();
+                let i=0;
+                let revText = '';
+                while(i<myjs.length){
+                    let j= i;
+                    revText = '';
+                    while(myjs[j]!=null && myjs[j].BOOK_NAME == myjs[i].BOOK_NAME){
+                        revText+= '<div class="w3-bottombar" style="height: 85px; overflow-y: scroll;">'+
+                                  '<i class="fa fa-user" style="font-size: 40px;"></i> '+myjs[j].MEMBER_NAME+' <i class="fa fa-comment" style="font-size: 25px;"></i> '+myjs[j].REVIEW_TEXT+'</div>';
+                        j++;
+                    }
+                    mydiv.append('<div class="w3-panel w3-section"><div class="w3-center w3-card-4" style="float: left; width: 300px; height: 250px;padding-top: 7px">'+
+                    '<img src='+myjs[i].COVER_IMAGE+' height="150px" width="150px"> <p><b>'+myjs[i].BOOK_NAME+'</b><br><b>Book ID: '+myjs[i].BOOK_ID+'</b><br><b>'+myjs[i].AUTHOR_NAME+'</b></p> </div>'+
+                    '<div class="w3-card-4" style="overflow-y: scroll; float: left; width: 800px; height: 250px; padding-top: 7px">'+revText+'</div></div>');
+                    i=j;
+                }      
             }
+            $(document).ready(getInfo('list'));
         </script>
     </body>
 </html> 

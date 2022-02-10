@@ -18,7 +18,7 @@
                     <a href="Sign_up.html" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
                     <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
-                    <a href="links.html" class="w3-btn w3-hover-grey"><h4>Links</h4></a>
+                    <a href="links.html" class="w3-btn w3-hover-grey"><h4>Useful Links</h4></a>
                 </div>
                 <div class="w3-dropdown-hover w3-right:0">
                     <button class="w3-button"><h4>:::Menu</h4></button>
@@ -28,7 +28,8 @@
                       <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
                       <a href="members.html" class="w3-bar-item w3-button">Members</a>
                       <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
-
+                      <a href="Authors.html" class="w3-bar-item w3-button">Authors</a>
+                      <a href="Publishers.html" class="w3-bar-item w3-button">Publishers</a>
                     </div>
                 </div>
             </div>
@@ -36,19 +37,17 @@
 
         <div class="w3-panel w3-topbar w3-center" style="margin-top: 50px;">
             <form>
-                <label><h5><b>Search by Book/Writer name</b></h5></label><br>
-                <input type="text" placeholder="book/writer name">
+                <label><h5><b>Search by Book/Writer name</b></h5></label>
+                <input type="text" name="book-name" placeholder="Book name">
+                <input type="text" name="author" placeholder="Writer name">
                 <button class="w3-blue">Search</button>
             </form>
             <div id="searchresult">
-                <div class="w3-center">        
-                    <h5 style="color: blue;">Click on any Column heading to sort it</h5>
-                </div>
                 <div class="w3-panel w3-center">
                     <table class="w3-table-all w3-centered sortable">
                         <tr>
                             <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
-                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of page</th>
+                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of pages</th>
                         </tr>
                     </table>
                 </div>
@@ -56,7 +55,7 @@
         </div>
 
         <div class="w3-panel w3-topbar w3-center" style="padding-top: 20px;">
-            <h5><b><u>List by Subject</u></b></h5>
+            <h5><b>List by Subject</b></h5>
             <div class="w3-bar w3-border">
                 <div class="w3-dropdown-hover">
                     <button class="w3-btn">Science</button>
@@ -107,14 +106,11 @@
                 </div>
             </div>
             <div id="listresult">
-                <div class="w3-center">        
-                    <h5 style="color: blue;">Click on any Column heading to sort it</h5>
-                </div>
                 <div class="w3-panel w3-center">
                     <table class="w3-table-all w3-centered sortable">
                         <tr>
-                            <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Cover Image</th><th>Status</th>
-                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of page</th>
+                            <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
+                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of pages</th>
                         </tr>
                     </table>
                 </div>
