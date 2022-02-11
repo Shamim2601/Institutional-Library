@@ -60,57 +60,84 @@
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">Bangla Literature</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                      <button class="w3-bar-item w3-button">Novel</button>
-                      <button class="w3-bar-item w3-button">Story</button>
-                      <button class="w3-bar-item w3-button">Poem</button>
-                      <button class="w3-bar-item w3-button">Drama</button>
-                      <button class="w3-bar-item w3-button">Translation</button>
-                      <button class="w3-bar-item w3-button">Misc</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('BANGLA_LITERATURE/NOVEL')">Novel</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('BANGLA_LITERATURE/STORY')">Story</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('BANGLA_LITERATURE/POEM')">Poem</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('BANGLA_LITERATURE/DRAMA')">Drama</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('BANGLA_LITERATURE/TRANSLATION')">Translation</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('BANGLA_LITERATURE/MISC')">Misc</button>
                     </div>
                 </div>
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">English Literature</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                        <button class="w3-bar-item w3-button">Novel</button>
-                        <button class="w3-bar-item w3-button">Story</button>
-                        <button class="w3-bar-item w3-button">Poem</button>
-                        <button class="w3-bar-item w3-button">Drama</button>
-                        <button class="w3-bar-item w3-button">Misc</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('ENGLISH_LITERATURE/NOVEL')">Novel</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('ENGLISH_LITERATURE/STORY')">Story</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('ENGLISH_LITERATURE/POEM')">Poem</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('ENGLISH_LITERATURE/DRAMA')">Drama</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('ENGLISH_LITERATURE/MISC')">Misc</button>
                     </div>
                 </div>
                 <div class="w3-dropdown-hover">
                     <button class="w3-button">Religious</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                      <button class="w3-bar-item w3-button">Islamic</button>
-                      <button class="w3-bar-item w3-button">Hinduism</button>
-                      <button class="w3-bar-item w3-button">Christianity</button>
-                      <button class="w3-bar-item w3-button">Buddhism</button>
-                      <button class="w3-bar-item w3-button">Misc</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('RELIGIOUS/ISLAMIC')">Islamic</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('RELIGIOUS/HINDUISM')">Hinduism</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('RELIGIOUS/CHRISTIANITY')">Christianity</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('RELIGIOUS/BUDDHISM')">Buddhism</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('RELIGIOUS/MISC')">Misc</button>
                     </div>
                 </div>
                 <div class="w3-dropdown-hover">
-                    <button class="w3-button">Magazine/Others</button>
+                    <button class="w3-button">Others</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                      <button class="w3-bar-item w3-button">Bangla Magazine</button>
-                      <button class="w3-bar-item w3-button">English Magazine</button>
-                      <button class="w3-bar-item w3-button">Others</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('OTHERS/BANGLA_MAGAZINE')">Bangla Magazine</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('OTHERS/ENGLISH_MAGAZINE')">English Magazine</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('OTHERS/CHILDREN')">Children</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('OTHERS/MISC')">Misc</button>
                     </div>
                 </div>
             </div>
 
-            <div id="listresult">
+            <div>
                 <div class="w3-panel w3-center">
-                    <table class="w3-table-all w3-centered sortable">
+                    <table id="otherbookstable" class="w3-table-all w3-centered">
                         <tr>
                             <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
-                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of pages</th>
+                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of pages</th><th>Cover Image</th>
                         </tr>
                     </table>
                 </div>
-            </div>
+            </div>         
         </div>
 
-        
+        <script>
+            const getInfo =async (inp)=>{
+                var table = document.getElementById("otherbookstable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                
+                const url = 'http://localhost:8080/other_books.html/'+inp;
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myjs = await response.json();                
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);  var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);  var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);  var cell7 = row.insertCell(6);
+                    var cell8 = row.insertCell(7);  var cell9 = row.insertCell(8);
+                    var cell10 = row.insertCell(9);
+                    cell1.innerHTML = myjs[i].BOOK_ID;     cell2.innerHTML = myjs[i].BOOK_NAME;
+                    cell3.innerHTML = myjs[i].AUTHOR_NAME;     cell4.innerHTML = myjs[i].PUBLISHER_NAME;
+                    cell5.innerHTML = myjs[i].STATUS;     cell6.innerHTML = myjs[i].LANGUAGE;
+                    cell7.innerHTML = myjs[i].YEAR;     cell8.innerHTML = myjs[i].EDITION;
+                    cell9.innerHTML = myjs[i].NO_OF_PAGES;   
+                    cell10.innerHTML = '<a href='+myjs[i].COVER_IMAGE+'><img src="'+ myjs[i].COVER_IMAGE+'" height ="70px" width = "70px"></a>';
 
+                } 
+            }
+        </script>
     </body>
 </html>

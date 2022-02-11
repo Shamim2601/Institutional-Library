@@ -30,11 +30,18 @@ tablerouter.get("/members.html/id", async (req,res)=>{
   res.status(200).json(result);
 });
 
-tablerouter.get("/Reviews.html/list", async (req,res)=>{
-    const query = "SELECT B.COVER_IMAGE, B.BOOK_NAME,B.BOOK_ID, A.AUTHOR_NAME, M.MEMBER_NAME, RL.REVIEW_TEXT FROM  MEMBER M JOIN REVIEW_LIST RL ON (M.MEMBER_ID = RL.MEMBER_ID) JOIN BOOK B ON (RL.BOOK_ID = B.BOOK_ID) JOIN AUTHOR A ON (B.AUTHOR_ID = A.AUTHOR_ID) ORDER BY B.BOOK_NAME";
+tablerouter.get("/Reviews.html/academic", async (req,res)=>{
+    const query = "SELECT B.COVER_IMAGE, B.BOOK_NAME,B.BOOK_ID, A.AUTHOR_NAME, M.MEMBER_NAME, RL.REVIEW_TEXT FROM  MEMBER M JOIN REVIEW_LIST RL ON (M.MEMBER_ID = RL.MEMBER_ID) JOIN BOOK B ON (RL.BOOK_ID = B.BOOK_ID) JOIN AUTHOR A ON (B.AUTHOR_ID = A.AUTHOR_ID) WHERE B.BOOK_TYPE LIKE 'ACADEMIC' ORDER BY B.BOOK_NAME";
     const params = [];
     const result = await dbQuery(query,params);
     res.status(200).json(result);
+});
+
+tablerouter.get("/Reviews.html/other", async (req,res)=>{
+  const query = "SELECT B.COVER_IMAGE, B.BOOK_NAME,B.BOOK_ID, A.AUTHOR_NAME, M.MEMBER_NAME, RL.REVIEW_TEXT FROM  MEMBER M JOIN REVIEW_LIST RL ON (M.MEMBER_ID = RL.MEMBER_ID) JOIN BOOK B ON (RL.BOOK_ID = B.BOOK_ID) JOIN AUTHOR A ON (B.AUTHOR_ID = A.AUTHOR_ID) WHERE B.BOOK_TYPE LIKE 'OTHER%' ORDER BY B.BOOK_NAME";
+  const params = [];
+  const result = await dbQuery(query,params);
+  res.status(200).json(result);
 });
 
 tablerouter.post('/searchRevByBookName', async (req,res)=>{

@@ -40,6 +40,8 @@
             <form action="/searchRevByBookName " method="post">
                 <input name="Book-Name" type="text" placeholder="Search by Book-Name"><input type="submit" value="Search">
             </form><br>  
+            <button class="w3-btn w3-blue" onclick="getInfo('academic')">Academic</button>
+            <button class="w3-btn w3-blue" onclick="getInfo('other')">Other</button>
             <a href="memberLogin.html" class="w3-btn w3-blue">Add Review</a>
         </div>
         
@@ -69,7 +71,6 @@
                     i=j;
                 }      
             }
-            $(document).ready(getInfo('list'));
         </script>
     </body>
 </html> 
