@@ -4,6 +4,7 @@
         <title>New Arrivals</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -24,6 +25,7 @@
                       <a href="index.html" class="w3-bar-item w3-button">Home</a>
                       <a href="ac_books.html" class="w3-bar-item w3-button">Academic Books</a>
                       <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
+                      <a href="new_arrivals.html" class="w3-bar-item w3-button">New Books</a>
                       <a href="members.html" class="w3-bar-item w3-button">Members</a>
                       <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
                       <a href="Authors.html" class="w3-bar-item w3-button">Authors</a>
@@ -34,14 +36,44 @@
         </div>
 
         <div class="w3-panel w3-center">
-            <h4 style="color: blueviolet;">Latest Books</h4>
-            <table class="w3-table-all w3-centered sortable">
+            <h4 style="color: blueviolet;">Newly Arrived Books</h4>
+            <table id="newbookstable" class="w3-table-all w3-centered">
                 <tr>
                     <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
-                    <th>Type</th><th>Language</th><th>Year</th><th>Edition</th>
+                    <th>Type</th><th>Language</th><th>Year</th><th>Edition</th><th>Cover Image</th>
                 </tr>
             </table>
         </div>
+
+        <script>
+            const getInfo =async (inp)=>{
+                var table = document.getElementById("newbookstable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                
+                const url = 'http://localhost:8080/new_arrivals.html/'+inp;
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myjs = await response.json();                
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);  var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);  var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);  var cell7 = row.insertCell(6);
+                    var cell8 = row.insertCell(7);  var cell9 = row.insertCell(8);
+                    var cell10 = row.insertCell(9);
+                    cell1.innerHTML = myjs[i].BOOK_ID;     cell2.innerHTML = myjs[i].BOOK_NAME;
+                    cell3.innerHTML = myjs[i].AUTHOR_NAME;     cell4.innerHTML = myjs[i].PUBLISHER_NAME;
+                    cell5.innerHTML = myjs[i].STATUS;     cell7.innerHTML = myjs[i].LANGUAGE;
+                    cell8.innerHTML = myjs[i].YEAR;     cell9.innerHTML = myjs[i].EDITION;
+                    cell6.innerHTML = myjs[i].BOOK_TYPE;   
+                    cell10.innerHTML = '<a href='+myjs[i].COVER_IMAGE+'><img src="'+ myjs[i].COVER_IMAGE+'" height ="70px" width = "70px"></a>';
+
+                } 
+            }
+            $(document).ready(getInfo('fill'));
+        </script>
     </body>
 </html> 
 ​
