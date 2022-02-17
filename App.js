@@ -6,7 +6,6 @@ const queryDB = require('./public/js/queryDBMS');
 var port = 8080; 
 
 app.set('view-engine','ejs');
-
 // let connection = undefined;
 // async function dbQuery(query){
 //   if(connection===undefined){
@@ -57,6 +56,9 @@ const signUpRouter = require('./public/js/sign_up');
 const { json } = require('express');
 app.use("/sign_up",signUpRouter);
 
+
+const loginRouter = require('./public/js/member_login');
+app.use("/memberLogin",loginRouter);
 // app.get('/',(req,res)=>{
 // })
 
