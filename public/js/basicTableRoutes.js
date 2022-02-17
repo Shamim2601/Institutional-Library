@@ -51,6 +51,13 @@ tablerouter.get("/news_events.html/fill", async (req,res)=>{
   res.status(200).json(result);
 });
 
+tablerouter.get("/index.html/news", async (req,res)=>{
+  const query = "SELECT IMAGE,TITLE,TO_CHAR(NEWS_DATE, 'DD.MM.YYYY') AS NEWS_DATE FROM NEWS_AND_EVENTS ORDER BY NEWS_DATE DESC";
+  const params = [];
+  const result = await dbQuery(query,params);
+  res.status(200).json(result);
+});
+
 tablerouter.get("/links.html/fill", async (req,res)=>{
     const query = "SELECT LINK_NAME,LINK_TEXT FROM LINKS ORDER BY LINK_NAME";
     const params = [];

@@ -75,19 +75,8 @@
         
         <div class="w3-panel w3-center w3-border-green w3-topbar w3-bottombar" style="margin-top: 40px;">
             <header><h3 style="color: red;">News and Events</h3></header>
-            <div class="w3-panel w3-border" style="width: 45%; float: left; margin-right: 5px; margin-left: 30px;">
-                <div class="w3-card">
-                    <img class="w3-round w3-border" src="images/climate.jpg">
-                </div>
-                <div class="w3-card-2" style="">Title</div>
-                <div class="w3-card-2" style="">Date</div>
-            </div>
-            <div class="w3-panel w3-border" style="width: 45%; float: left; margin-left: 15px;">
-                <div class="w3-card">
-                    <img class="w3-round w3-border" src="images/climate.jpg">
-                </div>
-                <div class="w3-card-2" style="">Title</div>
-                <div class="w3-card-2" style="">Date</div>
+            <div id="newsdiv">
+                
             </div>
             <a href="news_events.html" class="w3-btn w3-center w3-grey">View All>></a>
         </div>
@@ -121,5 +110,24 @@
             </div>
         </div>
 
+        <script>
+            const getInfo =async (inp)=>{
+                const url = 'http://localhost:8080/index.html/'+inp;
+                const options = {method: 'GET'};
+                const response = await fetch(url,options); 
+                const myjs = await response.json();
+                var mydiv ;
+                mydiv= $("#newsdiv");
+                mydiv.empty();
+                let i=0;
+                while(i<2){
+                    mydiv.append('<div class="w3-panel w3-border" style="width: 45%; float: left; margin-right: 5px; margin-left: 30px;">'+
+                    '<div class="w3-card">'+'<img class="w3-round w3-border" src='+myjs[i].IMAGE+' height="150px" width="400px"></div>'+
+                    '<div class="w3-card-2" style="">'+myjs[i].TITLE+'</div><div class="w3-card-2" style="">'+myjs[i].NEWS_DATE+'</div> </div>');
+                    i=i+1;
+                }      
+            }
+            $(document).ready(getInfo('news'));
+        </script>
     </body>
 </html>
