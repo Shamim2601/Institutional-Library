@@ -113,8 +113,8 @@
                     mydiv= $("#booksdiv");
                     mydiv.empty();
                     let i=0;
-                    while(i<4){
-                        let ar = [];
+                    var ar = [];
+                    while(i<4){                      
                         let j;
                         j = Math.floor(Math.random() * myjs.length);
                         while(ar.includes(j)){
@@ -128,7 +128,6 @@
                         i=i+1;
             
                     }
-                    console.log(ar);
                 }
             }
             $(document).ready(getInfo('news'));
