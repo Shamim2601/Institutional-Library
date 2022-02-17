@@ -58,6 +58,15 @@ tablerouter.get("/index.html/news", async (req,res)=>{
   res.status(200).json(result);
 });
 
+tablerouter.get("/index.html/books", async (req,res)=>{
+  const query = "SELECT B.BOOK_NAME, A.AUTHOR_NAME, B.STATUS, B.COVER_IMAGE,B.DATE_OF_ARRIVAL"+
+                " FROM BOOK B JOIN AUTHOR A ON (A.AUTHOR_ID = B.AUTHOR_ID) WHERE ((SYSDATE-B.DATE_OF_ARRIVAL)/30)<=3 ORDER BY B.DATE_OF_ARRIVAL";
+
+  const params = [];
+  const result = await dbQuery(query,params);
+  res.status(200).json(result);
+});
+
 tablerouter.get("/links.html/fill", async (req,res)=>{
     const query = "SELECT LINK_NAME,LINK_TEXT FROM LINKS ORDER BY LINK_NAME";
     const params = [];

@@ -33,8 +33,8 @@ bookRouter.get('/:parent/:child/:grandchild', async (req,res)=>{
 });
 
 bookRouter.get('/new_arrivals.html/fill', async (req,res)=>{
-  const query = "SELECT B.BOOK_ID, B.BOOK_NAME, A.AUTHOR_NAME, B.PUBLISHER_NAME, B.STATUS, B.BOOK_TYPE, B.LANGUAGE, B.YEAR, B.EDITION, B.COVER_IMAGE"+
-                " FROM BOOK B JOIN AUTHOR A ON (A.AUTHOR_ID = B.AUTHOR_ID) WHERE ((SYSDATE-B.DATE_OF_ARRIVAL)/30)<=1 ORDER BY A.AUTHOR_NAME";
+  const query = "SELECT B.BOOK_ID, B.BOOK_NAME, A.AUTHOR_NAME, B.PUBLISHER_NAME, B.STATUS, B.BOOK_TYPE,B.DATE_OF_ARRIVAL, B.LANGUAGE, B.YEAR, B.EDITION, B.COVER_IMAGE"+
+                " FROM BOOK B JOIN AUTHOR A ON (A.AUTHOR_ID = B.AUTHOR_ID) WHERE ((SYSDATE-B.DATE_OF_ARRIVAL)/30)<=3 ORDER BY B.DATE_OF_ARRIVAL";
   const params = [];
   const result = await dbQuery(query,params);
   res.status(200).json(result);
