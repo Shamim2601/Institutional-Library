@@ -16,8 +16,8 @@
             </div>
             <div class="w3-center">
                 <div class="w3-left" style="margin-left: 100px;">
-                    <a href="../../memberLogin" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
-                    <a href="../../Sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
+                    <a href="/memberLogin" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
+                    <a href="/Sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
                     <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
                     <a href="links.html" class="w3-btn w3-hover-grey"><h4>Useful Links</h4></a>
@@ -40,8 +40,8 @@
 
         <div class="w3-center w3-card-4" style="width: 200px; margin-left: 485px;">
             <i class="w3-xxlarge fa fa-user"></i>
-            <h4 id = "memberId">Member ID</h4>
-            <h4 id="memberName">Member Name</h4>
+            <h4 id = "memberId" name="memberId"><%= memberId %></h4>
+            <h4 id="memberName" name="memberName"><%= memberName %></h4>
         </div>
         
         <div class="w3-panel w3-center">
@@ -51,20 +51,20 @@
                     <button class="w3-btn w3-red" onclick='$("#rev").css("display","none")'>X</button>
                 </div>
                 <div>
-                    <form class="w3-container w3-card-4" method="post" action="/member_page">
+                    <form class="w3-container w3-card-4" id="reviewForm" method="POST" action="/member_page">
                         <h2 class="w3-text-blue">Review A Book</h2>
                         <p>      
-                           <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" id = "bookId" name="bookId" type="text" placeholder="ID">
+                           <label class="w3-text-blue" for="reviewBookId"><b>Book ID</b></label>
+                           <input class="w3-input w3-border" id = "reviewBookId" name="reviewBookId" type="text" placeholder="ID" required>
                         </p>
             
                         <p>      
-                            <label class="w3-text-blue" ><b>Review Text</b></label>
-                            <input class="w3-input w3-border" id="reviewText" name="reviewText" type="text" placeholder="review">
+                            <label class="w3-text-blue" for="reviewText" ><b>Review Text</b></label>
+                            <input class="w3-input w3-border" id="reviewText" name="reviewText" type="text" placeholder="review" maxlength="255" required>
                         </p>
             
                         <p>      
-                             <button class="w3-btn w3-blue" id="reviewSubmitBtn">Submit</button></p>
+                             <button class="w3-btn w3-blue" id="reviewSubmit" type="submit">Submit</button></p>
                     </form>
                 </div>
             </div>
@@ -77,15 +77,15 @@
                     <button class="w3-btn w3-red" onclick='$("#fav").css("display","none")'>X</button>
                 </div>
                 <div>
-                    <form class="w3-container w3-card-4" method="post" action="">
+                    <form class="w3-container w3-card-4" method="POST" action="/member_page">
                         <h2 class="w3-text-blue">Favourite Book info</h2>
                         <p>      
-                           <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" name="id" type="text" placeholder="ID">
+                           <label class="w3-text-blue" for="favBookId"><b>Book ID</b></label>
+                           <input class="w3-input w3-border" id="favBookId" name="favBookId" type="text" placeholder="ID">
                         </p>
             
                         <p>      
-                             <button class="w3-btn w3-blue">Submit</button></p>
+                             <button class="w3-btn w3-blue" name="favSubmit" type="submit">Submit</button></p>
                     </form>
                 </div>
             </div>
@@ -108,10 +108,8 @@
         </div>
         
         <div class="w3-center w3-panel">
-            <a class="w3-btn w3-blue" href="suggestion.html">Give Suggestion/Complaint</a>
+            <a class="w3-btn w3-blue" href="/suggestion?suggestionId=sug">Give Suggestion/Complaint</a>
         </div>
-
-        <script type="text/javascript" src="../public/js/member_page.js"></script>
 ​  
     </body>
 </html> 

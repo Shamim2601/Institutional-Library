@@ -5,11 +5,12 @@ const queryDB = require('./queryDBMS');
 router.get('/',(req,res)=>{
     console.log(" OH  NOOOOOOOO");
     let context = {
-        phoneNumber:""
+        phoneNumber:"",
     }
     if(req.session.phoneNumber){
         context.phoneNumber = req.session.phoneNumber;
     }
+
     res.render('member_login.ejs',context);
 })
 
@@ -33,6 +34,9 @@ router.post('/', async (req,res)=>{
     }
     else{
         // res.status(200).json(result);
+        req.session.phoneNumber = req.body.phoneNumber;
+        req.session.memberId = result.rows[0].MEMBER_ID;
+        req.session.memberName = result.rows[0].MEMBER_NAME;
         res.redirect('/member_page');
     }
     console.log(result.rows)
