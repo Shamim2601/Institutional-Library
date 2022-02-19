@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queryDB = require('./queryDBMS');
-// const phoneNumber = document.querySelector('#phoneNumber')
-router.get('/',(req,res)=>{
+router.get('/',async(req,res)=>{
     console.log("---MEMBER LOGIN GET REQUEST---");
     let context = {
         phoneNumber:"",
