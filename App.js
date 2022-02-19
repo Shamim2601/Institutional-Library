@@ -25,8 +25,8 @@ app.use(session({secret:"secretKey"}));
 const signUpRouter = require('./public/js/sign_up');
 app.use("/sign_up",signUpRouter);
 
-const loginRouter = require('./public/js/member_login');
-app.use("/member_login",loginRouter);
+const memberLoginRouter = require('./public/js/member_login');
+app.use("/member_login",memberLoginRouter);
 
 const memberPageRouter = require('./public/js/member_page');
 app.use("/member_page",memberPageRouter);
@@ -34,7 +34,13 @@ app.use("/member_page",memberPageRouter);
 const suggestionRouter = require('./public/js/suggestion');
 app.use("/suggestion",suggestionRouter);
 
-app.listen(port, function(err) {  
+const adminLoginRouter = require('./public/js/admin_login');
+app.use('/admin_login',adminLoginRouter);
+
+const adminPageRouter = require('./public/js/admin_page');
+app.use('/admin_page',adminPageRouter);
+
+app.listen(port, function(err) {
     if (typeof(err) == "undefined") {  
         console.log('Your application is running on : ' + port + ' port');  
     }  

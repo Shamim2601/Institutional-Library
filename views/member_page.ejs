@@ -98,19 +98,67 @@
                 <div class="w3-panel w3-center">
                     <button class="w3-btn w3-red" style="float:right;" onclick='$("#favlist").css("display","none")'>X</button>
                     <table class="w3-table-all w3-centered sortable">
-                        <tr>
-                            <th>Book Id</th><th>Book Name</th><th>Author</th>
+                        <tr class="bg-info">
+                            <th data-column="tableBookid" data-order="desc">Book Id</th>
+                            <th data-column="tableBookName" data-order="desc">Book Name</th>
+                            <th data-column="tableBookAuthor" data-order="desc">Author</th>
                         </tr>
+                        <tbody id="myTable">
+
+                        </tbody>
                     </table>
                 </div>
             </div>
-            
         </div>
         
         <div class="w3-center w3-panel">
             <a class="w3-btn w3-blue" href="/suggestion?suggestionId=sug">Give Suggestion/Complaint</a>
         </div>
-​  
+        <script>
+            var myArray = [
+                {'tableBookId':'MICHEAL', 'tableBookName':'30', 'tableBookAuthor':'11-OCT-1989'},
+                {'tableBookId':'MILA', 'tableBookName':'32', 'tableBookAuthor':'10-JAN-1989'},
+                {'tableBookId':'PAUL', 'tableBookName':'29', 'tableBookAuthor':'14-OCT-1990'},
+                {'tableBookId':'DENNIS', 'tableBookName':'25', 'tableBookAuthor':'29-SEP-1993'},
+                {'tableBookId':'TIM', 'tableBookName':'27', 'tableBookAuthor':'3-DEC-1991'},
+                {'tableBookId':'ERIK', 'tableBookName':'24', 'tableBookAuthor':'1-OCT-1995'},
+	        ]
+            
+            $('th').on('click', function(){
+                var column = $(this).data('column')
+                var order = $(this).data('order')
+                var text = $(this).html()
+                // text = text.substring(0, text.length - 1)
+
+                if(order == 'desc'){
+                    $(this).data('order', "asc")
+                    myArray = myArray.sort((a,b) => a[column] > b[column] ? 1 : -1)
+                    // text += '&#9660'
+
+                }else{
+                    $(this).data('order', "desc")
+                    myArray = myArray.sort((a,b) => a[column] < b[column] ? 1 : -1)
+                    // text += '&#9650'
+
+                }
+                $(this).html(text)
+                buildTable(myArray)
+            })
+
+            function buildTable(data){
+                var table = document.getElementById('myTable')
+                table.innerHTML = ''
+                for (var i = 0; i < data.length; i++){
+                    var row = `<tr>
+                                    <td>${data[i].tableBookId}</td>
+                                    <td>${data[i].tableBookName}</td>
+                                    <td>${data[i].tableBookAuthor}</td>
+                            </tr>`
+                    table.innerHTML += row
+                }
+            }
+
+        </script>
     </body>
 </html> 
 ​
