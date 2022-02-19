@@ -159,74 +159,74 @@
 
                     <form class="w3-container w3-card-4" method="POST" action="/admin_page">
                         <h2 class="w3-text-blue">Book info</h2>
-                        <p class="w3-text-red"><%= newBookErrorMessage %></p>
+                        <p class="w3-text-red" name="newBookErrorMessage"><%= newBookErrorMessage %></p>
                         <p style="width: 20%; float: left; margin-left: 2%;">      
                            <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" name="newBookId" type="text" placeholder="ID" value="<%=  %>" required>
+                           <input class="w3-input w3-border" name="newBookId" type="text" placeholder="ID" value="<%= newBookId %>" required>
                         </p>
                         <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Book Name</b></label>
-                            <input class="w3-input w3-border" name="newBookName" type="text" placeholder="name" value="<%=  %>" required>
+                            <input class="w3-input w3-border" name="newBookName" type="text" placeholder="name" value="<%= newBookName %>" required>
                          </p>
                          <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Author Id</b></label>
-                            <input class="w3-input w3-border" name="newBookAuthor" type="text" placeholder="" value="<%=  %>" required> 
+                            <input class="w3-input w3-border" name="newBookAuthor" type="text" placeholder="" value="<%= newBookAuthor %>" required> 
                          </p>
                          <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Publisher Name</b></label>
-                            <input class="w3-input w3-border" name="newBookPublisher" type="text" placeholder="" value="<%=  %>" required>
+                            <input class="w3-input w3-border" name="newBookPublisher" type="text" placeholder="" value="<%= newBookPublisher %>" required>
                          </p>
                          <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Cover Image</b></label>
-                            <input class="w3-input w3-border" name="newBookCoverImg" type="text" placeholder="src" value="<%=  %>">
+                            <input class="w3-input w3-border" name="newBookCoverImg" type="text" placeholder="src" value="<%= newBookCoverImg %>">
                          </p>
                          <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Status</b></label>
-                            <input class="w3-input w3-border" name="newBookStatus" type="text" placeholder="" value="<%=  %>">
+                            <input class="w3-input w3-border" name="newBookStatus" type="text" placeholder="" value="<%= newBookStatus %>">
                          </p>
                          <p style="width: 20%; float: left; margin-left: 2%;">      
                              <label class="w3-text-blue"><b>Date of Arrival</b></label>
-                             <input class="w3-input w3-border" name="newBookArrivalDate" type="text" placeholder="" value="<%=  %>">
+                             <input class="w3-input w3-border" name="newBookArrivalDate" type="text" placeholder="" value="<%= newBookArrivalDate %>">
                           </p>
                           <p style="width: 20%; float: left; margin-left: 2%;">      
                              <label class="w3-text-blue"><b>Year Released</b></label>
-                             <input class="w3-input w3-border" name="newBookYearReleased" type="text" placeholder="" value="<%=  %>">
+                             <input class="w3-input w3-border" name="newBookYearReleased" type="text" placeholder="" value="<%= newBookYearReleased %>">
                           </p>
                           <p style="width: 20%; float: left; margin-left: 2%;">      
                              <label class="w3-text-blue"><b>Edition</b></label>
-                             <input class="w3-input w3-border" name="newBookEdition" type="text" placeholder="" value="<%=  %>">
+                             <input class="w3-input w3-border" name="newBookEdition" type="text" placeholder="" value="<%= newBookEdition %>">
                           </p>
                           <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Language</b></label>
-                            <input class="w3-input w3-border" name="newBookLanguage" type="text" placeholder="" value="<%=  %>">
+                            <input class="w3-input w3-border" name="newBookLanguage" type="text" placeholder="" value="<%= newBookLanguage %>">
                          </p>
                          <p style="width: 20%; float: left; margin-left: 2%;">      
                             <label class="w3-text-blue"><b>Number of pages</b></label>
-                            <input class="w3-input w3-border" name="newBookNumberOfPage" type="number" placeholder="" value="<%=  %>">
+                            <input class="w3-input w3-border" name="newBookNumberOfPage" type="number" placeholder="" value="<%= newBookNumberOfPage %>">
                          </p>
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Type</b></label>
-                                <input class="w3-input w3-border" name="newBookType" type="text" placeholder="Academic/Others" value="<%=  %>">
+                                <input class="w3-input w3-border" name="newBookType" type="text" placeholder="Academic/Others" value="<%= newBookType %>">
                          </p>
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Department</b></label>
-                                <input class="w3-input w3-border" name="newBookDepartment" type="text" placeholder="" value="<%=  %>">
+                                <input class="w3-input w3-border" name="newBookDepartment" type="text" placeholder="" value="<%= newBookDepartment %>">
                          </p>
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Subject</b></label>
-                                <input class="w3-input w3-border" name="newBookSubject" type="text" placeholder="" value="<%=  %>">
+                                <input class="w3-input w3-border" name="newBookSubject" type="text" placeholder="" value="<%= newBookSubject %>">
                          </p>
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Topic</b></label>
-                                <input class="w3-input w3-border" name="newBookTopic" type="text" placeholder="" value="<%=  %>">
+                                <input class="w3-input w3-border" name="newBookTopic" type="text" placeholder="" value="<%= newBookTopic %>">
                          </p>
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Category</b></label>
-                                <input class="w3-input w3-border" name="newBookCategory" type="text" placeholder="" value="<%=  %>">
+                                <input class="w3-input w3-border" name="newBookCategory" type="text" placeholder="" value="<%= newBookCategory %>">
                          </p>
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Genre</b></label>
-                                <input class="w3-input w3-border" name="newBookGenre" type="text" placeholder="" value="<%=  %>">
+                                <input class="w3-input w3-border" name="newBookGenre" type="text" placeholder="" value="<%= newBookGenre %>">
                          </p>                         
                          <input type="submit" value="Add" class="w3-btn w3-blue">                 
                     </form>
