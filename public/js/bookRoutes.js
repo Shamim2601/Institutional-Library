@@ -2,12 +2,13 @@ const express = require('express');
 const oracledb = require('oracledb');
 const { subscribe } = require('./basicTableRoutes');
 oracledb.outFormat = oracledb.OBJECT ;
+const queryDB = require('./queryDBMS');
 const bookRouter = express.Router();
 
 let connection = undefined;
 async function dbQuery(query, params){
   if(connection===undefined){
-    connection = await oracledb.getConnection({ user: "C##INSLIB", password: "PROJECT", connectionString: "localhost/orcl" });
+    connection = await oracledb.getConnection({ user: "C##INSLIB", password: "PROJECT", connectionString: "127.0.0.1/orcl" });
   }
   try{
     let result = await connection.execute(query,params);
@@ -19,7 +20,7 @@ async function dbQuery(query, params){
 
 bookRouter.get('/:parent/:child/:grandchild', async (req,res)=>{
     var info = req.params;
-    var query;
+    let query;
     if(info.parent == 'ac_books.html'){
        query = `SELECT B.BOOK_ID, B.BOOK_NAME, A.AUTHOR_NAME, B.PUBLISHER_NAME, B.STATUS, B.LANGUAGE, B.YEAR, B.EDITION, B.NO_OF_PAGES, B.COVER_IMAGE FROM BOOKLIST_ACADEMIC AC JOIN BOOK B ON (AC.BOOK_ID = B.BOOK_ID) JOIN AUTHOR A ON (A.AUTHOR_ID = B.AUTHOR_ID) WHERE UPPER(AC.DEPARTMENT) LIKE '%${info.child}%' AND UPPER(AC.SUBJECT) LIKE '%${info.grandchild}%' ORDER BY A.AUTHOR_NAME`;
     }

@@ -14,9 +14,9 @@
             </div>
             <div class="w3-center">
                 <div class="w3-left" style="margin-left: 100px;">
-                    <a href="../../memberLogin" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
-                    <a href="../../Sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
-                    <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
+                    <a href="../../member_login" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
+                    <a href="../../sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
+                    <a href="../../admin_login" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
                     <a href="links.html" class="w3-bar-item w3-button"><h4>Useful Links</h4></a>
 
@@ -63,7 +63,7 @@
                     revText = '';
                     while(myjs[j]!=null && myjs[j].BOOK_NAME == myjs[i].BOOK_NAME){
                         revText+= '<div class="w3-bottombar" style="height: 85px; overflow-y: scroll;">'+
-                                  '<i class="fa fa-user" style="font-size: 40px;"></i> '+myjs[j].MEMBER_NAME+' <i class="fa fa-comment" style="font-size: 25px;"></i> '+myjs[j].REVIEW_TEXT+'</div>';
+                                  '<i class="fa fa-user" style="font-size: 40px;"></i> '+myjs[j].MEMBER_NAME+'-'+myjs[j].MEMBER_ID+' <i class="fa fa-comment" style="font-size: 25px;"></i> '+myjs[j].REVIEW_TEXT+'</div>';
                         j++;
                     }
                     mydiv.append('<div class="w3-panel w3-section"><div class="w3-center w3-card-4" style="float: left; width: 300px; height: 250px;padding-top: 7px">'+

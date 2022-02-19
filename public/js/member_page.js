@@ -6,14 +6,18 @@ const queryDB = require('./queryDBMS');
 let urlencodedParser = bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res)=>{
-    console.log(req.query);
-    console.log(`REALLY!???? ${req.session.memberName}`);
     let credentials = {
         memberId: req.session.memberId,
         memberName: req.session.memberName
     }
-    console.log(credentials.memberId);
     res.render('member_page.ejs',credentials);
+})
+
+router.get('/favtable',async(req,res)=>{
+    let query = `SELECT F.BOOK_ID,B.BOOK_NAME,A.AUTHOR_NAME FROM FAV_LIST F JOIN BOOK B ON(F.BOOK_ID = B.BOOK_ID) JOIN AUTHOR A ON(B.AUTHOR_ID=A.AUTHOR_ID) WHERE F.MEMBER_ID = :1 ORDER BY A.AUTHOR_NAME`
+    let params = [req.session.memberId]
+    let result = await queryDB(query,params,false);
+    res.status(200).json(result.rows);
 })
 
 router.post('/',urlencodedParser,async function(req,res){
@@ -47,7 +51,6 @@ router.post('/',urlencodedParser,async function(req,res){
                 WHERE MEMBER_ID = :2 AND BOOK_ID = :3`
                 params = [req.body.reviewText,req.session.memberId,req.body.reviewBookId]
                 result = await queryDB(query,params,true);
-                console.log("Thik e dhukse")
             }
         }
     }
@@ -75,9 +78,6 @@ router.post('/',urlencodedParser,async function(req,res){
             }
         }
     }
-
-    // console.log(`This is review ID ->${req.body.reviewBookId}99`)
-    // console.log(`This is fav ID ->${req.body.favBookId}99`)
     
     res.redirect('/member_page');
 

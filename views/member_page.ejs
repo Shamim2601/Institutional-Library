@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="../public/js/member_page.js" defer></script>
     </head>
@@ -16,9 +15,9 @@
             </div>
             <div class="w3-center">
                 <div class="w3-left" style="margin-left: 100px;">
-                    <a href="/memberLogin" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
-                    <a href="/Sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
-                    <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
+                    <a href="../../member_login" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
+                    <a href="../../sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
+                    <a href="../../admin_login" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
                     <a href="links.html" class="w3-btn w3-hover-grey"><h4>Useful Links</h4></a>
                 </div>
@@ -92,20 +91,16 @@
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue" onclick= '$("#favlist").css("display","block")'>My Favourites List</button>
+            <button class="w3-btn w3-blue" onclick= '$("#favlist").css("display","block");getInfo()'>My Favourites List</button>
             <div id="favlist" class="w3-center" style="display: none;">        
-                <h5 style="color: blue;">Click on any Column heading to sort it</h5>
                 <div class="w3-panel w3-center">
                     <button class="w3-btn w3-red" style="float:right;" onclick='$("#favlist").css("display","none")'>X</button>
-                    <table class="w3-table-all w3-centered sortable">
-                        <tr class="bg-info">
-                            <th data-column="tableBookid" data-order="desc">Book Id</th>
-                            <th data-column="tableBookName" data-order="desc">Book Name</th>
-                            <th data-column="tableBookAuthor" data-order="desc">Author</th>
+                    <table id="myfavtable" class="w3-table-all w3-centered">
+                        <tr>
+                            <th>Book Id</th>
+                            <th>Book Name</th>
+                            <th>Author</th>
                         </tr>
-                        <tbody id="myTable">
-
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -115,49 +110,25 @@
             <a class="w3-btn w3-blue" href="/suggestion?suggestionId=sug">Give Suggestion/Complaint</a>
         </div>
         <script>
-            var myArray = [
-                {'tableBookId':'MICHEAL', 'tableBookName':'30', 'tableBookAuthor':'11-OCT-1989'},
-                {'tableBookId':'MILA', 'tableBookName':'32', 'tableBookAuthor':'10-JAN-1989'},
-                {'tableBookId':'PAUL', 'tableBookName':'29', 'tableBookAuthor':'14-OCT-1990'},
-                {'tableBookId':'DENNIS', 'tableBookName':'25', 'tableBookAuthor':'29-SEP-1993'},
-                {'tableBookId':'TIM', 'tableBookName':'27', 'tableBookAuthor':'3-DEC-1991'},
-                {'tableBookId':'ERIK', 'tableBookName':'24', 'tableBookAuthor':'1-OCT-1995'},
-	        ]
-            
-            $('th').on('click', function(){
-                var column = $(this).data('column')
-                var order = $(this).data('order')
-                var text = $(this).html()
-                // text = text.substring(0, text.length - 1)
-
-                if(order == 'desc'){
-                    $(this).data('order', "asc")
-                    myArray = myArray.sort((a,b) => a[column] > b[column] ? 1 : -1)
-                    // text += '&#9660'
-
-                }else{
-                    $(this).data('order', "desc")
-                    myArray = myArray.sort((a,b) => a[column] < b[column] ? 1 : -1)
-                    // text += '&#9650'
-
+            const getInfo =async ()=>{
+                var table = document.getElementById("myfavtable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
                 }
-                $(this).html(text)
-                buildTable(myArray)
-            })
-
-            function buildTable(data){
-                var table = document.getElementById('myTable')
-                table.innerHTML = ''
-                for (var i = 0; i < data.length; i++){
-                    var row = `<tr>
-                                    <td>${data[i].tableBookId}</td>
-                                    <td>${data[i].tableBookName}</td>
-                                    <td>${data[i].tableBookAuthor}</td>
-                            </tr>`
-                    table.innerHTML += row
-                }
-            }
-
+                const url = 'http://localhost:8080/member_page/favtable';
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myjs = await response.json();
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    cell1.innerHTML = myjs[i].BOOK_ID;
+                    cell2.innerHTML = myjs[i].BOOK_NAME;
+                    cell3.innerHTML = myjs[i].AUTHOR_NAME;
+                }    
+            }   
         </script>
     </body>
 </html> 
