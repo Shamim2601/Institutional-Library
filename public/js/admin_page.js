@@ -66,9 +66,17 @@ router.get('/',(req,res)=>{
     res.render('admin_page.ejs',context);
 })
 
+router.get('/applicantTable', async function(req,res){
+    let query = `SELECT NAME, DESIGNATION, DEPT, ID, DATE_OF_BIRTH, ADDRESS, EMAIL, PHONE_NUMBER, BLOOD_GROUP, RESIDENCE
+    FROM APPLICANT
+    ORDER BY NAME`
+    let params = []
+    let result = await queryDB(query,params,false);
+    res.status(200).json(result.rows);
+})
+
 router.post('/',urlencodedParser, async function(req,res){
     console.log(req.body);
-
     //member info
     if(req.body.newMemberMemberId != undefined){
         req.session.newMemberMemberId = req.body.newMemberMemberId;

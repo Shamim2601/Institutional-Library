@@ -14,7 +14,8 @@ router.get('/',(req,res)=>{
 })
 
 router.get('/favtable',async(req,res)=>{
-    let query = `SELECT F.BOOK_ID,B.BOOK_NAME,A.AUTHOR_NAME FROM FAV_LIST F JOIN BOOK B ON(F.BOOK_ID = B.BOOK_ID) JOIN AUTHOR A ON(B.AUTHOR_ID=A.AUTHOR_ID) WHERE F.MEMBER_ID = :1 ORDER BY A.AUTHOR_NAME`
+    let query = `SELECT F.BOOK_ID,B.BOOK_NAME,A.AUTHOR_NAME FROM FAV_LIST F JOIN BOOK B ON(F.BOOK_ID = B.BOOK_ID) 
+    JOIN AUTHOR A ON(B.AUTHOR_ID=A.AUTHOR_ID) WHERE F.MEMBER_ID = :1 ORDER BY A.AUTHOR_NAME`
     let params = [req.session.memberId]
     let result = await queryDB(query,params,false);
     res.status(200).json(result.rows);

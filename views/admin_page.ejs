@@ -44,16 +44,22 @@
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue" onclick='$("#appllist").css("display","block")'>Show Applicants List</button>
-            <div id="appllist" class="w3-center" style="display: none;">        
+            <button class="w3-btn w3-blue" onclick='$("#applicantList").css("display","block");getInfo()'>Show Applicants List</button>
+            <div id="applicantList" class="w3-center" style="display: none;">        
                 <h5 style="color: blue;">Click on any Column heading to sort it</h5>
                 <div class="w3-panel w3-center">
-                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#appllist").css("display","none")'>X</button>
-                    <table class="w3-table-all w3-centered sortable">
+                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#applicantList").css("display","none")'>X</button>
+                    <table id="applicantTable" class="w3-table-all w3-centered sortable">
                         <tr>
-                            <th>Name</th><th>Designation</th><th>Dept</th><th>ID</th>
-                            <th>Date of birth</th><th>Address</th><th>Email</th><th>Phone</th>
-                            <th>Residence</th><th>Blood Group</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Dept</th><th>ID</th>
+                            <th>Date of birth</th>
+                            <th>Address</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Blood Group</th>
+                            <th>Residence</th>
                         </tr>
                     </table>
                 </div>
@@ -444,6 +450,41 @@
                 </div>
             </div>
         </div>
+        <script>
+            const getInfo = async ()=>{
+                let table = document.getElementById("applicantTable");
+                while(table.rows.length>1){
+                    table.deleteRow(1);
+                }
+                const url =  'http://localhost:8080/admin_page/applicantTable';
+                const options = {method:'GET'}
+                const response = await fetch(url,options);
+                const myJs = await response.json();
+                for(let i=0;i<myJs.length;i++){
+                    let row = table.insertRow();
+                    let cell0 = row.insertCell(0);
+                    let cell1 = row.insertCell(1);
+                    let cell2 = row.insertCell(2);
+                    let cell3 = row.insertCell(3);
+                    let cell4 = row.insertCell(4);
+                    let cell5 = row.insertCell(5);
+                    let cell6 = row.insertCell(6);
+                    let cell7 = row.insertCell(7);
+                    let cell8 = row.insertCell(8);
+                    let cell9 = row.insertCell(9);
+                    cell0.innerHTML = myJs[i].NAME;
+                    cell1.innerHTML = myJs[i].DESIGNATION;
+                    cell2.innerHTML = myJs[i].DEPT;
+                    cell3.innerHTML = myJs[i].ID;
+                    cell4.innerHTML = myJs[i].DATE_OF_BIRTH;
+                    cell5.innerHTML = myJs[i].ADDRESS;
+                    cell6.innerHTML = myJs[i].EMAIL;
+                    cell7.innerHTML = myJs[i].PHONE_NUMBER;
+                    cell8.innerHTML = myJs[i].BLOOD_GROUP;
+                    cell9.innerHTML = myJs[i].RESIDENCE;
+                }
+            }
+        </script>
     </body>
 </html> 
 ​
