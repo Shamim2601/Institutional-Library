@@ -39,6 +39,9 @@ app.use('/admin_login',adminLoginRouter);
 const adminPageRouter = require('./public/js/admin_page');
 app.use('/admin_page',adminPageRouter);
 
+const acBooksRouter = require('./public/js/ac_books');
+app.use('/ac_books',acBooksRouter)
+
 app.listen(port, function(err) {
     if (typeof(err) == "undefined") {  
         console.log('Your application is running on : ' + port + ' port');  

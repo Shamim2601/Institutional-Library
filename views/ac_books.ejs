@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Academic Books</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="w3-panel w3-black w3-border w3-bottombar">
+            <div class="w3-header w3-center">
+                <h1>Institutional Library</h1>
+            </div>
+            <div class="w3-center">
+                <div class="w3-left" style="margin-left: 100px;">
+                    <a href="../../member_login" class="w3-btn w3-hover-grey"><h4>Sign In</h4></a>
+                    <a href="../../sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
+                    <a href="../../admin_login" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
+                    <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
+                    <a href="links.html" class="w3-btn w3-hover-grey"><h4>Useful Links</h4></a>
+                </div>
+                <div class="w3-dropdown-hover w3-right:0">
+                    <button class="w3-button"><h4>:::Menu</h4></button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                      <a href="index.html" class="w3-bar-item w3-button">Home</a>
+                      <a href="ac_books.html" class="w3-bar-item w3-button">Academic Books</a>
+                      <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
+                      <a href="new_arrivals.html" class="w3-bar-item w3-button">New Books</a>
+                      <a href="members.html" class="w3-bar-item w3-button">Members</a>
+                      <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
+                      <a href="Authors.html" class="w3-bar-item w3-button">Authors</a>
+                      <a href="Publishers.html" class="w3-bar-item w3-button">Publishers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-panel w3-topbar w3-center" style="margin-top: 50px;">
+            <form method="POST" action="/ac_books">
+                <label><h5><b>Search by Book/Writer name</b></h5></label>
+                <input type="text" name="bookName" placeholder="Book Name">
+                <input type="text" name="author" placeholder="Writer">
+                <button class="w3-blue" onclick="getSearch()" >Search</button>
+            </form>
+            <div>
+                <div class="w3-panel w3-center">
+                    <table id="searchTable"  class="w3-table-all w3-centered sortable">
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Name</th>
+                            <th>Author</th>
+                            <th>Publisher</th>
+                            <th>Status</th>
+                            <th>Language</th>
+                            <th>Year</th>
+                            <th>Edition</th>
+                            <th>Num of pages</th>
+                            <th>Cover Image</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-panel w3-topbar w3-center" style="padding-top: 20px;">
+            <h5><b>List by Subject</b></h5>
+            <div class="w3-bar w3-border">
+                <div class="w3-dropdown-hover">
+                    <button class="w3-btn">Science</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/MATHEMATICS')">Mathematics</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/CHEMISTRY')">Chemistry</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/PHYSICS')">Physics</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/ZOOLOGY')">Zoology</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/BOTANY')">Botany</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/PRACTICAL')">Practical</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('SCIENCE/MISC')">Misc</button>
+                    </div>
+                </div>
+
+                <div class="w3-dropdown-hover">
+                    <button class="w3-button">Commerce</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/ACCOUNTING')">Accounting</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/B. ADMINISTRATION')">B. Administration</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/B. ANALYSIS')">B. Analysis</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/STATISTICS')">Statistics</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/FINANCE')">Finance</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/MARKETING')">Marketing</button>
+                      <button class="w3-bar-item w3-button" onclick="getInfo('COMMERCE/MISC')">Misc</button>
+                    </div>
+                </div>
+
+                <div class="w3-dropdown-hover">
+                    <button class="w3-button">Humanities</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                        <button class="w3-bar-item w3-button" onclick="getInfo('HUMANITIES/SOCIOLOGY')">Sociology</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('HUMANITIES/ECONOMICS')">Economics</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('HUMANITIES/CIVICS')">Civics</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('HUMANITIES/GEOGRAPHY')">Geography</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('HUMANITIES/HISTORY')">History</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('HUMANITIES/MISC')">Misc</button>
+                    </div>
+                </div>
+
+                <div class="w3-dropdown-hover">
+                    <button class="w3-button">Other</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                        <button class="w3-bar-item w3-button" onclick="getInfo('OTHER/TEXTBOOKS')">Textbooks</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('OTHER/ICT')">ICT</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('OTHER/MAGAZINE')">Magazine</button>
+                        <button class="w3-bar-item w3-button" onclick="getInfo('OTHER/ARTICLES')">Articles</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="w3-panel w3-center">
+                    <table id="acbookstable" class="w3-table-all w3-centered">
+                        <tr>
+                            <th>Book ID</th> <th>Name</th> <th>Author</th><th>Publisher</th><th>Status</th>
+                            <th>Language</th><th>Year</th><th>Edition</th><th>Num of pages</th><th>Cover Image</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            const getSearch = async function(){
+                let table = document.getElementById("searchTable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                const url = 'http://localhost:8080/ac_books/searchTable';
+                const options = {method:'GET'};
+                const response = await fetch(url,options)
+                const myjs = await response.json();                
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);  var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);  var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);  var cell7 = row.insertCell(6);
+                    var cell8 = row.insertCell(7);  var cell9 = row.insertCell(8);
+                    var cell10 = row.insertCell(9);
+                    cell1.innerHTML = myjs[i].BOOK_ID;     cell2.innerHTML = myjs[i].BOOK_NAME;
+                    cell3.innerHTML = myjs[i].AUTHOR_NAME;     cell4.innerHTML = myjs[i].PUBLISHER_NAME;
+                    cell5.innerHTML = myjs[i].STATUS;     cell6.innerHTML = myjs[i].LANGUAGE;
+                    cell7.innerHTML = myjs[i].YEAR;     cell8.innerHTML = myjs[i].EDITION;
+                    cell9.innerHTML = myjs[i].NO_OF_PAGES;   
+                    cell10.innerHTML = '<a href='+myjs[i].COVER_IMAGE+'><img src="'+ myjs[i].COVER_IMAGE+'" height ="70px" width = "70px"></a>';
+                }
+            }
+
+            const getInfo =async (inp)=>{
+                var table = document.getElementById("acbookstable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                
+                const url = 'http://localhost:8080/ac_books/'+inp;
+                const options = {method: 'GET'};
+                const response = await fetch(url,options);
+                const myjs = await response.json();                
+                for(let i =0;i<myjs.length;i++){
+                    var row = table.insertRow();    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);  var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);  var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);  var cell7 = row.insertCell(6);
+                    var cell8 = row.insertCell(7);  var cell9 = row.insertCell(8);
+                    var cell10 = row.insertCell(9);
+                    cell1.innerHTML = myjs[i].BOOK_ID;     cell2.innerHTML = myjs[i].BOOK_NAME;
+                    cell3.innerHTML = myjs[i].AUTHOR_NAME;     cell4.innerHTML = myjs[i].PUBLISHER_NAME;
+                    cell5.innerHTML = myjs[i].STATUS;     cell6.innerHTML = myjs[i].LANGUAGE;
+                    cell7.innerHTML = myjs[i].YEAR;     cell8.innerHTML = myjs[i].EDITION;
+                    cell9.innerHTML = myjs[i].NO_OF_PAGES;   
+                    cell10.innerHTML = '<a href='+myjs[i].COVER_IMAGE+'><img src="'+ myjs[i].COVER_IMAGE+'" height ="70px" width = "70px"></a>';
+
+                } 
+            }
+        </script>
+    </body>
+</html>

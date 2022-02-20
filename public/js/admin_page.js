@@ -67,6 +67,7 @@ router.get('/',(req,res)=>{
 })
 
 router.get('/applicantTable', async function(req,res){
+    console.log('jonmo')
     let query = `SELECT NAME, DESIGNATION, DEPT, ID, DATE_OF_BIRTH, ADDRESS, EMAIL, PHONE_NUMBER, BLOOD_GROUP, RESIDENCE
     FROM APPLICANT
     ORDER BY NAME`
@@ -76,10 +77,11 @@ router.get('/applicantTable', async function(req,res){
 })
 
 router.post('/',urlencodedParser, async function(req,res){
+    console.log('bhumi aage')
     console.log(req.body);
     //member info
     if(req.body.newMemberMemberId != undefined){
-        req.session.newMemberMemberId = req.body.newMemberMemberId;
+        req.session.newMemberMemberId = req.body.newMemberMemberId
         req.session.newMemberName = req.body.newMemberName
         req.session.newMemberEmail = req.body.newMemberEmail
         req.session.newMemberPhone = req.body.newMemberPhone
