@@ -47,7 +47,21 @@ router.get('/',(req,res)=>{
         issueBookId : req.session.issueBookid,
         issueMemberId : req.session.issueMemberId,
         issueDate : req.session.issueDate,
-        issueErrorMessage : req.session.issueErrorMessage
+        issueErrorMessage : req.session.issueErrorMessage,
+        newAdminErrorMessage : req.session.newAdminErrorMessage,
+        newAdminName : req.session.newAdminName,
+        newAdminId : req.session.newAdminId, 
+        newAdminEmail : req.session.newAdminEmail,
+        newAdminPhone : req.session.newAdminPhone,
+        newAuthorErrorMessage : req.session.newAuthorErrorMessage,
+        newAuthorName : req.session.newAuthorName,
+        newAuthorId : req.session.newAuthorId,
+        newAuthorNationality : req.session.newAuthorNationality,
+        newAuthorLife : req.session.newAuthorLife,
+        newPublisherErrorMessage : req.session.newPublisherErrorMessage,
+        newPublisherName :   req.session.newPublisherName,
+        newPublisherAddress : req.session.newPublisherAddress,
+        newPublisherPhone : req.session.newPublisherPhone
     }
     res.render('admin_page.ejs',context);
 })
@@ -382,6 +396,7 @@ router.post('/', async function(req,res){
         res.redirect('/admin_page');
     }
 
+    //link
     if(req.body.linkText != undefined){
         let query = `INSERT INTO LINKS (LINK_NAME, LINK_TEXT) VALUES (:1,:2)`
         let params = [req.body.linkName, req.body.linkText]
@@ -389,11 +404,138 @@ router.post('/', async function(req,res){
         res.redirect('/admin_page')
     }
 
+    //new info
     if(req.body.newsDate != undefined){
         let query = `INSERT INTO NEWS_AND_EVENTS (NEWS_DATE, IMAGE, DESCRIPTION) VALUES (:1,:2,:3)`
         let params = [req.body.newsDate,req.body.newsImage,req.body.newsDescription]
         let result = await queryDB(query,params,true);
         res.redirect('/admin_page')
+    }
+
+    //add admin
+    if(req.body.newAdminId != undefined){
+        req.session.newAdminName = req.body.newAdminName
+        req.session.newAdminId = req.body.newAdminId
+        req.session.newAdminEmail = req.body.newAdminEmail
+        req.session.newAdminPhone = req.body.newAdminPhone
+
+        let query = `SELECT COUNT(*) CNT
+        FROM ADMIN
+        WHERE ADMIN_ID = :1`
+        let params = [req.body.newAdminId]
+        let result = await queryDB(query,params,false);
+        if(result.rows[0].CNT > 0){
+            req.session.newAdminErrorMessage = "Admin ID already exists"
+            req.session.newAdminId = ""
+            res.redirect('/admin_page')
+        }
+        else{
+            query = `SELECT COUNT(*) CNT
+            FROM ADMIN
+            WHERE EMAIL = :1`
+            let params = [req.body.newAdminEmail]
+            let result = await queryDB(query,params,false);
+            if(result.rows[0].CNT > 0){
+                req.session.newAdminErrorMessage = "Admin Email already exists"
+                req.session.newAdminEmail = ""
+                res.redirect('/admin_page')
+            }
+            else{
+                query = `SELECT COUNT(*) CNT
+                FROM ADMIN
+                WHERE PHONE_NUMBER = :1`
+                let params = [req.body.newAdminPhone]
+                let result = await queryDB(query,params,false);
+                if(result.rows[0].CNT > 0){
+                    req.session.newAdminErrorMessage = "Phone Number already exists"
+                    req.session.newAdminPhone = ""
+                    res.redirect('/admin_page')
+                }
+                else{
+                    query = `INSERT INTO ADMIN (ADMIN_ID, ADMIN_PSW, NAME, EMAIL, PHONE_NUMBER) VALUES (:1,:2,:3,:4,:5)`
+                    params = [req.body.newAdminId,req.body.newAdminPassword,req.body.newAdminName,req.body.newAdminEmail,req.body.newAdminPhone]
+                    let result = await queryDB(query,params,true);
+                    req.session.newAdminErrorMessage = ""
+                    req.session.newAdminName = ""
+                    req.session.newAdminId = ""
+                    req.session.newAdminEmail = ""
+                    req.session.newAdminPhone = ""
+                    res.redirect('/admin_page')
+                }
+            }
+        }
+    }
+
+    //new Author
+    if(req.body.newAuthorName != undefined){
+        req.session.newAuthorName = req.body.newAuthorName;
+        req.session.newAuthorId = req.body.newAuthorId
+        req.session.newAuthorNationality = req.body.newAuthorNationality
+        req.session.newAuthorLife = req.body.newAuthorLife
+
+        let query = `SELECT COUNT(*) CNT
+        FROM AUTHOR
+        WHERE AUTHOR_ID = :1`
+        let params = [req.body.newAuthorId]
+        let result = await queryDB(query,params,false)
+        if(result.rows[0].CNT>0){
+            req.session.newAuthorErrorMessage = "Author Id already exists"
+            req.session.newAuthorId = "";
+            res.redirect('/admin_page')
+        }
+        else{
+            query = `INSERT INTO AUTHOR (AUTHOR_ID, AUTHOR_NAME, NATIONALITY, "LIFE-SPAN") VALUES (:1,:2,:3,:4)`
+            params = [req.body.newAuthorId, req.body.newAuthorName, req.body.newAuthorNationality, req.body.newAuthorLife]
+            result = await queryDB(query,params,true);
+            req.session.newAuthorErrorMessage = ""
+            req.session.newAuthorName = ""
+            req.session.newAuthorId = ""
+            req.session.newAuthorNationality = ""
+            req.session.newAuthorLife = ""
+            res.redirect('/admin_page')
+        }
+    }
+
+    //new Publisher
+    if(req.body.newPublisherName != undefined){
+        req.session.newPublisherName = req.body.newPublisherName
+        req.session.newPublisherAddress = req.body.newPublisherAddress
+        req.session.newPublisherPhone = req.body.newPublisherPhone
+
+        let query = `SELECT COUNT(*) CNT
+        FROM PUBLISHER
+        WHERE PUBLISHER_NAME = :1`
+        let params = [req.body.newPublisherName]
+        let result = await queryDB(query,params,false)
+        if(result.rows[0].CNT>0){
+            req.session.newPublisherErrorMessage = "Publisher already exists"
+            req.session.newPublisherName = ""
+            res.redirect('/admin_page')
+        }
+        else{
+            query = `SELECT COUNT(*) CNT
+            FROM PUBLISHER
+            WHERE PHONE_NUMBER = :1`
+            let params = [req.body.newPublisherPhone]
+            let result = await queryDB(query,params,false)
+            if(result.rows[0].CNT>0){
+                req.session.newPublisherErrorMessage = "Publisher's Phone Number already exists"
+                req.session.newPublisherPhone = ""
+                res.redirect('/admin_page')
+            }
+            else{
+                query = `INSERT INTO PUBLISHER (PUBLISHER_NAME, ADDRESS, PHONE_NUMBER) VALUES (:1,:2,:3)`
+                params = [req.body.newPublisherName,req.body.newPublisherAddress,req.body.newPublisherPhone]
+                result = await queryDB(query,params,true)
+                req.session.newPublisherErrorMessage = ""
+                req.session.newPublisherName = ""
+                req.session.newPublisherAddress = ""
+                req.session.newPublisherPhone = ""
+                res.redirect('/admin_page')
+    
+            }
+        }
+
     }
     // res.redirect('/admin_page')
 })

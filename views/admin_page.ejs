@@ -351,33 +351,65 @@
         </div>
 
         <div class="w3-panel w3-center">
-            <button class="w3-btn w3-blue" onclick='$("#admin").css("display","block")'>Add new Admin</button>
+            <button class="w3-btn w3-blue" onclick='$("#admin").css("display","block")'>Add New Admin</button>
             <div id="admin" class="w3-display-container" style="display: none;">
                 <div class="w3-display-topright">
                     <button class="w3-btn w3-red" onclick='$("#admin").css("display","none")'>X</button>
                 </div>
                 <div>
-                    <form class="w3-container w3-card-4" method="post" action="">
+                    <form class="w3-container w3-card-4" method="post" action="/admin_page">
                         <h2 class="w3-text-blue">Admin info</h2>
+                        <p class="w3-text-blue"><%= newAdminErrorMessage %></p>
                         <p>      
                             <label class="w3-text-blue"><b>Name</b></label>
-                            <input class="w3-input w3-border" name="name" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="newAdminName" type="text" placeholder="" value="<%= newAdminName %>" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>ID</b></label>
-                            <input class="w3-input w3-border" name="id" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="newAdminId" type="text" placeholder="" value="<%= newAdminId %>" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Password</b></label>
-                            <input class="w3-input w3-border" name="psw" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="newAdminPassword" type="password" placeholder="" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Email</b></label>
-                            <input class="w3-input w3-border" name="email" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="newAdminEmail" type="text" placeholder="" value="<%= newAdminEmail  %>" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Phone Number</b></label>
-                            <input class="w3-input w3-border" name="phone" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="newAdminPhone" type="text" placeholder="" value="<%= newAdminPhone %>" required>
+                        </p>
+                        <input type="submit" value="Add" class="w3-btn w3-blue">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="w3-panel w3-center">
+            <button class="w3-btn w3-blue" onclick='$("#author").css("display","block")'>Add New Author</button>
+            <div id="author" class="w3-display-container" style="display: none;">
+                <div class="w3-display-topright">
+                    <button class="w3-btn w3-red" onclick='$("#author").css("display","none")'>X</button>
+                </div>
+                <div>
+                    <form class="w3-container w3-card-4" method="POST" action="/admin_page">
+                        <h2 class="w3-text-blue">Author info</h2>
+                        <p class="w3-text-blue"><%= newAuthorErrorMessage %></p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Name</b></label>
+                            <input class="w3-input w3-border" name="newAuthorName" type="text" placeholder="" value="<%= newAuthorName %>" required>
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>ID</b></label>
+                            <input class="w3-input w3-border" name="newAuthorId" type="text" placeholder="" value="<%= newAuthorId %>" required>
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Nationality</b></label>
+                            <input class="w3-input w3-border" name="newAuthorNationality" type="text" placeholder="" value="<%= newAuthorNationality  %>">
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Life Span</b></label>
+                            <input class="w3-input w3-border" name="newAuthorLife" type="text" placeholder="" value="<%= newAuthorLife %>">
                         </p>
                         <input type="submit" value="Add" class="w3-btn w3-blue">
                     </form>
@@ -385,6 +417,33 @@
             </div>
         </div>
 
+        <div class="w3-panel w3-center">
+            <button class="w3-btn w3-blue" onclick='$("#publisher").css("display","block")'>Add New Publisher</button>
+            <div id="publisher" class="w3-display-container" style="display: none;">
+                <div class="w3-display-topright">
+                    <button class="w3-btn w3-red" onclick='$("#publisher").css("display","none")'>X</button>
+                </div>
+                <div>
+                    <form class="w3-container w3-card-4" method="post" action="/admin_page">
+                        <h2 class="w3-text-blue">Publisher info</h2>
+                        <p class="w3-text-blue"><%= newPublisherErrorMessage %></p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Name</b></label>
+                            <input class="w3-input w3-border" name="newPublisherName" type="text" placeholder="" value="<%= newPublisherName %>" required>
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Address</b></label>
+                            <input class="w3-input w3-border" name="newPublisherAddress" type="text" placeholder="" value="<%= newPublisherAddress %>" required>
+                        </p>
+                        <p>      
+                            <label class="w3-text-blue"><b>Phone Number</b></label>
+                            <input class="w3-input w3-border" name="newPublisherPhone" type="text" placeholder="" value="<%= newPublisherPhone %>" required>
+                        </p>
+                        <input type="submit" value="Add" class="w3-btn w3-blue">
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html> 
 ​
