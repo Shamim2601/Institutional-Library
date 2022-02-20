@@ -66,7 +66,7 @@ router.get('/',(req,res)=>{
     res.render('admin_page.ejs',context);
 })
 
-router.post('/', async function(req,res){
+router.post('/',urlencodedParser, async function(req,res){
     console.log(req.body);
 
     //member info
