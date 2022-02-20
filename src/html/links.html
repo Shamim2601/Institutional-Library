@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
     </head>
     <body>
         <div class="w3-panel w3-black w3-border w3-bottombar">
@@ -37,7 +38,7 @@
 
         <div class="w3-panel w3-center">
             <h4 style="color: blue;">Some useful Links for students</h4>
-            <table id="linktable" class="w3-table-all w3-centered">
+            <table id="linktable" class="w3-table-all w3-centered sortable">
                 <tr>
                     <th>Link Name</th> <th>Link URL</th>
                 </tr>
@@ -59,7 +60,7 @@
                     var cell2 = row.insertCell(1);
                     cell1.innerHTML = myjs[i].LINK_NAME;
                     cell2.innerHTML = myjs[i].LINK_TEXT;
-                }    
+                }   
             }
             $(document).ready(getInfo('fill'));
         </script>
