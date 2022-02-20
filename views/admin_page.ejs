@@ -245,7 +245,7 @@
                         <h2 class="w3-text-blue">Book info</h2>
                         <p>      
                            <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" name="id" type="text" placeholder="ID">
+                           <input class="w3-input w3-border" name="deleteBookId" type="text" placeholder="ID" required>
                         </p>
                         <input type="submit" value="Delete" class="w3-btn w3-blue">
                     </form>
@@ -262,17 +262,18 @@
                 <div>
                     <form class="w3-container w3-card-4" method="post" action="">
                         <h2 class="w3-text-blue">Issue info</h2>
+                        <p class="w3-text-red"><%= issueErrorMessage %></p>
                         <p>      
                            <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" name="bookid" type="text" placeholder="">
+                           <input class="w3-input w3-border" name="issueBookId" type="text" placeholder="" value="<%= issueBookId %>" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Member ID</b></label>
-                            <input class="w3-input w3-border" name="memid" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="issueMemberId" type="text" placeholder="" value="<%= issueMemberId %>" required>
                          </p>
                          <p>      
-                            <label class="w3-text-blue"><b>Date</b></label>
-                            <input class="w3-input w3-border" name="date" type="date" placeholder="">
+                            <label class="w3-text-blue"><b>Issue Date</b></label>
+                            <input class="w3-input w3-border" name="issueDate" type="text" placeholder="" value="<%= issueDate %>" required>
                          </p>
                          <input type="submit" value="Add" class="w3-btn w3-blue">
                     </form>
@@ -287,11 +288,11 @@
                     <button class="w3-btn w3-red" onclick='$("#delissue").css("display","none")'>X</button>
                 </div>
                 <div>
-                    <form class="w3-container w3-card-4" method="post" action="">
+                    <form class="w3-container w3-card-4" method="POST" action="/admin_page">
                         <h2 class="w3-text-blue">Issue info</h2>
                         <p>      
                             <label class="w3-text-blue"><b>Issue ID</b></label>
-                            <input class="w3-input w3-border" name="issueid" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="deleteIssueId" type="text" placeholder="" required>
                          </p>
                          <input type="submit" value="Delete" class="w3-btn w3-blue">
                     </form>
@@ -306,15 +307,15 @@
                     <button class="w3-btn w3-red" onclick='$("#links").css("display","none")'>X</button>
                 </div>
                 <div>
-                    <form class="w3-container w3-card-4" method="post" action="">
+                    <form class="w3-container w3-card-4" method="post" action="/admin_page">
                         <h2 class="w3-text-blue">Link info</h2>
                         <p>      
-                            <label class="w3-text-blue"><b>Link name</b></label>
-                            <input class="w3-input w3-border" name="lname" type="text" placeholder="">
+                            <label class="w3-text-blue"><b>Link Name</b></label>
+                            <input class="w3-input w3-border" name="linkName" type="text" placeholder="">
                         </p>
                         <p>      
-                            <label class="w3-text-blue"><b>Link text</b></label>
-                            <input class="w3-input w3-border" name="ltext" type="text" placeholder="">
+                            <label class="w3-text-blue"><b>Link Text</b></label>
+                            <input class="w3-input w3-border" name="linkText" type="text" placeholder="" required>
                         </p>
                         <input type="submit" value="Add" class="w3-btn w3-blue">
                     </form>
@@ -329,19 +330,19 @@
                     <button class="w3-btn w3-red" onclick='$("#news").css("display","none")'>X</button>
                 </div>
                 <div>
-                    <form class="w3-container w3-card-4" method="post" action="">
+                    <form class="w3-container w3-card-4" method="post" action="/admin_page">
                         <h2 class="w3-text-blue">News info</h2>
                         <p>      
                             <label class="w3-text-blue"><b>Date</b></label>
-                            <input class="w3-input w3-border" name="date" type="date" placeholder="">
+                            <input class="w3-input w3-border" name="newsDate" type="text" placeholder="" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Image</b></label>
-                            <input class="w3-input w3-border" name="image" type="text" placeholder="src">
+                            <input class="w3-input w3-border" name="newsImage" type="text" placeholder="src" >
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Description</b></label>
-                            <input class="w3-input w3-border" name="descr" type="text" placeholder="">
+                            <input class="w3-input w3-border" name="newsDescription" type="text" placeholder="" required>
                         </p>
                         <input type="submit" value="Add" class="w3-btn w3-blue">
                     </form>
