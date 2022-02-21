@@ -4,7 +4,7 @@ const queryDB = require('./queryDBMS');
 router.get('/',async(req,res)=>{
     console.log("---MEMBER LOGIN GET REQUEST---");
     let context = {
-        phoneNumber:"",
+        phoneNumber:""
     }
     if(req.session.phoneNumber){
         context.phoneNumber = req.session.memberPhoneNumber;
@@ -32,10 +32,10 @@ router.post('/', async (req,res)=>{
         // phoneNumber.innerHTML = req.body.phoneNumber;
     }
     else{
-        // res.status(200).json(result);
         req.session.memberPhoneNumber = req.body.phoneNumber;
         req.session.memberId = result.rows[0].MEMBER_ID;
         req.session.memberName = result.rows[0].MEMBER_NAME;
+        req.session.adminId = ""
         res.redirect('/member_page');
     }
     // console.log(result.rows)

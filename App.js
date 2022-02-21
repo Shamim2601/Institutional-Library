@@ -11,7 +11,7 @@ const session = require('express-session')
 var app = new express(); 
 var port = 8080; 
 
-app.set('view-engine','ejs');
+app.set('view-engine','ejs'); 
 app.use(express.json());
 //app.use(express.static('public'));   
 app.use(express.static('src/html'));
@@ -47,6 +47,9 @@ app.use('/other_books',otherBooksRouter)
 
 const contactUsRouter = require('./public/js/contactUs')
 app.use('/contactUs',contactUsRouter)
+
+const signOutRouter = require('./public/js/sign_out')
+app.use('/sign_out',signOutRouter)
 
 app.listen(port, function(err) {
     if (typeof(err) == "undefined") {  

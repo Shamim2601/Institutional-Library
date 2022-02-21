@@ -8,11 +8,17 @@ let urlencodedParser = bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res)=>{
     console.log(`--- ADMIN PAGE GET REQUEST---`);
+    
+    if(!req.session.adminId){
+        res.redirect('/admin_login')
+        return;
+    }
+
     // console.log(req.query);
     let context = {
-        adminId: req.session.adminId,
-        adminName: req.session.adminName,
-        newMemberErrorMessage: req.session.newMemberErrorMessage,
+        adminId : req.session.adminId,
+        adminName : req.session.adminName,
+        newMemberErrorMessage : req.session.newMemberErrorMessage,
         newMemberMemberId : req.session.newMemberMemberId,
         newMemberName : req.session.newMemberName,
         newMemberEmail : req.session.newMemberEmail,
@@ -77,6 +83,11 @@ router.get('/applicantTable', async function(req,res){
 })
 
 router.post('/',urlencodedParser, async function(req,res){
+    if(!req.session.adminId){
+        res.redirect('/sign_out')
+        return;
+    }
+
     // console.log('bhumi aage')
     console.log(req.body);
     //member info

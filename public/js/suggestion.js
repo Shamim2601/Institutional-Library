@@ -6,6 +6,13 @@ const queryDB = require('./queryDBMS');
 let urlencodedParser = bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res)=>{
+    console.log('---SUGGESTION GET REQUEST---')
+
+    if(!req.session.memberId){
+        res.redirect('/sign_out')
+        return;
+    }
+    
     console.log(req.query.suggestionId);
     res.render('suggestion.ejs');
 })

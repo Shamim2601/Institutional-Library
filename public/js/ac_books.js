@@ -8,6 +8,12 @@ let urlencodedParser = bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res)=>{
     console.log(`---ACADEMIC BOOKS GET REQUEST---`)
+
+    if(!req.session.memberId){
+        res.redirect('/sign_out')
+        return;
+    }
+
     let context = {
         bookRows : req.session.bookRows
     }

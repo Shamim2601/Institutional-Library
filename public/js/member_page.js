@@ -6,6 +6,11 @@ const queryDB = require('./queryDBMS');
 let urlencodedParser = bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res)=>{
+    if(!req.session.memberId){
+        res.redirect('/sign_out')
+        return;
+    }
+    
     let credentials = {
         memberId: req.session.memberId,
         memberName: req.session.memberName

@@ -5,7 +5,7 @@ const queryDB = require('./queryDBMS');
 router.get('/',(req,res)=>{
     console.log("---ADMIN GET REQUEST---");
     let context = {
-        adminId:"",
+        adminId:""
     }
     if(req.session.adminId){
         context.adminId = req.session.adminId;
@@ -35,6 +35,7 @@ router.post('/', async function(req,res){
         req.session.adminId = req.body.adminId;
         req.session.adminPassword = req.body.adminPassword;
         req.session.adminName = result.rows[0].NAME;
+        req.session.memberId = ""
         res.redirect('/admin_page');
     }
 
