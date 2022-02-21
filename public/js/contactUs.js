@@ -28,7 +28,7 @@ router.post('/',urlencodedParser,async function(req,res){
     req.session.contactUsErrorMessage = "Thank you! We will get in touch with you in no time InshaaAllah"
     let query = `INSERT INTO CONTACT_US (NAME, EMAIL, PHONE_NUMBER, MESSAGE) VALUES (:1,:2,:3,:4)`
     let params = [req.body.contactUsName,req.body.contactUsEmail,req.body.contactUsPhone,req.body.contactUsMessage]
-    let result = await queryDB(query,params,false);
+    let result = await queryDB(query,params,true);
 
     //send email
     let transporter = nodemailer.createTransport({
@@ -40,9 +40,9 @@ router.post('/',urlencodedParser,async function(req,res){
     });
     
     let mailOptions = {
-        from: 'ihtemadul.csebuet71@gmail.com',
-        to: 'asifihtemadulhaque@gmail.com',
-        subject: 'Institutional Library',
+        from: process.env.EMAIL,
+        to: req.body.contactUsEmail,
+        subject: 'Institutional Library: Read Me',
         text: `Hi How are you?`
         // attachment:[
         //     {
@@ -56,7 +56,7 @@ router.post('/',urlencodedParser,async function(req,res){
             console.log(`error occurs: ${err}`)
         }
         else{
-            console.log('Email Sent!!!')
+            console.log('---Email Sent!!!---')
         }
     });
     res.redirect('/contactUs')
