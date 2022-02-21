@@ -11,8 +11,11 @@ router.get('/',(req,res)=>{
     let context = {
         bookRows : req.session.bookRows
     }
+    req.session.bookRows = []
     res.render('ac_books.ejs',context);
 })
+
+
 router.post('/searchTable', urlencodedParser,async function (req,res){
     console.log('---ACADEMIC BOOKS SEARCH TABLE POST REQUEST---')
     console.log(req.body.bookName + " + " + req.body.author)
@@ -22,7 +25,8 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
     let query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, 
     BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
     FROM BOOK JOIN AUTHOR ON (BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID)
-    WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) AND (AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2)
+    WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) AND 
+    ((AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2) OR (AUTHOR.AUTHOR_ID LIKE :3))
     ORDER BY AUTHOR.AUTHOR_NAME`
     
     let bookName = '%'
@@ -37,7 +41,7 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
             bookAuthor += req.body.author[i] + '%';
         }
     }
-    let params = [bookName.toUpperCase(),bookAuthor.toUpperCase()]
+    let params = [bookName.toUpperCase(),bookAuthor.toUpperCase(),bookAuthor.toUpperCase()]
     let result = await queryDB(query,params,false);
     req.session.bookRows = []
     for(let i=0;i<result.rows.length;i++){
