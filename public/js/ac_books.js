@@ -56,7 +56,7 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
             bookName : result.rows[i].BOOK_NAME,
             bookAuthor : result.rows[i].AUTHOR_NAME,
             bookPublisher : result.rows[i].PUBLISHER_NAME,
-            bookStatus : result.rows[i].STAUS,
+            bookStatus : result.rows[i].STATUS,
             bookLanguage : result.rows[i].LANGUAGE,
             bookYear : result.rows[i].YEAR,
             bookEdition : result.rows[i].EDITION,
