@@ -7,24 +7,54 @@ const queryDB = require('./queryDBMS');
 let urlencodedParser = bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res)=>{
-    console.log(`---ACADEMIC BOOKS GET REQUEST`)
-    res.render('ac_books.ejs');
+    console.log(`---ACADEMIC BOOKS GET REQUEST---`)
+    let context = {
+        bookRows : req.session.bookRows
+    }
+    res.render('ac_books.ejs',context);
 })
-router.get('/searchTable',async (req,res)=>{
-    let query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
+router.post('/searchTable', urlencodedParser,async function (req,res){
+    console.log('---ACADEMIC BOOKS SEARCH TABLE POST REQUEST---')
+    console.log(req.body.bookName + " + " + req.body.author)
+    // req.session.bookName = req.body.bookName;
+    // req.session.author = req.body.author;
+
+    let query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, 
+    BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
     FROM BOOK JOIN AUTHOR ON (BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID)
-    WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) OR (AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2)` //need to modify this query
-    let book = '%' + req.session.bookName + '%'
-    let author = '%' + req.session.author + '%';
-    let params = [book.toUpperCase(),author.toUpperCase()]
+    WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) AND (AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2)
+    ORDER BY AUTHOR.AUTHOR_NAME`
+    
+    let bookName = '%'
+    if(req.body.bookName){
+        for(let i=0;i<req.body.bookName.length;i++){
+            bookName += req.body.bookName[i] + '%';
+        }
+    }
+    let bookAuthor = '%'
+    if(req.body.author){
+        for(let i=0;i<req.body.author.length;i++){
+            bookAuthor += req.body.author[i] + '%';
+        }
+    }
+    let params = [bookName.toUpperCase(),bookAuthor.toUpperCase()]
     let result = await queryDB(query,params,false);
-    res.status(200).json(result.rows);
-})
-router.post('/', async function (req,res){
-    console.log('POST FOR FORM')
-    console.log(req.body)
-    req.session.bookName = req.body.bookName;
-    req.session.author = req.body.author;
+    req.session.bookRows = []
+    for(let i=0;i<result.rows.length;i++){
+        let myArray = {
+            bookId : result.rows[i].BOOK_ID,
+            bookName : result.rows[i].BOOK_NAME,
+            bookAuthor : result.rows[i].AUTHOR_NAME,
+            bookPublisher : result.rows[i].PUBLISHER_NAME,
+            bookStatus : result.rows[i].STAUS,
+            bookLanguage : result.rows[i].LANGUAGE,
+            bookYear : result.rows[i].YEAR,
+            bookEdition : result.rows[i].EDITION,
+            bookNumOfPage : result.rows[i].NO_OF_PAGES,
+            bookCoverImage : '<a href='+result.rows[i].COVER_IMAGE+'><img src="'+ result.rows[i].COVER_IMAGE +'" height ="70px" width = "70px"></a>'
+        }
+        req.session.bookRows.push(myArray);
+    }
     res.redirect('/ac_books')
 })
 module.exports = router

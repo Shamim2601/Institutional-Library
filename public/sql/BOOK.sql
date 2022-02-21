@@ -54,10 +54,10 @@ ENABLE ROW MOVEMENT
 -- Records of BOOK
 -- ----------------------------
 INSERT INTO "C##INSLIB"."BOOK" VALUES ('12', 'CHACHA KAHINI', 'SMA', 'HAKKANI', 'AVAILABLE', TO_DATE('2022-02-13 22:31:34', 'SYYYY-MM-DD HH24:MI:SS'), '2008', 'THIRD', '234', 'AD1', 'BANGLA', 'OTHER', 'https://bdebooks.com/wp-content/uploads/2019/09/15778722.jpg');
-INSERT INTO "C##INSLIB"."BOOK" VALUES ('14', 'ITOL BITOL', 'SUKA', 'KOTHAMALA', 'AVAILABLE', TO_DATE('2022-02-08 15:38:33', 'SYYYY-MM-DD HH24:MI:SS'), '2008', NULL, '50', 'AD1', 'BANGLA', 'others', 'https://i.ytimg.com/vi/BZUN-wTbGl4/maxresdefault.jpg');
-INSERT INTO "C##INSLIB"."BOOK" VALUES ('13', 'SESER KOBITA', 'RNT', 'KOTHAMALA', 'AVAILABLE', TO_DATE('2022-01-10 19:43:58', 'SYYYY-MM-DD HH24:MI:SS'), '2016', 'SECOND', '120', 'AD1', 'BANGLA', 'OTHER', 'https://ds.rokomari.store/rokomari110/ProductNew20190903/260X372/23f2f82cb_41029.jpg');
-INSERT INTO "C##INSLIB"."BOOK" VALUES ('11', 'DESE BIDESE', 'SMA', 'HAKKANI', 'AVAILABLE', TO_DATE('2022-01-31 22:31:24', 'SYYYY-MM-DD HH24:MI:SS'), '2008', 'THIRD', '164', 'AD1', 'BANGLA', 'OTHER', 'https://1.bp.blogspot.com/-azI7RfXYCYM/VL5GQH6hJrI/AAAAAAAAAmQ/-3cK9QmpCD4/s1600/desh%2Bbideshe%2Bby%2Bsayed%2Bmostoba%2Bali.jpg');
-INSERT INTO "C##INSLIB"."BOOK" VALUES ('21', 'COLLEGE ALGEBRA', 'NAS', 'SIMON AND SCHUSTER', 'AVAILABLE', TO_DATE('2022-02-01 11:54:06', 'SYYYY-MM-DD HH24:MI:SS'), '2019', 'SECOND', '204', 'AD1', 'ENGLISH', 'ACADEMIC', 'https://i.pinimg.com/originals/14/df/43/14df437e93ef277b0771bc46964c663c.jpg');
+INSERT INTO "C##INSLIB"."BOOK" VALUES ('14', 'ITOL BITOL', 'HA', 'KOTHAMALA', 'AVAILABLE', TO_DATE('2022-02-08 15:38:33', 'SYYYY-MM-DD HH24:MI:SS'), '2008', NULL, '50', 'AD1', 'BANGLA', 'others', 'https://i.ytimg.com/vi/BZUN-wTbGl4/maxresdefault.jpg');
+INSERT INTO "C##INSLIB"."BOOK" VALUES ('13', 'SESER KOBITA', 'AH', 'KOTHAMALA', 'AVAILABLE', TO_DATE('2022-01-10 19:43:58', 'SYYYY-MM-DD HH24:MI:SS'), '2016', 'SECOND', '120', 'AD1', 'BANGLA', 'OTHER', 'https://ds.rokomari.store/rokomari110/ProductNew20190903/260X372/23f2f82cb_41029.jpg');
+INSERT INTO "C##INSLIB"."BOOK" VALUES ('11', 'DESE BIDESE', 'HA', 'HAKKANI', 'AVAILABLE', TO_DATE('2022-01-31 22:31:24', 'SYYYY-MM-DD HH24:MI:SS'), '2008', 'THIRD', '164', 'AD1', 'BANGLA', 'OTHER', 'https://1.bp.blogspot.com/-azI7RfXYCYM/VL5GQH6hJrI/AAAAAAAAAmQ/-3cK9QmpCD4/s1600/desh%2Bbideshe%2Bby%2Bsayed%2Bmostoba%2Bali.jpg');
+INSERT INTO "C##INSLIB"."BOOK" VALUES ('21', 'COLLEGE ALGEBRA', 'JI', 'PROTHOM_ALO', 'AVAILABLE', TO_DATE('2022-02-01 11:54:06', 'SYYYY-MM-DD HH24:MI:SS'), '2019', 'SECOND', '204', 'AD1', 'ENGLISH', 'ACADEMIC', 'https://i.pinimg.com/originals/14/df/43/14df437e93ef277b0771bc46964c663c.jpg');
 
 -- ----------------------------
 -- Primary Key structure for table BOOK
