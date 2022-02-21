@@ -41,7 +41,8 @@
             <h4 style="color: blue;">Some useful Links for students</h4>
             <table id="linktable" class="w3-table-all w3-centered sortable">
                 <tr>
-                    <th>Link Name</th> <th>Link URL</th>
+                    <th>Link Name</th> 
+                    <th>Link URL</th>
                 </tr>
             </table>
         </div>
@@ -60,7 +61,7 @@
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
                     cell1.innerHTML = myjs[i].LINK_NAME;
-                    cell2.innerHTML = myjs[i].LINK_TEXT;
+                    cell2.innerHTML = `<a href="${myjs[i].LINK_TEXT}" target="_blank">${myjs[i].LINK_TEXT}</a>`;
                 }   
             }
             $(document).ready(getInfo('fill'));

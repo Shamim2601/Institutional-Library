@@ -23,6 +23,10 @@ router.get('/favtable',async(req,res)=>{
     JOIN AUTHOR A ON(B.AUTHOR_ID=A.AUTHOR_ID) WHERE F.MEMBER_ID = :1 ORDER BY A.AUTHOR_NAME`
     let params = [req.session.memberId]
     let result = await queryDB(query,params,false);
+    if(!result){
+        res.redirect('/member_page')
+        return;
+    }
     res.status(200).json(result.rows);
 })
 
@@ -36,6 +40,10 @@ router.post('/',urlencodedParser,async function(req,res){
         WHERE BOOK_ID = :1`
         let params = [req.body.reviewBookId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/member_page')
+            return;
+        }
         if(result.rows.length == 0){
              console.log('Sorry! Wrong Book ID. Try Again!');//it will be an alert
         }  
@@ -49,6 +57,10 @@ router.post('/',urlencodedParser,async function(req,res){
                 query = `INSERT INTO REVIEW_LIST (MEMBER_ID,BOOK_ID,REVIEW_TEXT) VALUES (:1, :2, :3)`
                 params = [req.session.memberId,req.body.reviewBookId,req.body.reviewText]
                 result = await queryDB(query,params,true);
+                if(!result){
+                    res.redirect('/member_page')
+                    return;
+                }
                 console.log("successful");
             }
             else{//update the reiviw only
@@ -57,6 +69,10 @@ router.post('/',urlencodedParser,async function(req,res){
                 WHERE MEMBER_ID = :2 AND BOOK_ID = :3`
                 params = [req.body.reviewText,req.session.memberId,req.body.reviewBookId]
                 result = await queryDB(query,params,true);
+                if(!result){
+                    res.redirect('/member_page')
+                    return;
+                }
             }
         }
     }
@@ -67,6 +83,10 @@ router.post('/',urlencodedParser,async function(req,res){
         WHERE BOOK_ID = :1`
         let params = [req.body.favBookId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/member_page')
+            return;
+        }
         // console.log(`I am gonna say ${result.rows[0].PRESENT}`);
         if(result.rows[0].PRESENT == 0){
             console.log("Sorry! No Book Found!");
@@ -81,6 +101,10 @@ router.post('/',urlencodedParser,async function(req,res){
                 query = `INSERT INTO FAV_LIST (MEMBER_ID, BOOK_ID) VALUES (:1, :2)`
                 params = [req.session.memberId,req.body.favBookId]
                 result = await queryDB(query,params,true);
+                if(!result){
+                    res.redirect('/member_page')
+                    return;
+                }
             }
         }
     }

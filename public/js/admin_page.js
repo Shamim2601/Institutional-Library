@@ -79,6 +79,10 @@ router.get('/applicantTable', async function(req,res){
     ORDER BY NAME`
     let params = []
     let result = await queryDB(query,params,false);
+    // if(!result){
+    //     res.redirect('/admin_page')
+    //     return;
+    // }
     res.status(200).json(result.rows);
 })
 
@@ -111,6 +115,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE MEMBER_ID = :1 OR PHONE_NUMBER = :2`
         let params = [req.body.newMemberMemberId,req.body.newMemberPhone]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT > 0){
             req.session.newMemberErrorMessage = "Sorry! Phone Number or Member Id already exists!"
             req.session.newMemberMemberId = "";
@@ -131,6 +139,10 @@ router.post('/',urlencodedParser, async function(req,res){
             result = await queryDB(query,params,false)
             let result2 = await queryDB(query2,params,false);
             let result3 = await queryDB(query3,params2,false);
+            if(!result || !result2 || !result3){
+                res.redirect('/admin_page')
+                return;
+            }
             if(result.rows[0].CNT > 0 || result2.rows[0].CNT > 0 || result3.rows[0].CNT > 0){
                 req.session.newMemberErrorMessage = "Sorry! This Member is not unique! try again"
                 res.redirect('/admin_page')
@@ -140,10 +152,18 @@ router.post('/',urlencodedParser, async function(req,res){
                 VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9)`
                 params = [req.body.newMemberMemberId,req.body.newMemberName,req.body.newMemberEmail,req.body.newMemberPhone,req.body.newMemberBloodGroup,req.body.newMemberDob,req.session.adminId,req.body.newMemberPhone,0];
                 result = await queryDB(query,params,true)
+                if(!result){
+                    res.redirect('/admin_page')
+                    return;
+                }
                 if(req.body.newMemberType.toUpperCase() == "STUDENT"){
                     query = `INSERT INTO MEMBER_STUDENT (DEPT, STUDENT_ID, RESIDENCE, MEMBER_ID) VALUES (:1,:2,:3,:4)`
                     params = [req.body.newMemberDepartment,req.body.newMemberId,req.body.newMemberResidence,req.body.newMemberMemberId]
                     result = await queryDB(query,params,true);
+                    if(!result){
+                        res.redirect('/admin_page')
+                        return;
+                    }
                     req.session.newMemberErrorMessage = "";
                     req.session.newMemberMemberId = ""
                     req.session.newMemberName = ""
@@ -164,6 +184,10 @@ router.post('/',urlencodedParser, async function(req,res){
                     query = `INSERT INTO MEMBER_TEACHER (MEMBER_ID, DEPT, ADDRESS, TEACHER_ID, DESIGNATION) VALUES (:1,:2,:3,:4,:5)`
                     params = [req.body.newMemberMemberId,req.body.newMemberDepartment,req.body.newMemberAddress,req.body.newMemberId,req.body.newMemberDesignation]
                     result = await queryDB(query,params,true);
+                    if(!result){
+                        res.redirect('/admin_page')
+                        return;
+                    }
                     req.session.newMemberErrorMessage = "";
                     req.session.newMemberMemberId = ""
                     req.session.newMemberName = ""
@@ -184,6 +208,10 @@ router.post('/',urlencodedParser, async function(req,res){
                     query = `INSERT INTO MEMBER_OTHERS (MEMBER_ID, DEPT, ADDRESS, DESIGNATION) VALUES (:1,:2,:3,:4)`
                     params = [req.body.newMemberMemberId,req.body.newMemberDepartment,req.body.newMemberAddress,req.body.newMemberDesignation]
                     result = await queryDB(query,params,true);
+                    if(!result){
+                        res.redirect('/admin_page')
+                        return;
+                    }
                     req.session.newMemberErrorMessage = "";
                     req.session.newMemberMemberId = ""
                     req.session.newMemberName = ""
@@ -216,38 +244,74 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE MEMBER_ID = :1`
         let params = [req.body.deleteMemberId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT>0){
             query = `DELETE FROM MEMBER_STUDENT
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             
             query = `DELETE FROM MEMBER_TEACHER
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             
             query = `DELETE FROM MEMBER_OTHERS
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             
             query = `DELETE FROM FAV_LIST
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
 
             query = `DELETE FROM ISSUE_LIST
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
 
             query = `DELETE FROM REVIEW_LIST
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
 
             query = `DELETE FROM SUGG_LIST
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             
             query = `DELETE FROM MEMBER
             WHERE MEMBER_ID = :1`
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
 
             console.log("MEMBER DELETED!")
             res.redirect('/admin_page');
@@ -282,6 +346,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE BOOK_ID = :1`
         let params = [req.body.newBookId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT > 0){
             req.session.newBookErrorMessage = "Book ID already exists";
             req.session.newBookId = "";
@@ -293,6 +361,10 @@ router.post('/',urlencodedParser, async function(req,res){
             WHERE AUTHOR_ID = :1`
             params = [req.body.newBookAuthor]
             result = await queryDB(query,params,false);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             if(result.rows[0].CNT == 0){
                 req.session.newBookErrorMessage = "Author ID does not exist!";
                 req.session.newBookAuthor = "";
@@ -304,6 +376,10 @@ router.post('/',urlencodedParser, async function(req,res){
                 WHERE PUBLISHER_NAME = :1`
                 params = [req.body.newBookPublisher]
                 result = await queryDB(query,params,false);
+                if(!result){
+                    res.redirect('/admin_page')
+                    return;
+                }
                 if(result.rows[0].CNT == 0){
                     req.session.newBookErrorMessage = "Publisher does not exist!";
                     req.session.newBookPublisher = "";
@@ -314,16 +390,28 @@ router.post('/',urlencodedParser, async function(req,res){
                     VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12)`
                     params = [req.body.newBookId,req.body.newBookName,req.body.newBookAuthor,req.body.newBookPublisher,req.body.newBookCoverImg,req.body.newBookStatus,req.body.newBookArrivalDate,req.body.newBookYearReleased,req.body.newBookEdition,req.body.newBookNumberOfPage,req.body.newBookLanguage,req.session.adminId]
                     result = await queryDB(query,params,true);
+                    if(!result){
+                        res.redirect('/admin_page')
+                        return;
+                    }
 
                     if(req.body.newBookType != undefined && req.body.newBookType.toUpperCase() == "ACADEMIC"){
                         query = `INSERT INTO BOOKLIST_ACADEMIC (BOOK_ID, SUBJECT, TOPIC, DEPARTMENT) VALUES (:1,:2,:3,:4)`
                         params = [req.body.newBookId,req.body.newBookSubject,req.body.newBookTopic,req.body.newBookDepartment]
                         result = await queryDB(query,params,true);
+                        if(!result){
+                            res.redirect('/admin_page')
+                            return;
+                        }
                     }
                     else{
                         query = `INSERT INTO BOOKLIST_OTHERS (BOOK_ID, GENRE, CATEGORY) VALUES (:1,:2,:3)`
                         params = [req.body.newBookId,req.body.newBookGenre,req.body.newBookCategory];
                         result = await queryDB(query,params,true);
+                        if(!result){
+                            res.redirect('/admin_page')
+                            return;
+                        }
                     }
                     req.session.newBookErrorMessage = "";
                     req.session.newBookId = ""
@@ -357,6 +445,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE BOOK_ID = :1`
         let params = [req.body.deleteBookId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT == 0){
             res.redirect('/admin_page')
         }
@@ -380,6 +472,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE MEMBER_ID = :1`
         let params = [req.body.issueMemberId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT == 0){
             req.session.issueErrorMessage = "Member does not exist"
             req.session.issueMemberId = "";
@@ -391,6 +487,10 @@ router.post('/',urlencodedParser, async function(req,res){
             WHERE BOOK_ID = :1 AND UPPER(STATUS) = 'AVAILABLE'`
             params = [req.body.issueBookId]
             result = await queryDB(query,params,false);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             if(result.rows[0].CNT == 0){
                 req.session.issueErrorMessage = "THIS BOOK IS NOT AVAILABLE"
                 req.session.issueBookId = "";
@@ -400,6 +500,10 @@ router.post('/',urlencodedParser, async function(req,res){
                 query = `INSERT INTO ISSUE_LIST (MEMBER_ID, BOOK_ID, ISSUE_DATE, ADMIN_ID) VALUES (:1,:2,:3,:4)`
                 params = [req.body.issueMemberId,req.body.issueBookId,req.body.issueDate,req.session.adminId]
                 result = await queryDB(query,params,true);
+                if(!result){
+                    res.redirect('/admin_page')
+                    return;
+                }
                 req.session.issueBookId = "";
                 req.session.issueMemberId = "";
                 req.session.issueDate = "";
@@ -414,6 +518,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE ISSUE_ID = :1`
         let params = [req.body.deleteIssueId]
         let result = await queryDB(query,params,true);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         res.redirect('/admin_page');
     }
 
@@ -422,6 +530,10 @@ router.post('/',urlencodedParser, async function(req,res){
         let query = `INSERT INTO LINKS (LINK_NAME, LINK_TEXT) VALUES (:1,:2)`
         let params = [req.body.linkName, req.body.linkText]
         let result = await queryDB(query,params,true);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         res.redirect('/admin_page')
     }
 
@@ -430,6 +542,10 @@ router.post('/',urlencodedParser, async function(req,res){
         let query = `INSERT INTO NEWS_AND_EVENTS (NEWS_DATE, IMAGE, DESCRIPTION) VALUES (:1,:2,:3)`
         let params = [req.body.newsDate,req.body.newsImage,req.body.newsDescription]
         let result = await queryDB(query,params,true);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         res.redirect('/admin_page')
     }
 
@@ -445,6 +561,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE ADMIN_ID = :1`
         let params = [req.body.newAdminId]
         let result = await queryDB(query,params,false);
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT > 0){
             req.session.newAdminErrorMessage = "Admin ID already exists"
             req.session.newAdminId = ""
@@ -456,6 +576,10 @@ router.post('/',urlencodedParser, async function(req,res){
             WHERE EMAIL = :1`
             let params = [req.body.newAdminEmail]
             let result = await queryDB(query,params,false);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             if(result.rows[0].CNT > 0){
                 req.session.newAdminErrorMessage = "Admin Email already exists"
                 req.session.newAdminEmail = ""
@@ -467,6 +591,10 @@ router.post('/',urlencodedParser, async function(req,res){
                 WHERE PHONE_NUMBER = :1`
                 let params = [req.body.newAdminPhone]
                 let result = await queryDB(query,params,false);
+                if(!result){
+                    res.redirect('/admin_page')
+                    return;
+                }
                 if(result.rows[0].CNT > 0){
                     req.session.newAdminErrorMessage = "Phone Number already exists"
                     req.session.newAdminPhone = ""
@@ -476,6 +604,10 @@ router.post('/',urlencodedParser, async function(req,res){
                     query = `INSERT INTO ADMIN (ADMIN_ID, ADMIN_PSW, NAME, EMAIL, PHONE_NUMBER) VALUES (:1,:2,:3,:4,:5)`
                     params = [req.body.newAdminId,req.body.newAdminPassword,req.body.newAdminName,req.body.newAdminEmail,req.body.newAdminPhone]
                     let result = await queryDB(query,params,true);
+                    if(!result){
+                        res.redirect('/admin_page')
+                        return;
+                    }
                     req.session.newAdminErrorMessage = ""
                     req.session.newAdminName = ""
                     req.session.newAdminId = ""
@@ -499,6 +631,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE AUTHOR_ID = :1`
         let params = [req.body.newAuthorId]
         let result = await queryDB(query,params,false)
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT>0){
             req.session.newAuthorErrorMessage = "Author Id already exists"
             req.session.newAuthorId = "";
@@ -508,6 +644,10 @@ router.post('/',urlencodedParser, async function(req,res){
             query = `INSERT INTO AUTHOR (AUTHOR_ID, AUTHOR_NAME, NATIONALITY, "LIFE-SPAN") VALUES (:1,:2,:3,:4)`
             params = [req.body.newAuthorId, req.body.newAuthorName, req.body.newAuthorNationality, req.body.newAuthorLife]
             result = await queryDB(query,params,true);
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             req.session.newAuthorErrorMessage = ""
             req.session.newAuthorName = ""
             req.session.newAuthorId = ""
@@ -528,6 +668,10 @@ router.post('/',urlencodedParser, async function(req,res){
         WHERE PUBLISHER_NAME = :1`
         let params = [req.body.newPublisherName]
         let result = await queryDB(query,params,false)
+        if(!result){
+            res.redirect('/admin_page')
+            return;
+        }
         if(result.rows[0].CNT>0){
             req.session.newPublisherErrorMessage = "Publisher already exists"
             req.session.newPublisherName = ""
@@ -539,6 +683,10 @@ router.post('/',urlencodedParser, async function(req,res){
             WHERE PHONE_NUMBER = :1`
             let params = [req.body.newPublisherPhone]
             let result = await queryDB(query,params,false)
+            if(!result){
+                res.redirect('/admin_page')
+                return;
+            }
             if(result.rows[0].CNT>0){
                 req.session.newPublisherErrorMessage = "Publisher's Phone Number already exists"
                 req.session.newPublisherPhone = ""

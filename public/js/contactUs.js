@@ -29,6 +29,7 @@ router.post('/',urlencodedParser,async function(req,res){
     let query = `INSERT INTO CONTACT_US (NAME, EMAIL, PHONE_NUMBER, MESSAGE) VALUES (:1,:2,:3,:4)`
     let params = [req.body.contactUsName,req.body.contactUsEmail,req.body.contactUsPhone,req.body.contactUsMessage]
     let result = await queryDB(query,params,true);
+    
 
     //send email
     let transporter = nodemailer.createTransport({
