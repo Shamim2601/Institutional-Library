@@ -45,6 +45,9 @@ app.use('/ac_books',acBooksRouter)
 const otherBooksRouter = require('./public/js/other_books');
 app.use('/other_books',otherBooksRouter)
 
+const contactUsRouter = require('./public/js/contactUs')
+app.use('/contactUs',contactUsRouter)
+
 app.listen(port, function(err) {
     if (typeof(err) == "undefined") {  
         console.log('Your application is running on : ' + port + ' port');  
