@@ -21,7 +21,7 @@ router.post('/', async (req,res)=>{
     // let  params = [req.body.phoneNumber];
     let params = [req.body.phoneNumber]
     let result = await queryDB(query,params,false);
-    if(result.rows.length == 0){
+    if(!result){
         // res.send('No Data found! try again!');
         res.redirect('/member_login')
     }

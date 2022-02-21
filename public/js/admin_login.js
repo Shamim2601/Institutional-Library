@@ -21,7 +21,7 @@ router.post('/', async function(req,res){
     WHERE ADMIN_ID = :1`
     let params = [req.body.adminId];
     let result = await queryDB(query,params,false);
-    if(result.rows.length == 0){
+    if(!result){
         // res.send("No DATA FOUND");
         res.redirect('/admin_login');
     }

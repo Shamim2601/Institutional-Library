@@ -47,6 +47,10 @@ router.post('/searchTable',urlencodedParser, async function(req,res){
     }
     let params = [otherBookName.toUpperCase(),otherBookAuthor.toUpperCase(),otherBookAuthor.toUpperCase()]
     let result = await queryDB(query,params,false);
+    if(!result){
+        res.redirect('/other_books')
+        return;
+    }
     req.session.otherBookRows = []
     for(let i=0;i<result.rows.length;i++){
         let myArray = {

@@ -21,7 +21,6 @@ router.get('/',(req,res)=>{
     res.render('ac_books.ejs',context);
 })
 
-
 router.post('/searchTable', urlencodedParser,async function (req,res){
     console.log('---ACADEMIC BOOKS SEARCH TABLE POST REQUEST---')
     console.log(req.body.bookName + " + " + req.body.author)
@@ -34,7 +33,7 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
     WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) AND 
     ((AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2) OR (AUTHOR.AUTHOR_ID LIKE :3))
     ORDER BY AUTHOR.AUTHOR_NAME`
-    
+
     let bookName = '%'
     if(req.body.bookName){
         for(let i=0;i<req.body.bookName.length;i++){
@@ -48,7 +47,12 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
         }
     }
     let params = [bookName.toUpperCase(),bookAuthor.toUpperCase(),bookAuthor.toUpperCase()]
+    
     let result = await queryDB(query,params,false);
+    if(!result){
+        res.redirect('/ac_books')
+        return;
+    }
     req.session.bookRows = []
     for(let i=0;i<result.rows.length;i++){
         let myArray = {
@@ -67,4 +71,6 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
     }
     res.redirect('/ac_books')
 })
+
+
 module.exports = router
