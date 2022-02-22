@@ -66,7 +66,7 @@
                                         <td><%= otherBookRows[i].otherBookAuthor %></td>
                                         <td><%= otherBookRows[i].otherBookPublisher %></td>
                                         <td><%= otherBookRows[i].otherBookStatus %></td>
-                                        <td><%= otherBookRows[i].otherBookID %></td>
+                                        <td><%= otherBookRows[i].otherBookLanguage %></td>
                                         <td><%= otherBookRows[i].otherBookYear %></td>
                                         <td><%= otherBookRows[i].otherBookEdition %></td>
                                         <td><%= otherBookRows[i].otherBookNumOfPage %></td>
@@ -144,7 +144,7 @@
                     table.deleteRow(1);
                 }
                 
-                const url = 'http://localhost:8080/other_books.html/'+inp;
+                const url = 'http://localhost:8080/other_books/'+inp;
                 const options = {method: 'GET'};
                 const response = await fetch(url,options);
                 const myjs = await response.json();                

@@ -69,7 +69,7 @@
                                             <td><%= bookRows[i].bookAuthor %></td>
                                             <td><%= bookRows[i].bookPublisher %></td>
                                             <td><%= bookRows[i].bookStatus %></td>
-                                            <td><%= bookRows[i].bookID %></td>
+                                            <td><%= bookRows[i].bookLanguage %></td>
                                             <td><%= bookRows[i].bookYear %></td>
                                             <td><%= bookRows[i].bookEdition %></td>
                                             <td><%= bookRows[i].bookNumOfPage %></td>
@@ -151,7 +151,7 @@
                     table.deleteRow(1);
                 }
                 
-                const url = 'http://localhost:8080/ac_books.html/'+inp;
+                const url = 'http://localhost:8080/ac_books/'+inp;
                 const options = {method: 'GET'};
                 const response = await fetch(url,options);
                 const myjs = await response.json();                
