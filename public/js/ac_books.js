@@ -39,10 +39,6 @@ router.post('/searchTable', urlencodedParser,async function (req,res){
     OR (BOOK.PUBLISHER_NAME LIKE :1)
     OR (BOOK.LANGUAGE LIKE :1)
     OR (BOOKLIST_ACADEMIC.SUBJECT LIKE :1)
-<<<<<<< HEAD
-    OR (BOOKLIST_ACADEMIC.TOPIC LIKE :1)
-=======
->>>>>>> 371371ad2ef97d2a336781a36367dee529d9d3f8
     OR (BOOKLIST_ACADEMIC.DEPARTMENT LIKE :1)
     ORDER BY AUTHOR.AUTHOR_NAME`
 
