@@ -9,11 +9,10 @@ let urlencodedParser = bodyParser.urlencoded({extended:false})
 router.get('/',(req,res)=>{
     console.log('---OTHER BOOKS GET REQUEST---')
     
-    // if(!req.session.memberId){
-    //     res.redirect('/sign_out')
-    //     return;
-    // }
-
+    if(!req.session.memberId){
+        res.redirect('/sign_out')
+        return;
+    }
     let context = {
         otherBookRows : req.session.otherBookRows
     }
@@ -23,33 +22,36 @@ router.get('/',(req,res)=>{
 
 router.post('/searchTable',urlencodedParser, async function(req,res){
     console.log('---OTHER BOOKS SEARCH TABLE POST REQUEST---')
-    console.log(req.body.otherBookName + " + " + req.body.otherBookAuthor)
+    console.log(req.body.otherBookEntry)
     // req.session.bookName = req.body.bookName;
     // req.session.author = req.body.author;
-
-    let query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, 
+    let query,params,result;
+    query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, 
     BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
-    FROM BOOK JOIN AUTHOR ON (BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID)
-    WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) AND 
-    ((AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2) OR (AUTHOR.AUTHOR_ID LIKE :3))
+    FROM BOOK 
+    JOIN AUTHOR ON (BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID)
+    JOIN BOOKLIST_OTHERS ON (BOOK.BOOK_ID = BOOKLIST_OTHERS.BOOK_ID)
+    WHERE (BOOK.BOOK_NAME LIKE :1)
+    OR (BOOK.STATUS LIKE :1)
+    OR (AUTHOR.AUTHOR_NAME LIKE :1) 
+    OR (AUTHOR.AUTHOR_ID LIKE :1)
+    OR (BOOK.PUBLISHER_NAME LIKE :1)
+    OR (BOOK.LANGUAGE LIKE :1)
+    OR (BOOKLIST_OTHERS.CATEGORY LIKE :1)
+    OR (BOOKLIST_OTHERS.GENRE LIKE :1)
     ORDER BY AUTHOR.AUTHOR_NAME`
     
-    let otherBookName = '%'
-    if(req.body.otherBookName){
-        for(let i=0;i<req.body.otherBookName.length;i++){
-            otherBookName += req.body.otherBookName[i] + '%';
+    let otherBookEntry = '%'
+    if(req.body.otherBookEntry){
+        for(let i=0;i<req.body.otherBookEntry.length;i++){
+            otherBookEntry += req.body.otherBookEntry[i] + '%';
         }
     }
-    let otherBookAuthor = '%'
-    if(req.body.otherBookAuthor){
-        for(let i=0;i<req.body.otherBookAuthor.length;i++){
-            otherBookAuthor += req.body.otherBookAuthor[i] + '%';
-        }
-    }
-    let params = [otherBookName.toUpperCase(),otherBookAuthor.toUpperCase(),otherBookAuthor.toUpperCase()]
-    let result = await queryDB(query,params,false);
-    if(!result){
-        res.redirect('/other_books')
+    params = [otherBookEntry.toUpperCase()]
+    try{
+        result = await queryDB(query,params,false);
+    }catch{
+        res.redirect('/other_books');
         return;
     }
     req.session.otherBookRows = []
