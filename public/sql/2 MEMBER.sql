@@ -1,0 +1,73 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : Oracle
+ Source Server Type    : Oracle
+ Source Server Version : 190000
+ Source Host           : localhost:1521
+ Source Schema         : C##INSLIB
+
+ Target Server Type    : Oracle
+ Target Server Version : 190000
+ File Encoding         : 65001
+
+ Date: 22/02/2022 20:41:45
+*/
+
+
+-- ----------------------------
+-- Table structure for MEMBER
+-- ----------------------------
+DROP TABLE "C##INSLIB"."MEMBER";
+CREATE TABLE "C##INSLIB"."MEMBER" (
+  "MEMBER_ID" NUMBER(10,0) VISIBLE NOT NULL,
+  "MEMBER_NAME" VARCHAR2(255 BYTE) VISIBLE,
+  "EMAIL" VARCHAR2(255 BYTE) VISIBLE,
+  "PHONE_NUMBER" NUMBER(20,0) VISIBLE,
+  "BLOOD_GROUP" VARCHAR2(5 BYTE) VISIBLE,
+  "DATE_OF_BIRTH" DATE VISIBLE,
+  "ADMIN_ID" VARCHAR2(255 BYTE) VISIBLE NOT NULL,
+  "NUM_OF_ISSUE" NUMBER(2,0) VISIBLE DEFAULT 0,
+  "TYPE" VARCHAR2(255 BYTE) VISIBLE,
+  "DEPT" VARCHAR2(255 BYTE) VISIBLE,
+  "PASSWORD" VARCHAR2(20 BYTE) VISIBLE,
+  "FINE" NUMBER(10,2) VISIBLE DEFAULT 0
+)
+LOGGING
+NOCOMPRESS
+PCTFREE 10
+INITRANS 1
+STORAGE (
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1
+  MAXEXTENTS 2147483645
+  BUFFER_POOL DEFAULT
+)
+PARALLEL 1
+NOCACHE
+DISABLE ROW MOVEMENT
+;
+
+-- ----------------------------
+-- Records of MEMBER
+-- ----------------------------
+INSERT INTO "C##INSLIB"."MEMBER" VALUES ('1', 'HASAN', NULL, '47894875', 'A-', TO_DATE('1995-07-26 15:48:59', 'SYYYY-MM-DD HH24:MI:SS'), 'AD1', '0', 'STUDENT', 'SCIENCE', 'DJGIRI45986', '0');
+INSERT INTO "C##INSLIB"."MEMBER" VALUES ('2', 'SAAD', NULL, '85698598', 'B+', NULL, 'AD1', '0', 'STUDENT', 'HUMANITIES', '8UIUG8RU', '0');
+INSERT INTO "C##INSLIB"."MEMBER" VALUES ('3', 'SAMIA', NULL, '598769872', 'A+', NULL, 'AD1', '0', 'STUDENT', 'SCIENCE', 'LKDJG88', '0');
+
+-- ----------------------------
+-- Primary Key structure for table MEMBER
+-- ----------------------------
+ALTER TABLE "C##INSLIB"."MEMBER" ADD CONSTRAINT "SYS_C007670" PRIMARY KEY ("MEMBER_ID");
+
+-- ----------------------------
+-- Checks structure for table MEMBER
+-- ----------------------------
+ALTER TABLE "C##INSLIB"."MEMBER" ADD CONSTRAINT "SYS_C007669" CHECK ("MEMBER_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "C##INSLIB"."MEMBER" ADD CONSTRAINT "SYS_C007673" CHECK ("ADMIN_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+
+-- ----------------------------
+-- Foreign Keys structure for table MEMBER
+-- ----------------------------
+ALTER TABLE "C##INSLIB"."MEMBER" ADD CONSTRAINT "MEM_AD_FK" FOREIGN KEY ("ADMIN_ID") REFERENCES "C##INSLIB"."ADMIN" ("ADMIN_ID") NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
