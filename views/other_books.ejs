@@ -143,7 +143,7 @@
                     table.deleteRow(1);
                 }
                 
-                const url = 'http://localhost:8080/other_books.html/'+inp;
+                const url = 'http://localhost:8080/other_books/'+inp;
                 const options = {method: 'GET'};
                 const response = await fetch(url,options);
                 const myjs = await response.json();                
