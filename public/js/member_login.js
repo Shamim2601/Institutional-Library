@@ -15,32 +15,42 @@ router.get('/',async(req,res)=>{
 
 router.post('/', async (req,res)=>{
     console.log(req.body);
-    const query = `SELECT *
-    FROM MEMBER 
-    WHERE PHONE_NUMBER = :1`
-    // let  params = [req.body.phoneNumber];
-    let params = [req.body.phoneNumber]
-    let result = await queryDB(query,params,false);
-    if(!result){
-        // res.send('No Data found! try again!');
-        res.redirect('/member_login')
+    let query,params,result;
+    try{
+        query = `SELECT COUNT(*) CNT
+        FROM MEMBER 
+        WHERE PHONE_NUMBER = :1`
+        // let  params = [req.body.phoneNumber];
+        params = [req.body.phoneNumber]
+        result = await queryDB(query,params,false);
+    }catch{
+        console.log('wrong catch!');
+        res.redirect('/member_login');
+        return;
     }
-    else if(result.rows[0].PASSWORD != req.body.password){
-        req.session.memberPhoneNumber = req.body.phoneNumber;
+    if(result.rows[0].CNT == 0){
+        console.log('wrong phone!');
         res.redirect('/member_login')
-        
-        // phoneNumber.innerHTML = req.body.phoneNumber;
     }
     else{
-        req.session.memberPhoneNumber = req.body.phoneNumber;
-        req.session.memberId = result.rows[0].MEMBER_ID;
-        req.session.memberName = result.rows[0].MEMBER_NAME;
-        req.session.adminId = ""
-        res.redirect('/member_page');
+        query = `SELECT *
+        FROM MEMBER 
+        WHERE PHONE_NUMBER = :1`
+        params = [req.body.phoneNumber]
+        result = await queryDB(query,params,false);
+        if(result.rows[0].PASSWORD != req.body.password){
+            console.log(`wrong pw! right-> ${result.rows[0].PASSWORD}`);
+            req.session.memberPhoneNumber = req.body.phoneNumber;
+            res.redirect('/member_login')
+        }
+        else{
+            console.log('right!');
+            req.session.memberPhoneNumber = req.body.phoneNumber;
+            req.session.memberId = result.rows[0].MEMBER_ID;
+            req.session.memberName = result.rows[0].MEMBER_NAME;
+            req.session.adminId = ""
+            res.redirect('/member_page');
+        }
     }
-    // console.log(result.rows)
-
-    // console.log(result.rows.length);
-    // console.log(result.rows[1].PHONE_NUMBER);
 })
 module.exports = router;

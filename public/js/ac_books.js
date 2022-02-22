@@ -23,34 +23,37 @@ router.get('/',(req,res)=>{
 
 router.post('/searchTable', urlencodedParser,async function (req,res){
     console.log('---ACADEMIC BOOKS SEARCH TABLE POST REQUEST---')
-    console.log(req.body.bookName + " + " + req.body.author)
+    console.log(req.body.entry)
     // req.session.bookName = req.body.bookName;
     // req.session.author = req.body.author;
-
-    let query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, 
+    let query,params,result;
+    query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR,
     BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
-    FROM BOOK JOIN AUTHOR ON (BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID)
-    WHERE (BOOK.BOOK_NAME IS NOT NULL AND BOOK.BOOK_NAME LIKE :1) AND 
-    ((AUTHOR.AUTHOR_NAME IS NOT NULL AND AUTHOR.AUTHOR_NAME LIKE :2) OR (AUTHOR.AUTHOR_ID LIKE :3))
+    FROM BOOK
+    JOIN AUTHOR ON (BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID)
+    JOIN BOOKLIST_ACADEMIC ON (BOOK.BOOK_ID = BOOKLIST_ACADEMIC.BOOK_ID)
+    WHERE (BOOK.BOOK_NAME LIKE :1)
+    OR (BOOK.STATUS LIKE :1)
+    OR (AUTHOR.AUTHOR_NAME LIKE :1)
+    OR (AUTHOR.AUTHOR_ID LIKE :1)
+    OR (BOOK.PUBLISHER_NAME LIKE :1)
+    OR (BOOK.LANGUAGE LIKE :1)
+    OR (BOOKLIST_ACADEMIC.SUBJECT LIKE :1)
+    OR (BOOKLIST_ACADEMIC.TOPIC LIKE :1)
+    OR (BOOKLIST_ACADEMIC.DEPARTMENT LIKE :1)
     ORDER BY AUTHOR.AUTHOR_NAME`
 
-    let bookName = '%'
-    if(req.body.bookName){
-        for(let i=0;i<req.body.bookName.length;i++){
-            bookName += req.body.bookName[i] + '%';
+    let entry = '%'
+    if(req.body.entry){
+        for(let i=0;i<req.body.entry.length;i++){
+            entry += req.body.entry[i] + '%';
         }
     }
-    let bookAuthor = '%'
-    if(req.body.author){
-        for(let i=0;i<req.body.author.length;i++){
-            bookAuthor += req.body.author[i] + '%';
-        }
-    }
-    let params = [bookName.toUpperCase(),bookAuthor.toUpperCase(),bookAuthor.toUpperCase()]
-    
-    let result = await queryDB(query,params,false);
-    if(!result){
-        res.redirect('/ac_books')
+    params = [entry.toUpperCase()]
+    try{
+        result = await queryDB(query,params,false);
+    }catch{
+        res.redirect('/ac_books');
         return;
     }
     req.session.bookRows = []
