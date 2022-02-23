@@ -21,8 +21,24 @@ adpageRouter.get('/admin_page/:child', async (req,res)=>{
     var info = req.params;
     let query;
     let query1;
+    if(info.child=='MEMBER'){
+      query1 = `DECLARE
+                DAYS NUMBER(10);
+                BEGIN
+                FOR R IN (SELECT ISSUE_LIST.ISSUE_DATE, MEMBER.FINE, MEMBER.MEMBER_ID FROM ISSUE_LIST JOIN MEMBER ON ISSUE_LIST.MEMBER_ID = MEMBER.MEMBER_ID)
+                LOOP
+                SELECT TRUNC(SYSDATE - R.ISSUE_DATE) INTO DAYS
+                FROM DUAL;
+                IF(DAYS >14) THEN
+                  UPDATE MEMBER SET FINE = FINE+ (DAYS - 14) * 5
+                  WHERE MEMBER_ID = R.MEMBER_ID;
+                END IF;
+                END LOOP;
+                END;`
+    }
     query = `SELECT * FROM ${info.child} `;
     const params = [];
+    const result1 = await dbQuery(query1,params);
     const result = await dbQuery(query,params);
     res.status(200).json(result);
     

@@ -43,14 +43,10 @@ router.post('/',urlencodedParser,async function(req,res){
     let mailOptions = {
         from: process.env.EMAIL,
         to: req.body.contactUsEmail,
+        cc: 'asifihtemadulhaque@gmail.com',
         subject: 'Institutional Library: Read Me',
-        text: `Hi How are you?`
-        // attachment:[
-        //     {
-        //         filename: 'meme.jpg',
-        //         path: '../../meme.jpg'
-        //     }
-        // ]
+        text: `Dear ${req.body.contactUsName},
+               Your message has been recieved. An admin will look into this issue soon. Thank you for your patience! `
     };
     transporter.sendMail(mailOptions,function(err,data){
         if(err){

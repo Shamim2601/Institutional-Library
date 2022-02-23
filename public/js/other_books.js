@@ -67,7 +67,7 @@ router.post('/searchTable',urlencodedParser, async function(req,res){
             otherBookYear : result.rows[i].YEAR,
             otherBookEdition : result.rows[i].EDITION,
             otherBookNumOfPage : result.rows[i].NO_OF_PAGES,
-            otherBookCoverImage : '<a href='+result.rows[i].COVER_IMAGE+'><img src="'+ result.rows[i].COVER_IMAGE +'" height ="70px" width = "70px"></a>'
+            otherBookCoverImage : result.rows[i].COVER_IMAGE
         }
         req.session.otherBookRows.push(myArray);
     }

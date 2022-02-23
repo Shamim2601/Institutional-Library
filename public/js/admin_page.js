@@ -778,6 +778,7 @@ router.post('/',urlencodedParser, async function(req,res){
                 req.session.issueBookId = "";
                 req.session.issueMemberId = "";
                 req.session.issueDate = "";
+                req.session.issueErrorMessage = ""
                 res.redirect('/admin_page')
             }
         }
