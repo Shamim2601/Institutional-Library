@@ -55,7 +55,6 @@ router.get('/',(req,res)=>{
         newBookDepartment : req.session.newBookDepartment, 
         newBookSubject : req.session.newBookSubject,
         newBookType : req.body.newBookType,
-        newBookTopic: req.body.newBookTopic,
         newBookCategory : req.session.newBookCategory,
         newBookGenre : req.session.newBookGenre,
         issueBookId : req.session.issueBookid,
@@ -554,7 +553,6 @@ router.post('/',urlencodedParser, async function(req,res){
         req.session.newBookLanguage = req.body.newBookLanguage
         req.session.newBookNumberOfPage = req.body.newBookNumberOfPage
         req.session.newBookType = req.body.newBookType
-        req.session.newBookTopic = req.body.newBookTopic
         req.session.newBookDepartment = req.body.newBookDepartment
         req.session.newBookSubject = req.body.newBookSubject
         req.session.newBookCategory = req.body.newBookCategory
@@ -610,12 +608,12 @@ router.post('/',urlencodedParser, async function(req,res){
                         GENERATE_BOOK_ID(2,NEW_BOOK_ID);
                         INSERT INTO BOOK (BOOK_ID, BOOK_NAME, AUTHOR_ID, PUBLISHER_NAME, COVER_IMAGE, STATUS, DATE_OF_ARRIVAL, YEAR,
                         EDITION, NO_OF_PAGES, LANGUAGE, ADMIN_ID) VALUES (NEW_BOOK_ID,:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11);
-                        INSERT INTO BOOKLIST_ACADEMIC (BOOK_ID, SUBJECT, TOPIC, DEPARTMENT) VALUES (NEW_BOOK_ID,:12,:13,:14);
+                        INSERT INTO BOOKLIST_ACADEMIC (BOOK_ID, SUBJECT, DEPARTMENT) VALUES (NEW_BOOK_ID,:12,:13);
                     END;`
                     params = [req.body.newBookName,req.body.newBookAuthor,req.body.newBookPublisher,req.body.newBookCoverImg,
                         req.body.newBookStatus,req.body.newBookArrivalDate,req.body.newBookYearReleased,req.body.newBookEdition,
                         req.body.newBookNumberOfPage,req.body.newBookLanguage,req.session.adminId,
-                        req.body.newBookSubject,req.body.newBookTopic,req.body.newBookDepartment]
+                        req.body.newBookSubject,req.body.newBookDepartment]
                     try{
                         result = await queryDB(query,params,true);
             
@@ -664,13 +662,11 @@ router.post('/',urlencodedParser, async function(req,res){
                 req.session.newBookEdition = ""
                 req.session.newBookLanguage = ""
                 req.session.newBookNumberOfPage = ""
-                req.session.newBookTopic = ""
                 req.session.newBookType = ""
                 req.session.newBookDepartment = ""
                 req.session.newBookSubject = ""
                 req.session.newBookCategory = ""
                 req.session.newBookGenre = ""
-                console.log('mehram')
                 res.redirect('/admin_page')
             }
         }
@@ -725,7 +721,7 @@ router.post('/',urlencodedParser, async function(req,res){
             result = await queryDB(query,params,false);
 
         }catch(err){
-            console.log(err);
+            console.log(`${err}`);
             res.redirect('/admin_page');
             return;
         }
@@ -744,7 +740,7 @@ router.post('/',urlencodedParser, async function(req,res){
                 result = await queryDB(query,params,false);
     
             }catch(err){
-                console.log(err);
+                console.log(`${err}`);
                 res.redirect('/admin_page');
                 return;
             }
@@ -761,7 +757,7 @@ router.post('/',urlencodedParser, async function(req,res){
                         result = await queryDB(query,params,true);
             
                     }catch(err){
-                        console.log(err);
+                        console.log(`${err}`);
                         res.redirect('/admin_page');
                         return;
                     }
@@ -773,7 +769,7 @@ router.post('/',urlencodedParser, async function(req,res){
                         result = await queryDB(query,params,true);
         
                     }catch(err){
-                        console.log(err);
+                        console.log(`${err}`);
                         res.redirect('/admin_page');
                         return;
                     }
@@ -820,7 +816,7 @@ router.post('/',urlencodedParser, async function(req,res){
         res.redirect('/admin_page')
     }
 
-    //new info
+    //news info
     if(req.body.newsDate != undefined){
         let query,params,result;
         query = `INSERT INTO NEWS_AND_EVENTS (NEWS_DATE, IMAGE,TITLE, DESCRIPTION) VALUES (:1,:2,:3,:4)`
