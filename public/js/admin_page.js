@@ -750,6 +750,23 @@ router.post('/',urlencodedParser, async function(req,res){
                 res.redirect('/admin_page');
             }
             else{
+                query = `SELECT NUM_OF_ISSUE
+                FROM MEMBER 
+                WHERE MEMBER_ID = :1`
+                params = [req.body.issueMemberId];
+                try{
+                    result = await queryDB(query,params,false);
+                }catch(err){
+                    console.log(err);
+                    res.redirect('/admin_page');
+                    return;
+                }
+                if(result.rows[0].NUM_OF_ISSUE >= 3){
+                    req.session.issueErrorMessage = "The member already reached the limit"
+                    req.session.issueBookId = "";
+                    res.redirect('/admin_page');
+                    return;
+                }
                 if(req.body.issueDate){
                     query = `INSERT INTO ISSUE_LIST (MEMBER_ID, BOOK_ID, ISSUE_DATE, ADMIN_ID) VALUES (:1,:2,:3,:4)`
                     params = [req.body.issueMemberId,req.body.issueBookId,req.body.issueDate,req.session.adminId]
