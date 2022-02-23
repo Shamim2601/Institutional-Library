@@ -6,6 +6,16 @@ const router = express.Router();
 const queryDB = require('./queryDBMS');
 let urlencodedParser = bodyParser.urlencoded({extended:false})
 
+function makeRandomeId(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+   return result;
+}
+
 router.get('/',(req,res)=>{
     console.log(`--- ADMIN PAGE GET REQUEST---`);
     
@@ -13,7 +23,7 @@ router.get('/',(req,res)=>{
         res.redirect('/admin_login')
         return;
     }
-
+    
     // console.log(req.query);
     let context = {
         adminId : req.session.adminId,
@@ -70,20 +80,164 @@ router.get('/',(req,res)=>{
     res.render('admin_page.ejs',context);
 })
 
-router.get('/applicantTable', async function(req,res){
+router.get('/APPLICANT', async function(req,res){
     // console.log('jonmo')
+    if(!req.session.applicantSearchById){
+        req.session.applicantSearchById = '%';
+    }
     let query = `SELECT NAME, DESIGNATION, DEPT, ID, DATE_OF_BIRTH, ADDRESS, EMAIL, PHONE_NUMBER, BLOOD_GROUP, RESIDENCE
     FROM APPLICANT
+    WHERE ID LIKE :1
     ORDER BY NAME`
-    let params = []
+    let params = [req.session.applicantSearchById]
     let result = await queryDB(query,params,false);
     // if(!result){
     //     res.redirect('/admin_page')
     //     return;
     // }
+    req.session.applicantSearchById = "";
     res.status(200).json(result.rows);
 })
+router.post('/searchApplicantTable', urlencodedParser, async function(req,res){
+    console.log(req.body.applicantAddById, req.body.applicantSearchById);
 
+    let query,params,result;
+    if(req.body.applicantAddById){
+        query = `SELECT COUNT(*) CNT
+        FROM APPLICANT
+        WHERE ID = :1`
+        params = [req.body.applicantAddById];
+        try{
+            result = await queryDB(query,params,false);
+        }catch{
+            res.redirect('/admin_page');
+            return;
+        }
+        if(result.rows[0].CNT > 0){
+            let query2,params2,result2;
+            query2 = `SELECT *
+            FROM APPLICANT
+            WHERE ID = :1`
+            params2 = [req.body.applicantAddById];
+            try{
+                result2 = await queryDB(query2,params2,false);
+            }catch{
+                res.redirect('/admin_page');
+                return;
+            }
+            query = `SELECT COUNT(*) CNT
+            FROM MEMBER
+            WHERE PHONE_NUMBER = :1`
+            params = [result2.rows[0].PHONE_NUMBER];
+            try{
+                result = await queryDB(query,params,false);
+            }catch{
+                res.redirect('/admin_page');
+                return;
+            }
+            if(result.rows[0].CNT == 0){
+                let query3,query4,params3,params4,result3,result4;
+                query = `SELECT COUNT(*) CNT
+                FROM MEMBER_STUDENT
+                WHERE STUDENT_ID = :1`
+                query3 = `SELECT COUNT(*) CNT
+                FROM MEMBER_TEACHER
+                WHERE TEACHER_ID = :1`
+                query4 = `SELECT COUNT(*) CNT
+                FROM MEMBER_OTHERS
+                WHERE ID = :1`
+                params = [req.body.applicantAddById];
+                params3 = [req.body.applicantAddById];
+                params4 = [result2.rows[0].ID];
+                try{
+                    result = await queryDB(query,params,false);
+                    result3 = await queryDB(query3,params3,false);
+                    result4 = await queryDB(query4,params4,false);
+
+                }catch{
+                    res.redirect('/admin_page');
+                    return;
+                }
+                    result = await queryDB(query,params,false);
+                    if(result.rows[0].CNT == 0 || result3.rows[0].CNT == 0 || result4.rows[0].CNT == 0){
+                        if(result.rows[0].TYPE == "STUDENT"){
+                            query = `
+                            DECLARE
+                                NEW_MEMBER_ID NUMBER(10);
+                            BEGIN
+                                GENERATE_MEMBER_ID(1,NEW_MEMBER_ID);
+                                INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE,DEPT)
+                                VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8,:9);
+                                INSERT INTO MEMBER_STUDENT (STUDENT_ID, RESIDENCE, MEMBER_ID) VALUES (:10,:11,NEW_MEMBER_ID);
+                            END;`
+                            params = [result2.rows[0].NAME,result2.rows[0].EMAIL,result2.rows[0].PHONE_NUMBER,result2.rows[0].BLOOD_GROUP,
+                            result2.rows[0].DATE_OF_BIRTH,req.session.adminId,result2.rows[0].PASSWORD,0,result2.rows[0].DEPT,result2.rows[0].ID,
+                            result2.rows[0].RESIDENCE];
+                            try{
+                                result = await queryDB(query,params,true);
+                            }catch{
+                                res.redirect('/admin_page')
+                                return;
+                            }
+                        }
+                        else if(result.rows[0].TYPE == "TEACHER"){
+                            query = `
+                            DECLARE
+                                NEW_MEMBER_ID NUMBER(10);
+                            BEGIN
+                                GENERATE_MEMBER_ID(2,NEW_MEMBER_ID);
+                                INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE,DEPT)
+                                VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8,:9);
+                                INSERT INTO MEMBER_TEACHER (MEMBER_ID, ADDRESS, TEACHER_ID, DESIGNATION) VALUES (NEW_MEMBER_ID,:10,:11,:12);
+                            END;`
+                            params = [result2.rows[0].NAME,result2.rows[0].EMAIL,result2.rows[0].PHONE_NUMBER,result2.rows[0].BLOOD_GROUP,
+                            result2.rows[0].DATE_OF_BIRTH,req.session.adminId,result2.rows[0].PASSWORD,0,result2.rows[0].DEPT,result2.rows[0].ADDRESS,result2.rows[0].ID,
+                            result2.rows[0].DESIGNATION];
+                            try{
+                                result = await queryDB(query,params,true);
+                            }catch{
+                                res.redirect('/admin_page')
+                                return;
+                            }
+                        }
+                        else{
+                            query = `
+                            DECLARE
+                                NEW_MEMBER_ID NUMBER(10);
+                            BEGIN
+                                GENERATE_MEMBER_ID(3,NEW_MEMBER_ID);
+                                INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE,DEPT)
+                                VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8,:9);
+                                INSERT INTO MEMBER_OTHERS (MEMBER_ID, ADDRESS, DESIGNATION,ID) VALUES (NEW_MEMBER_ID,:10,:11,:12);
+                            END;`
+                            params = [result2.rows[0].NAME,result2.rows[0].EMAIL,result2.rows[0].PHONE_NUMBER,result2.rows[0].BLOOD_GROUP,
+                            result2.rows[0].DATE_OF_BIRTH,req.session.adminId,result2.rows[0].PASSWORD,0,result2.rows[0].DEPT,result2.rows[0].ADDRESS,
+                            result2.rows[0].DESIGNATION,result2.rows[0].ID];
+                            try{
+                                result = await queryDB(query,params,true);
+                            }catch{
+                                res.redirect('/admin_page')
+                                return;
+                            }
+                            query = `DELETE FROM APPLICANT WHERE ID = :1`
+                            params = [req.body.applicantAddById];
+                            try{
+                                result = await queryDB(query,params,true);
+                            }catch{
+                                res.redirect('/admin_page')
+                                return;
+                            }
+                        }
+                    }
+            }
+        }
+    }
+    if(req.body.applicantSearchById){
+        req.session.applicantSearchById = req.body.applicantSearchById;
+    }
+    res.redirect('/admin_page')
+    
+})
 router.post('/',urlencodedParser, async function(req,res){
     if(!req.session.adminId){
         res.redirect('/admin_login')
@@ -125,53 +279,50 @@ router.post('/',urlencodedParser, async function(req,res){
             return;
         }
         else{
+            let query2,query3,result2,result3;
             query = `SELECT COUNT(*) CNT
             FROM MEMBER_STUDENT
             WHERE STUDENT_ID = :1`
-            let query2 = `SELECT COUNT(*) CNT
+            query2 = `SELECT COUNT(*) CNT
             FROM MEMBER_TEACHER
             WHERE TEACHER_ID = :1`
             params = [req.body.newMemberId]
-            let query3 = `SELECT COUNT(*) CNT
+            query3 = `SELECT COUNT(*) CNT
             FROM MEMBER_OTHERS
-            WHERE DESIGNATION = :1 AND DEPT = :2 AND ADDRESS = :3`
-            let params2 = [req.body.newMemberDesignation,req.body.newMemberDepartment,req.body.newMemberAddress]
-            result = await queryDB(query,params,false)
-            let result2 = await queryDB(query2,params,false);
-            let result3 = await queryDB(query3,params2,false);
-            // if(!result || !result2 || !result3){
-            //     res.redirect('/admin_page')
-            //     return;
-            // }
+            WHERE ID = :1`
+            try{
+                result = await queryDB(query,params,false)
+                result2 = await queryDB(query2,params,false);
+                result3 = await queryDB(query3,params,false);
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
+                return;
+            }
             if(result.rows[0].CNT > 0 || result2.rows[0].CNT > 0 || result3.rows[0].CNT > 0){
                 req.session.newMemberErrorMessage = "Sorry! This Member is not unique! try again"
                 res.redirect('/admin_page')
             }
             else{
-                // query = `INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE)
-                // VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9)`
-                // params = [req.body.newMemberName,req.body.newMemberEmail,req.body.newMemberPhone,req.body.newMemberBloodGroup,req.body.newMemberDob,req.session.adminId,req.body.newMemberPhone,0];
-                // result = await queryDB(query,params,true)
-                // if(!result){
-                //     res.redirect('/admin_page')
-                //     return;
-                // }
                 if(req.body.newMemberType.toUpperCase() == "STUDENT"){
                     query = `
                     DECLARE
                         NEW_MEMBER_ID NUMBER(10);
                     BEGIN
                         GENERATE_MEMBER_ID(1,NEW_MEMBER_ID);
-                        INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE)
-                        VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8);
-                        INSERT INTO MEMBER_STUDENT (DEPT, STUDENT_ID, RESIDENCE, MEMBER_ID) VALUES (:9,:10,:11,NEW_MEMBER_ID);
+                        INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE,DEPT)
+                        VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8,:9);
+                        INSERT INTO MEMBER_STUDENT (STUDENT_ID, RESIDENCE, MEMBER_ID) VALUES (:10,:11,NEW_MEMBER_ID);
                     END;`
                     params = [req.body.newMemberName,req.body.newMemberEmail,req.body.newMemberPhone,req.body.newMemberBloodGroup,
-                        req.body.newMemberDob,req.session.adminId,req.body.newMemberPhone,0,req.body.newMemberDepartment,
+                        req.body.newMemberDob,req.session.adminId,makeRandomeId(12),0,req.body.newMemberDepartment,
                         req.body.newMemberId,req.body.newMemberResidence]
-                    result = await queryDB(query,params,true);
-                    if(!result){
-                        res.redirect('/admin_page')
+                    try{
+                        result = await queryDB(query,params,true);
+
+                    }catch(err){
+                        console.log(`${err}`);
+                        res.redirect('/admin_page');
                         return;
                     }
                     req.session.newMemberErrorMessage = "";
@@ -190,20 +341,26 @@ router.post('/',urlencodedParser, async function(req,res){
                     res.redirect('/admin_page')
                 }
                 else if(req.body.newMemberType.toUpperCase() == "TEACHER"){
-                    query = `INSERT INTO MEMBER_TEACHER (MEMBER_ID, DEPT, ADDRESS, TEACHER_ID, DESIGNATION) VALUES (NEW_MEMBER_ID,:1,:2,:3,:4);`
                     query = `
                     DECLARE
                         NEW_MEMBER_ID NUMBER(10);
                     BEGIN
                         GENERATE_MEMBER_ID(2,NEW_MEMBER_ID);
-                        INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE)
-                        VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8);
-                        INSERT INTO MEMBER_TEACHER (MEMBER_ID, DEPT, ADDRESS, TEACHER_ID, DESIGNATION) VALUES (NEW_MEMBER_ID,:9,:10,:11,:12);
+                        INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE, DEPT)
+                        VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8,:9);
+                        INSERT INTO MEMBER_TEACHER (MEMBER_ID,ADDRESS, TEACHER_ID, DESIGNATION) VALUES (NEW_MEMBER_ID,:10,:11,:12);
                     END;`
                     params = [req.body.newMemberName,req.body.newMemberEmail,req.body.newMemberPhone,req.body.newMemberBloodGroup,
                         req.body.newMemberDob,req.session.adminId,req.body.newMemberPhone,0,req.body.newMemberDepartment,
                         req.body.newMemberAddress,req.body.newMemberId,req.body.newMemberDesignation]
-                    result = await queryDB(query,params,true);
+                    try{
+                        result = await queryDB(query,params,true);
+
+                    }catch(err){
+                        console.log(`${err}`);
+                        res.redirect('/admin_page');
+                        return;
+                    }
                     // if(!result){
                     //     res.redirect('/admin_page')
                     //     return;
@@ -230,14 +387,21 @@ router.post('/',urlencodedParser, async function(req,res){
                         NEW_MEMBER_ID NUMBER(10);
                     BEGIN
                         GENERATE_MEMBER_ID(3,NEW_MEMBER_ID);
-                        INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE)
+                        INSERT INTO MEMBER (MEMBER_ID, MEMBER_NAME, EMAIL, PHONE_NUMBER, BLOOD_GROUP, DATE_OF_BIRTH, ADMIN_ID, PASSWORD,NUM_OF_ISSUE,DEPT)
                         VALUES (NEW_MEMBER_ID,:1,:2,:3,:4,:5,:6,:7,:8);
-                        INSERT INTO MEMBER_OTHERS (MEMBER_ID, DEPT, ADDRESS, DESIGNATION) VALUES (NEW_MEMBER_ID,:9,:10,:11);
+                        INSERT INTO MEMBER_OTHERS (MEMBER_ID, ADDRESS, DESIGNATION,ID) VALUES (NEW_MEMBER_ID,:10,:11,:12);
                     END;`
                     params = [req.body.newMemberName,req.body.newMemberEmail,req.body.newMemberPhone,req.body.newMemberBloodGroup,
                         req.body.newMemberDob,req.session.adminId,req.body.newMemberPhone,0,req.body.newMemberDepartment,
-                        req.body.newMemberAddress,req.body.newMemberDesignation]
-                    result = await queryDB(query,params,true);
+                        req.body.newMemberAddress,req.body.newMemberDesignation,req.body.newMemberId]
+                    try{
+                        result = await queryDB(query,params,true);
+
+                    }catch(err){
+                        console.log(`${err}`);
+                        res.redirect('/admin_page');
+                        return;
+                    }
                     // if(!result){
                     //     res.redirect('/admin_page')
                     //     return;
@@ -268,77 +432,104 @@ router.post('/',urlencodedParser, async function(req,res){
 
     //Delete Member
     if(req.body.deleteMemberId != undefined){
-        let query = `SELECT COUNT(*) CNT
+        let result,query,params;
+        query = `SELECT COUNT(*) CNT
         FROM MEMBER
         WHERE MEMBER_ID = :1`
-        let params = [req.body.deleteMemberId]
-        let result = await queryDB(query,params,false);
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.deleteMemberId]
+        result = await queryDB(query,params,false);
+        try{
+            result = await queryDB(query,params,false);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         if(result.rows[0].CNT>0){
             query = `DELETE FROM MEMBER_STUDENT
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
-            
             query = `DELETE FROM MEMBER_TEACHER
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             
             query = `DELETE FROM MEMBER_OTHERS
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             
             query = `DELETE FROM FAV_LIST
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
 
             query = `DELETE FROM ISSUE_LIST
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
 
             query = `DELETE FROM REVIEW_LIST
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
-
             query = `DELETE FROM SUGG_LIST
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             
             query = `DELETE FROM MEMBER
             WHERE MEMBER_ID = :1`
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
 
@@ -369,15 +560,20 @@ router.post('/',urlencodedParser, async function(req,res){
         req.session.newBookCategory = req.body.newBookCategory
         req.session.newBookGenre = req.body.newBookGenre
         
-        let query = `SELECT COUNT(*) CNT
+        let query,params,result;
+        query = `SELECT COUNT(*) CNT
         FROM AUTHOR
         WHERE AUTHOR_ID = :1`
-        let params = [req.body.newBookAuthor]
-        let result = await queryDB(query,params,false);
-        // if(!result){
-        //     res.redirect('/admin_page')
-        //     return;
-        // }
+        params = [req.body.newBookAuthor]
+        try{
+            result = await queryDB(query,params,false);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
+            return;
+        }
+        
         if(result.rows[0].CNT == 0){
             req.session.newBookErrorMessage = "Author ID does not exist!";
             req.session.newBookAuthor = "";
@@ -390,9 +586,12 @@ router.post('/',urlencodedParser, async function(req,res){
             FROM PUBLISHER
             WHERE PUBLISHER_NAME = :1`
             params = [req.body.newBookPublisher]
-            result = await queryDB(query,params,false);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,false);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             if(result.rows[0].CNT == 0){
@@ -417,9 +616,12 @@ router.post('/',urlencodedParser, async function(req,res){
                         req.body.newBookStatus,req.body.newBookArrivalDate,req.body.newBookYearReleased,req.body.newBookEdition,
                         req.body.newBookNumberOfPage,req.body.newBookLanguage,req.session.adminId,
                         req.body.newBookSubject,req.body.newBookTopic,req.body.newBookDepartment]
-                    result = await queryDB(query,params,true);
-                    if(!result){
-                        res.redirect('/admin_page')
+                    try{
+                        result = await queryDB(query,params,true);
+            
+                    }catch(err){
+                        console.log(`${err}`);
+                        res.redirect('/admin_page');
                         return;
                     }
                 }
@@ -438,7 +640,14 @@ router.post('/',urlencodedParser, async function(req,res){
                         req.body.newBookStatus,req.body.newBookArrivalDate,req.body.newBookYearReleased,req.body.newBookEdition,
                         req.body.newBookNumberOfPage,req.body.newBookLanguage,req.session.adminId,
                         req.body.newBookGenre,req.body.newBookCategory];
-                    result = await queryDB(query,params,true);
+                    try{
+                        result = await queryDB(query,params,true);
+            
+                    }catch(err){
+                        console.log(`${err}`);
+                        res.redirect('/admin_page');
+                        return;
+                    }
                         // if(!result){
                         //     res.redirect('/admin_page')
                         //     return;
@@ -470,13 +679,17 @@ router.post('/',urlencodedParser, async function(req,res){
 
     //delete book
     if(req.body.deleteBookId != undefined){
-        let query = `SELECT COUNT(*) CNT
+        let query,params,result;
+        query = `SELECT COUNT(*) CNT
         FROM BOOK
         WHERE BOOK_ID = :1`
-        let params = [req.body.deleteBookId]
-        let result = await queryDB(query,params,false);
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.deleteBookId]
+        try{
+            result = await queryDB(query,params,false);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         if(result.rows[0].CNT == 0){
@@ -485,7 +698,14 @@ router.post('/',urlencodedParser, async function(req,res){
         else{
             query = `DELETE FROM BOOK
             WHERE BOOK_ID = :1`
-            result = await queryDB(query,params,true);
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
+                return;
+            }
             console.log("Book Deleted")
             res.redirect('/admin_page')
         }
@@ -496,29 +716,36 @@ router.post('/',urlencodedParser, async function(req,res){
         req.session.issueBookId = req.body.issueBookId;
         req.session.issueMemberId = req.body.issueMemberId;
         req.session.issueDate = req.body.issueDate;
-
-        let query = `SELECT COUNT(*) CNT
+        let query,params,result;
+        query = `SELECT COUNT(*) CNT
         FROM MEMBER
         WHERE MEMBER_ID = :1`
-        let params = [req.body.issueMemberId]
-        let result = await queryDB(query,params,false);
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.issueMemberId]
+        try{
+            result = await queryDB(query,params,false);
+
+        }catch(err){
+            console.log(err);
+            res.redirect('/admin_page');
             return;
         }
         if(result.rows[0].CNT == 0){
             req.session.issueErrorMessage = "Member does not exist"
             req.session.issueMemberId = "";
             res.redirect('/admin_page');
+            return;
         }
         else{
             query = `SELECT COUNT(*) CNT
             FROM BOOK
             WHERE BOOK_ID = :1 AND UPPER(STATUS) = 'AVAILABLE'`
             params = [req.body.issueBookId]
-            result = await queryDB(query,params,false);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,false);
+    
+            }catch(err){
+                console.log(err);
+                res.redirect('/admin_page');
                 return;
             }
             if(result.rows[0].CNT == 0){
@@ -527,13 +754,31 @@ router.post('/',urlencodedParser, async function(req,res){
                 res.redirect('/admin_page');
             }
             else{
-                query = `INSERT INTO ISSUE_LIST (MEMBER_ID, BOOK_ID, ISSUE_DATE, ADMIN_ID) VALUES (:1,:2,:3,:4)`
-                params = [req.body.issueMemberId,req.body.issueBookId,req.body.issueDate,req.session.adminId]
-                result = await queryDB(query,params,true);
-                if(!result){
-                    res.redirect('/admin_page')
-                    return;
+                if(req.body.issueDate){
+                    query = `INSERT INTO ISSUE_LIST (MEMBER_ID, BOOK_ID, ISSUE_DATE, ADMIN_ID) VALUES (:1,:2,:3,:4)`
+                    params = [req.body.issueMemberId,req.body.issueBookId,req.body.issueDate,req.session.adminId]
+                    try{
+                        result = await queryDB(query,params,true);
+            
+                    }catch(err){
+                        console.log(err);
+                        res.redirect('/admin_page');
+                        return;
+                    }
                 }
+                else{
+                    query = `INSERT INTO ISSUE_LIST (MEMBER_ID, BOOK_ID, ADMIN_ID) VALUES (:1,:2,:3)`
+                    params = [req.body.issueMemberId,req.body.issueBookId,req.session.adminId]
+                    try{
+                        result = await queryDB(query,params,true);
+        
+                    }catch(err){
+                        console.log(err);
+                        res.redirect('/admin_page');
+                        return;
+                    }
+                }
+                
                 req.session.issueBookId = "";
                 req.session.issueMemberId = "";
                 req.session.issueDate = "";
@@ -544,12 +789,16 @@ router.post('/',urlencodedParser, async function(req,res){
 
     //delete issue list
     if(req.body.deleteIssueId != undefined){
-        let query = `DELETE FROM ISSUE_LIST
+        let query,params,result;
+        query = `DELETE FROM ISSUE_LIST
         WHERE ISSUE_ID = :1`
-        let params = [req.body.deleteIssueId]
-        let result = await queryDB(query,params,true);
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.deleteIssueId]
+        try{
+            result = await queryDB(query,params,true);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         res.redirect('/admin_page');
@@ -557,11 +806,15 @@ router.post('/',urlencodedParser, async function(req,res){
 
     //link
     if(req.body.linkText != undefined){
-        let query = `INSERT INTO LINKS (LINK_NAME, LINK_TEXT) VALUES (:1,:2)`
-        let params = [req.body.linkName, req.body.linkText]
-        let result = await queryDB(query,params,true);
-        if(!result){
-            res.redirect('/admin_page')
+        let query,params,result;
+        query = `INSERT INTO LINKS (LINK_NAME, LINK_TEXT) VALUES (:1,:2)`
+        params = [req.body.linkName, req.body.linkText]
+        try{
+            result = await queryDB(query,params,true);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         res.redirect('/admin_page')
@@ -569,11 +822,15 @@ router.post('/',urlencodedParser, async function(req,res){
 
     //new info
     if(req.body.newsDate != undefined){
-        let query = `INSERT INTO NEWS_AND_EVENTS (NEWS_DATE, IMAGE, DESCRIPTION) VALUES (:1,:2,:3)`
-        let params = [req.body.newsDate,req.body.newsImage,req.body.newsDescription]
-        let result = await queryDB(query,params,true);
-        if(!result){
-            res.redirect('/admin_page')
+        let query,params,result;
+        query = `INSERT INTO NEWS_AND_EVENTS (NEWS_DATE, IMAGE,TITLE, DESCRIPTION) VALUES (:1,:2,:3,:4)`
+        params = [req.body.newsDate,req.body.newsImage,req.body.newsTitle,req.body.newsDescription]
+        try{
+            result = await queryDB(query,params,true);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         res.redirect('/admin_page')
@@ -586,13 +843,17 @@ router.post('/',urlencodedParser, async function(req,res){
         req.session.newAdminEmail = req.body.newAdminEmail
         req.session.newAdminPhone = req.body.newAdminPhone
 
-        let query = `SELECT COUNT(*) CNT
+        let query,params,result;
+        query = `SELECT COUNT(*) CNT
         FROM ADMIN
         WHERE ADMIN_ID = :1`
-        let params = [req.body.newAdminId]
-        let result = await queryDB(query,params,false);
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.newAdminId]
+        try{
+            result = await queryDB(query,params,true);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         if(result.rows[0].CNT > 0){
@@ -604,10 +865,13 @@ router.post('/',urlencodedParser, async function(req,res){
             query = `SELECT COUNT(*) CNT
             FROM ADMIN
             WHERE EMAIL = :1`
-            let params = [req.body.newAdminEmail]
-            let result = await queryDB(query,params,false);
-            if(!result){
-                res.redirect('/admin_page')
+            params = [req.body.newAdminEmail]
+            try{
+                result = await queryDB(query,params,false);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             if(result.rows[0].CNT > 0){
@@ -619,10 +883,13 @@ router.post('/',urlencodedParser, async function(req,res){
                 query = `SELECT COUNT(*) CNT
                 FROM ADMIN
                 WHERE PHONE_NUMBER = :1`
-                let params = [req.body.newAdminPhone]
-                let result = await queryDB(query,params,false);
-                if(!result){
-                    res.redirect('/admin_page')
+                params = [req.body.newAdminPhone]
+                try{
+                    result = await queryDB(query,params,false);
+        
+                }catch(err){
+                    console.log(`${err}`);
+                    res.redirect('/admin_page');
                     return;
                 }
                 if(result.rows[0].CNT > 0){
@@ -633,9 +900,12 @@ router.post('/',urlencodedParser, async function(req,res){
                 else{
                     query = `INSERT INTO ADMIN (ADMIN_ID, ADMIN_PSW, NAME, EMAIL, PHONE_NUMBER) VALUES (:1,:2,:3,:4,:5)`
                     params = [req.body.newAdminId,req.body.newAdminPassword,req.body.newAdminName,req.body.newAdminEmail,req.body.newAdminPhone]
-                    let result = await queryDB(query,params,true);
-                    if(!result){
-                        res.redirect('/admin_page')
+                    try{
+                        result = await queryDB(query,params,true);
+            
+                    }catch(err){
+                        console.log(`${err}`);
+                        res.redirect('/admin_page');
                         return;
                     }
                     req.session.newAdminErrorMessage = ""
@@ -656,13 +926,17 @@ router.post('/',urlencodedParser, async function(req,res){
         req.session.newAuthorNationality = req.body.newAuthorNationality
         req.session.newAuthorLife = req.body.newAuthorLife
 
-        let query = `SELECT COUNT(*) CNT
+        let query,params,result;
+        query = `SELECT COUNT(*) CNT
         FROM AUTHOR
         WHERE AUTHOR_ID = :1`
-        let params = [req.body.newAuthorId]
-        let result = await queryDB(query,params,false)
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.newAuthorId]
+        try{
+            result = await queryDB(query,params,false);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         if(result.rows[0].CNT>0){
@@ -673,9 +947,12 @@ router.post('/',urlencodedParser, async function(req,res){
         else{
             query = `INSERT INTO AUTHOR (AUTHOR_ID, AUTHOR_NAME, NATIONALITY, "LIFE-SPAN") VALUES (:1,:2,:3,:4)`
             params = [req.body.newAuthorId, req.body.newAuthorName, req.body.newAuthorNationality, req.body.newAuthorLife]
-            result = await queryDB(query,params,true);
-            if(!result){
-                res.redirect('/admin_page')
+            try{
+                result = await queryDB(query,params,true);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             req.session.newAuthorErrorMessage = ""
@@ -692,14 +969,17 @@ router.post('/',urlencodedParser, async function(req,res){
         req.session.newPublisherName = req.body.newPublisherName
         req.session.newPublisherAddress = req.body.newPublisherAddress
         req.session.newPublisherPhone = req.body.newPublisherPhone
-
-        let query = `SELECT COUNT(*) CNT
+        let query,params,result;
+        query = `SELECT COUNT(*) CNT
         FROM PUBLISHER
         WHERE PUBLISHER_NAME = :1`
-        let params = [req.body.newPublisherName]
-        let result = await queryDB(query,params,false)
-        if(!result){
-            res.redirect('/admin_page')
+        params = [req.body.newPublisherName]
+        try{
+            result = await queryDB(query,params,false);
+
+        }catch(err){
+            console.log(`${err}`);
+            res.redirect('/admin_page');
             return;
         }
         if(result.rows[0].CNT>0){
@@ -711,10 +991,13 @@ router.post('/',urlencodedParser, async function(req,res){
             query = `SELECT COUNT(*) CNT
             FROM PUBLISHER
             WHERE PHONE_NUMBER = :1`
-            let params = [req.body.newPublisherPhone]
-            let result = await queryDB(query,params,false)
-            if(!result){
-                res.redirect('/admin_page')
+            params = [req.body.newPublisherPhone]
+            try{
+                result = await queryDB(query,params,false);
+    
+            }catch(err){
+                console.log(`${err}`);
+                res.redirect('/admin_page');
                 return;
             }
             if(result.rows[0].CNT>0){
@@ -725,7 +1008,14 @@ router.post('/',urlencodedParser, async function(req,res){
             else{
                 query = `INSERT INTO PUBLISHER (PUBLISHER_NAME, ADDRESS, PHONE_NUMBER) VALUES (:1,:2,:3)`
                 params = [req.body.newPublisherName,req.body.newPublisherAddress,req.body.newPublisherPhone]
-                result = await queryDB(query,params,true)
+                try{
+                    result = await queryDB(query,params,true);
+        
+                }catch(err){
+                    console.log(`${err}`);
+                    res.redirect('/admin_page');
+                    return;
+                }
                 req.session.newPublisherErrorMessage = ""
                 req.session.newPublisherName = ""
                 req.session.newPublisherAddress = ""

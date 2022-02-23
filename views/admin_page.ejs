@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
@@ -15,9 +14,9 @@
             </div>
             <div class="w3-center">
                 <div class="w3-left" style="margin-left: 100px;">
-                    <a href="../../memberLogin" class="w3-btn w3-hover-grey"><h4>Member Sign In</h4></a>
-                    <a href="../../Sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
-                    <a href="adminLogin.html" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
+                    <a href="../member_login" class="w3-btn w3-hover-grey"><h4>Member Sign In</h4></a>
+                    <a href="../Sign_up" class="w3-btn w3-hover-grey"><h4>Sign Up</h4></a>
+                    <a href="../admin_login" class="w3-btn w3-hover-grey"><h4>Admin Login</h4></a>
                     <a href="news_events.html" class="w3-btn w3-hover-grey"><h4>News and Events</h4></a>
                     <a href="links.html" class="w3-btn w3-hover-grey"><h4>Useful Links</h4></a>
                 </div>
@@ -25,8 +24,8 @@
                     <button class="w3-button"><h4>:::Menu</h4></button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4">
                       <a href="index.html" class="w3-bar-item w3-button">Home</a>
-                      <a href="../../ac_books" class="w3-bar-item w3-button">Academic Books</a>
-                      <a href="other_books.html" class="w3-bar-item w3-button">Other Books</a>
+                      <a href="../ac_books" class="w3-bar-item w3-button">Academic Books</a>
+                      <a href="../other_books" class="w3-bar-item w3-button">Other Books</a>
                       <a href="new_arrivals.html" class="w3-bar-item w3-button">New Books</a>
                       <a href="members.html" class="w3-bar-item w3-button">Members</a>
                       <a href="Reviews.html" class="w3-bar-item w3-button">Reviews</a>
@@ -49,6 +48,13 @@
             <button class="w3-btn w3-blue" onclick='$("#applicantList").css("display","block");getInfo()'>Show Applicants List</button>
             <div id="applicantList" class="w3-center" style="display: none;">        
                 <div class="w3-panel w3-center">
+                    <form method="POST" action="/admin_page/searchApplicantTable">
+                        <label><h5><b>Search</b></h5></label>
+                        <input type="number" name="applicantAddById" placeholder="Add member with ID">
+                        <button class="w3-blue" type="submit" >Add</button>
+                        <input type="number" name="applicantSearchById" placeholder="Search with ID">
+                        <button class="w3-blue" type="submit" >Search</button>
+                    </form>
                     <button class="w3-btn w3-red" style="float:right;" onclick='$("#applicantList").css("display","none")'>X</button>
                     <table id="applicantTable" class="w3-table-all w3-centered sortable">
                         <tr>
@@ -108,10 +114,7 @@
                                 <label class="w3-text-blue"><b>Type</b></label>
                                 <input class="w3-input w3-border" name="newMemberType" type="text" placeholder="TEACHER/STUDENT/OTHER" value="<%= newMemberType  %>" required>
                             </p>
-                            <p style="width: 20%; margin-left: 10px; float: left;">      
-                                <label class="w3-text-blue"><b>Issue limit</b></label>
-                                <input class="w3-input w3-border" name="newMemberIssueLimit" type="text" placeholder="" value="<%= newMemberIssueLimit %>">
-                            </p>
+              
                             <p style="width: 20%; margin-left: 10px; float: left;">      
                                 <label class="w3-text-blue"><b>Address</b></label>
                                 <input class="w3-input w3-border" name="newMemberAddress" type="text" placeholder="" value="<%= newMemberAddress %>">
@@ -136,23 +139,23 @@
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue" onclick='$("#applicantList").css("display","block");getInfo()'>Show Members List</button>
-            <div id="applicantList" class="w3-center" style="display: none;">        
+            <button class="w3-btn w3-blue" onclick='$("#memberList").css("display","block");getMember()'>Show Members List</button>
+            <div id="memberList" class="w3-center" style="display: none;">        
                 <div class="w3-panel w3-center">
-                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#applicantList").css("display","none")'>X</button>
-                    <table id="applicantTable" class="w3-table-all w3-centered sortable">
+                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#memberList").css("display","none")'>X</button>
+                    <table id="memberTable" class="w3-table-all w3-centered sortable">
                         <tr>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Dept</th>
                             <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Dept</th>
+                            <th>Fine</th>
                             <th>Date of birth</th>
-                            <th>Address</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Blood Group</th>
-                            <th>Residence</th>
                         </tr>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -169,7 +172,7 @@
                         <h2 class="w3-text-blue">Member Info</h2>
                         <p>      
                            <label class="w3-text-blue"><b>Member ID</b></label>
-                           <input class="w3-input w3-border" name="deleteMemberId" type="text" placeholder="ID" required>
+                           <input class="w3-input w3-border" name="deleteMemberId" type="number" placeholder="ID" required>
                         </p>
                         <p><input type="submit" value="Delete" class="w3-btn w3-blue"></p>
                     </form>
@@ -240,10 +243,7 @@
                                 <label class="w3-text-blue"><b>Subject</b></label>
                                 <input class="w3-input w3-border" name="newBookSubject" type="text" placeholder="" value="<%= newBookSubject %>">
                          </p>
-                         <p style="width: 20%; float: left;margin-left: 2%;">      
-                                <label class="w3-text-blue"><b>Topic</b></label>
-                                <input class="w3-input w3-border" name="newBookTopic" type="text" placeholder="" value="<%= newBookTopic %>">
-                         </p>
+                         
                          <p style="width: 20%; float: left;margin-left: 2%;">      
                                 <label class="w3-text-blue"><b>Category</b></label>
                                 <input class="w3-input w3-border" name="newBookCategory" type="text" placeholder="" value="<%= newBookCategory %>">
@@ -269,7 +269,7 @@
                         <h2 class="w3-text-blue">Book info</h2>
                         <p>      
                            <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" name="deleteBookId" type="text" placeholder="ID" required>
+                           <input class="w3-input w3-border" name="deleteBookId" type="number" placeholder="ID" required>
                         </p>
                         <input type="submit" value="Delete" class="w3-btn w3-blue">
                     </form>
@@ -289,15 +289,15 @@
                         <p class="w3-text-red"><%= issueErrorMessage %></p>
                         <p>      
                            <label class="w3-text-blue"><b>Book ID</b></label>
-                           <input class="w3-input w3-border" name="issueBookId" type="text" placeholder="" value="<%= issueBookId %>" required>
+                           <input class="w3-input w3-border" name="issueBookId" type="number" placeholder="" value="<%= issueBookId %>" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Member ID</b></label>
-                            <input class="w3-input w3-border" name="issueMemberId" type="text" placeholder="" value="<%= issueMemberId %>" required>
+                            <input class="w3-input w3-border" name="issueMemberId" type="number" placeholder="" value="<%= issueMemberId %>" required>
                          </p>
                          <p>      
                             <label class="w3-text-blue"><b>Issue Date</b></label>
-                            <input class="w3-input w3-border" name="issueDate" type="text" placeholder="" value="<%= issueDate %>" required>
+                            <input class="w3-input w3-border" name="issueDate" type="text" placeholder="2-FEB-2021" value="<%= issueDate %>">
                          </p>
                          <input type="submit" value="Add" class="w3-btn w3-blue">
                     </form>
@@ -306,23 +306,21 @@
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue" onclick='$("#applicantList").css("display","block");getInfo()'>Show Issue List</button>
-            <div id="applicantList" class="w3-center" style="display: none;">        
+            <button class="w3-btn w3-blue" onclick='$("#divissueList").css("display","block");getListIssue()'>Show Issue List</button>
+            <div id="divissueList" class="w3-center" style="display: none;">        
                 <div class="w3-panel w3-center">
-                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#applicantList").css("display","none")'>X</button>
-                    <table id="applicantTable" class="w3-table-all w3-centered sortable">
+                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#divissueList").css("display","none")'>X</button>
+                    <table id="issueTable" class="w3-table-all w3-centered sortable">
                         <tr>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Dept</th>
-                            <th>ID</th>
-                            <th>Date of birth</th>
-                            <th>Address</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Blood Group</th>
-                            <th>Residence</th>
+                            <th>Issue ID</th>
+                            <th>Book ID</th>
+                            <th>Member ID</th>
+                            <th>Issue Date</th>
+                            <th>Admin ID</th>
                         </tr>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -339,7 +337,7 @@
                         <h2 class="w3-text-blue">Issue info</h2>
                         <p>      
                             <label class="w3-text-blue"><b>Issue ID</b></label>
-                            <input class="w3-input w3-border" name="deleteIssueId" type="text" placeholder="" required>
+                            <input class="w3-input w3-border" name="deleteIssueId" type="number" placeholder="" required>
                          </p>
                          <input type="submit" value="Delete" class="w3-btn w3-blue">
                     </form>
@@ -388,6 +386,10 @@
                             <input class="w3-input w3-border" name="newsImage" type="text" placeholder="src" >
                         </p>
                         <p>      
+                            <label class="w3-text-blue"><b>Title</b></label>
+                            <input class="w3-input w3-border" name="newsTitle" type="text" placeholder="" required>
+                        </p>
+                        <p>      
                             <label class="w3-text-blue"><b>Description</b></label>
                             <input class="w3-input w3-border" name="newsDescription" type="text" placeholder="" required>
                         </p>
@@ -413,7 +415,7 @@
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>ID</b></label>
-                            <input class="w3-input w3-border" name="newAdminId" type="text" placeholder="" value="<%= newAdminId %>" required>
+                            <input class="w3-input w3-border" name="newAdminId" type="number" placeholder="" value="<%= newAdminId %>" required>
                         </p>
                         <p>      
                             <label class="w3-text-blue"><b>Password</b></label>
@@ -493,46 +495,38 @@
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue" onclick='$("#applicantList").css("display","block");getInfo()'>Show Member Messages</button>
-            <div id="applicantList" class="w3-center" style="display: none;">        
+            <button class="w3-btn w3-blue" onclick='$("#MmsgList").css("display","block");getMmsg()'>Show Member Messages</button>
+            <div id="MmsgList" class="w3-center" style="display: none;">        
                 <div class="w3-panel w3-center">
-                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#applicantList").css("display","none")'>X</button>
-                    <table id="applicantTable" class="w3-table-all w3-centered sortable">
+                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#MmsgList").css("display","none")'>X</button>
+                    <table id="MmsgTable" class="w3-table-all w3-centered sortable">
                         <tr>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Dept</th>
-                            <th>ID</th>
-                            <th>Date of birth</th>
-                            <th>Address</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Blood Group</th>
-                            <th>Residence</th>
+                            <th>Member ID</th>
+                            <th>Message</th>
                         </tr>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
         <div class="w3-center w3-panel">
-            <button class="w3-btn w3-blue" onclick='$("#applicantList").css("display","block");getInfo()'>Show Viewer Messages</button>
-            <div id="applicantList" class="w3-center" style="display: none;">        
+            <button class="w3-btn w3-blue" onclick='$("#vmsgList").css("display","block");getVmsg()'>Show Viewer Messages</button>
+            <div id="vmsgList" class="w3-center" style="display: none;">        
                 <div class="w3-panel w3-center">
-                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#applicantList").css("display","none")'>X</button>
-                    <table id="applicantTable" class="w3-table-all w3-centered sortable">
+                    <button class="w3-btn w3-red" style="float:right;" onclick='$("#vmsgList").css("display","none")'>X</button>
+                    <table id="vmsgTable" class="w3-table-all w3-centered sortable">
                         <tr>
                             <th>Name</th>
-                            <th>Designation</th>
-                            <th>Dept</th>
-                            <th>ID</th>
-                            <th>Date of birth</th>
-                            <th>Address</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Blood Group</th>
-                            <th>Residence</th>
+                            <th>Message</th>
                         </tr>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -544,7 +538,7 @@
                 while(table.rows.length>1){
                     table.deleteRow(1);
                 }
-                const url =  'http://localhost:8080/admin_page/applicantTable';
+                const url =  'http://localhost:8080/admin_page/APPLICANT';
                 const options = {method:'GET'}
                 const response = await fetch(url,options);
                 const myJs = await response.json();
@@ -572,6 +566,76 @@
                     cell9.innerHTML = myJs[i].RESIDENCE;
                 }
             }
+
+            const getListIssue=async ()=>{
+                let table = document.getElementById("issueTable");
+                while(table.rows.length>1){
+                    table.deleteRow(1);
+                }
+                let tablebody = $("#issueTable tbody")
+                const url =  'http://localhost:8080/admin_page/ISSUE_LIST';
+                const options = {method:'GET'}
+                const response = await fetch(url,options);
+                const myJs = await response.json();
+                for(let i=0;i<myJs.length;i++){
+                    var markup = "<tr><th>"+myJs[i].ISSUE_ID+"</th><th>"+myJs[i].BOOK_ID+"</th><th>"+myJs[i].MEMBER_ID+"</th><th>"+myJs[i].ISSUE_DATE+"</th><th>"+myJs[i].ADMIN_ID+"</th></tr>";
+                    tablebody.append(markup);
+                    table.deleteRow(2+i);
+                }
+            }
+
+            const getVmsg=async ()=>{
+                let table = document.getElementById("vmsgTable");
+                while(table.rows.length>1){
+                    table.deleteRow(1);
+                }
+                let tablebody = $("#vmsgTable tbody")
+                const url =  'http://localhost:8080/admin_page/CONTACT_US';
+                const options = {method:'GET'}
+                const response = await fetch(url,options);
+                const myJs = await response.json();
+                for(let i=0;i<myJs.length;i++){
+                    var markup = "<tr><th>"+myJs[i].NAME+"</th><th>"+myJs[i].EMAIL+"</th><th>"+myJs[i].PHONE_NUMBER+"</th><th>"+myJs[i].MESSAGE+"</th></tr>";
+                    tablebody.append(markup);
+                    table.deleteRow(2+i);
+                }
+            }
+
+            const getMmsg=async ()=>{
+                let table = document.getElementById("MmsgTable");
+                while(table.rows.length>1){
+                    table.deleteRow(1);
+                }
+                let tablebody = $("#MmsgTable tbody")
+                const url =  'http://localhost:8080/admin_page/SUGG_LIST';
+                const options = {method:'GET'}
+                const response = await fetch(url,options);
+                const myJs = await response.json();
+                for(let i=0;i<myJs.length;i++){
+                    var markup = "<tr><th>"+myJs[i].MEMBER_ID+"</th><th>"+myJs[i].MESSAGE+"</th></tr>";
+                    tablebody.append(markup);
+                    table.deleteRow(2+i);
+                }
+            }
+
+            const getMember=async ()=>{
+                let table = document.getElementById("memberTable");
+                while(table.rows.length>1){
+                    table.deleteRow(1);
+                }
+                let tablebody = $("#memberTable tbody")
+                const url =  'http://localhost:8080/admin_page/MEMBER';
+                const options = {method:'GET'}
+                const response = await fetch(url,options);
+                const myJs = await response.json();
+                for(let i=0;i<myJs.length;i++){
+                    var markup = "<tr><th>"+myJs[i].MEMBER_ID+"</th><th>"+myJs[i].MEMBER_NAME+"</th><th>"+myJs[i].TYPE+"</th><th>"+myJs[i].DEPT+"</th><th>"+myJs[i].FINE+"</th><th>"+myJs[i].DATE_OF_BIRTH+"</th>"+
+                                  "<th>"+myJs[i].EMAIL+"</th><th>"+myJs[i].PHONE_NUMBER+"</th><th>"+myJs[i].BLOOD_GROUP+"</th> </tr>";
+                    tablebody.append(markup);
+                    table.deleteRow(2+i);
+                }
+            }
+
         </script>
     </body>
 </html> 

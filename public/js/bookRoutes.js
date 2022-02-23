@@ -2,7 +2,6 @@ const express = require('express');
 const oracledb = require('oracledb');
 const { subscribe } = require('./basicTableRoutes');
 oracledb.outFormat = oracledb.OBJECT ;
-const queryDB = require('./queryDBMS');
 const bookRouter = express.Router();
 
 let connection = undefined;

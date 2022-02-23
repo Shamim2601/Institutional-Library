@@ -5,6 +5,7 @@ const cors = require('cors');
 const router = express.Router(); 
 const tablerouter = require('./public/js/basicTableRoutes');
 const bookRouter = require('./public/js/bookRoutes');
+const adpageRouter = require('./public/js/adminPageRoutes');
 const { json } = require('express');
 const session = require('express-session')
 
@@ -18,6 +19,7 @@ app.use(express.static('src/html'));
 app.use(express.urlencoded({extended: false}))
 app.use(tablerouter);
 app.use(bookRouter);
+app.use(adpageRouter);
 app.use(router);
 app.use(session({secret:"secretKey"}));
 
@@ -48,7 +50,7 @@ app.use('/other_books',otherBooksRouter)
 const contactUsRouter = require('./public/js/contactUs')
 app.use('/contactUs',contactUsRouter)
 
-const signOutRouter = require('./public/js/sign_out')
+const signOutRouter = require('./public/js/sign_out');
 app.use('/sign_out',signOutRouter)
 
 app.listen(port, function(err) {

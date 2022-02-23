@@ -44,7 +44,6 @@
                 <button class="w3-blue" type="submit" >Search</button>
             </form>
         
-            <!-- <button class="w3-blue" onclick="getSearch()" >t Search</button> -->
             <div>
                 <div class="w3-panel w3-center">
                     <table id="searchTable"  class="w3-table-all w3-centered sortable">
@@ -150,7 +149,7 @@
                     table.deleteRow(1);
                 }
                 
-                const url = 'http://localhost:8080/ac_books.html/'+inp;
+                const url = 'http://localhost:8080/ac_books/'+inp;
                 const options = {method: 'GET'};
                 const response = await fetch(url,options);
                 const myjs = await response.json();                
