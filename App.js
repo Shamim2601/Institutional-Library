@@ -14,7 +14,6 @@ var port = 8080;
 
 app.set('view-engine','ejs'); 
 app.use(express.json());
-//app.use(express.static('public'));   
 app.use(express.static('src/html'));
 app.use(express.urlencoded({extended: false}))
 app.use(tablerouter);

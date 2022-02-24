@@ -20,7 +20,6 @@ router.post('/', async (req,res)=>{
         query = `SELECT COUNT(*) CNT
         FROM MEMBER 
         WHERE PHONE_NUMBER = :1`
-        // let  params = [req.body.phoneNumber];
         params = [req.body.phoneNumber]
         result = await queryDB(query,params,false);
     }catch{

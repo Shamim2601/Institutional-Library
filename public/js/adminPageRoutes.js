@@ -38,7 +38,7 @@ adpageRouter.get('/admin_page/:child', async (req,res)=>{
     }
     query = `SELECT * FROM ${info.child} `;
     const params = [];
-    const result1 = await dbQuery(query1,params);
+    const result1 = await dbQuery(query1,params); //updates the fine column of member table
     const result = await dbQuery(query,params);
     res.status(200).json(result);
     

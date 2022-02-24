@@ -24,9 +24,8 @@ router.get('/',(req,res)=>{
 router.post('/searchTable',urlencodedParser, async function(req,res){
     console.log('---OTHER BOOKS SEARCH TABLE POST REQUEST---')
     console.log(req.body.otherBookEntry)
-    // req.session.bookName = req.body.bookName;
-    // req.session.author = req.body.author;
     let query,params,result;
+    //query for searching other type book, according to book/writer name; partial/misspelling also give correct result
     query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR, 
     BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
     FROM BOOK 

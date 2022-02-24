@@ -9,11 +9,6 @@ let urlencodedParser = bodyParser.urlencoded({extended:false})
 router.get('/',(req,res)=>{
     console.log(`---ACADEMIC BOOKS GET REQUEST---`)
 
-    // if(!req.session.memberId){
-    //     res.redirect('/sign_out')
-    //     return;
-    // }
-
     let context = {
         bookRows : req.session.bookRows
     }
@@ -24,9 +19,8 @@ router.get('/',(req,res)=>{
 router.post('/searchTable', urlencodedParser,async function (req,res){
     console.log('---ACADEMIC BOOKS SEARCH TABLE POST REQUEST---')
     console.log(req.body.entry)
-    // req.session.bookName = req.body.bookName;
-    // req.session.author = req.body.author;
     let query,params,result;
+    //query for searching acadmeic type book, according to book/writer name; partial/misspelling also give correct result
     query = `SELECT BOOK.BOOK_ID, BOOK.BOOK_NAME, AUTHOR.AUTHOR_NAME, BOOK.PUBLISHER_NAME, BOOK.STATUS, BOOK.LANGUAGE, BOOK.YEAR,
     BOOK.EDITION, BOOK.NO_OF_PAGES,COVER_IMAGE
     FROM BOOK
