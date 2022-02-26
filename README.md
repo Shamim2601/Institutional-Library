@@ -73,3 +73,28 @@ npm run device
 ```
 The Project should be working!
 
+
+## Contributing ##
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+
+## Contributors ##
+ - Asif Ihtemadul Haque - 1805048
+ - Md. Shamim Al Mamum - 1805060
+
+## Supervisor ##
+ -  Dr. Muhammad Abdullah Adnan
+    - Associate Professor
+        
+        **Contact**:
+        
+        Department of Computer Science and Engineering, Bangladesh University of Engineering and Technology, Dhaka - 1000, Bangladesh.
+
+        __Homepage__ :
+        https://sites.google.com/site/abdullahadnan/
+
+## Acknowledgment ##
+ - https://www.w3schools.com/css/
+ - https://www.youtube.com/c/WebDevSimplified
+ - https://www.youtube.com/c/anisulislamrubel 
