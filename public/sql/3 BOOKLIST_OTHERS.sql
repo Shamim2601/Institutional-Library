@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for BOOKLIST_OTHERS
 -- ----------------------------
-DROP TABLE "C##INSLIB"."BOOKLIST_OTHERS";
+--DROP TABLE "C##INSLIB"."BOOKLIST_OTHERS";
 CREATE TABLE "C##INSLIB"."BOOKLIST_OTHERS" (
   "BOOK_ID" NUMBER(10,0) VISIBLE NOT NULL,
   "CATEGORY" VARCHAR2(255 BYTE) VISIBLE,

@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for PUBLISHER
 -- ----------------------------
-DROP TABLE "C##INSLIB"."PUBLISHER";
+--DROP TABLE "C##INSLIB"."PUBLISHER";
 CREATE TABLE "C##INSLIB"."PUBLISHER" (
   "PUBLISHER_NAME" VARCHAR2(255 BYTE) VISIBLE NOT NULL,
   "ADDRESS" VARCHAR2(255 BYTE) VISIBLE,

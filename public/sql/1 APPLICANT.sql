@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for APPLICANT
 -- ----------------------------
-DROP TABLE "C##INSLIB"."APPLICANT";
+--DROP TABLE "C##INSLIB"."APPLICANT";
 CREATE TABLE "C##INSLIB"."APPLICANT" (
   "NAME" VARCHAR2(255 BYTE) VISIBLE,
   "TYPE" VARCHAR2(255 BYTE) VISIBLE,

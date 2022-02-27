@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for ISSUE_LIST
 -- ----------------------------
-DROP TABLE "C##INSLIB"."ISSUE_LIST";
+--DROP TABLE "C##INSLIB"."ISSUE_LIST";
 CREATE TABLE "C##INSLIB"."ISSUE_LIST" (
   "ISSUE_ID" NUMBER VISIBLE NOT NULL,
   "MEMBER_ID" NUMBER(10,0) VISIBLE NOT NULL,

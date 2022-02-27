@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for CONTACT_US
 -- ----------------------------
-DROP TABLE "C##INSLIB"."CONTACT_US";
+--DROP TABLE "C##INSLIB"."CONTACT_US";
 CREATE TABLE "C##INSLIB"."CONTACT_US" (
   "NAME" VARCHAR2(255 BYTE) VISIBLE,
   "EMAIL" VARCHAR2(255 BYTE) VISIBLE,

@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for ADMIN
 -- ----------------------------
-DROP TABLE "C##INSLIB"."ADMIN";
+--DROP TABLE "C##INSLIB"."ADMIN";
 CREATE TABLE "C##INSLIB"."ADMIN" (
   "ADMIN_ID" VARCHAR2(255 BYTE) VISIBLE NOT NULL,
   "ADMIN_PSW" VARCHAR2(255 BYTE) VISIBLE,

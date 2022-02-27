@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for FAV_LIST
 -- ----------------------------
-DROP TABLE "C##INSLIB"."FAV_LIST";
+--DROP TABLE "C##INSLIB"."FAV_LIST";
 CREATE TABLE "C##INSLIB"."FAV_LIST" (
   "MEMBER_ID" NUMBER VISIBLE NOT NULL,
   "BOOK_ID" NUMBER VISIBLE

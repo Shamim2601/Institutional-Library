@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for SUGG_LIST
 -- ----------------------------
-DROP TABLE "C##INSLIB"."SUGG_LIST";
+--DROP TABLE "C##INSLIB"."SUGG_LIST";
 CREATE TABLE "C##INSLIB"."SUGG_LIST" (
   "MEMBER_ID" NUMBER VISIBLE NOT NULL,
   "MESSAGE" VARCHAR2(255 BYTE) VISIBLE

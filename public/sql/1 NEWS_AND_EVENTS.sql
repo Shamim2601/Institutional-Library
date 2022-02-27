@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for NEWS_AND_EVENTS
 -- ----------------------------
-DROP TABLE "C##INSLIB"."NEWS_AND_EVENTS";
+--DROP TABLE "C##INSLIB"."NEWS_AND_EVENTS";
 CREATE TABLE "C##INSLIB"."NEWS_AND_EVENTS" (
   "NEWS_DATE" DATE VISIBLE DEFAULT SYSDATE,
   "TITLE" VARCHAR2(255 BYTE) VISIBLE,

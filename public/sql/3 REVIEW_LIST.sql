@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for REVIEW_LIST
 -- ----------------------------
-DROP TABLE "C##INSLIB"."REVIEW_LIST";
+--DROP TABLE "C##INSLIB"."REVIEW_LIST";
 CREATE TABLE "C##INSLIB"."REVIEW_LIST" (
   "MEMBER_ID" NUMBER VISIBLE NOT NULL,
   "BOOK_ID" NUMBER VISIBLE,

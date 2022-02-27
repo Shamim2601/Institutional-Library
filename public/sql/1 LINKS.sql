@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for LINKS
 -- ----------------------------
-DROP TABLE "C##INSLIB"."LINKS";
+--DROP TABLE "C##INSLIB"."LINKS";
 CREATE TABLE "C##INSLIB"."LINKS" (
   "LINK_NAME" VARCHAR2(255 BYTE) VISIBLE,
   "LINK_TEXT" VARCHAR2(255 BYTE) VISIBLE,

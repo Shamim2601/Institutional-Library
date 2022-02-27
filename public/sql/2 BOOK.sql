@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for BOOK
 -- ----------------------------
-DROP TABLE "C##INSLIB"."BOOK";
+--DROP TABLE "C##INSLIB"."BOOK";
 CREATE TABLE "C##INSLIB"."BOOK" (
   "BOOK_ID" NUMBER(10,0) VISIBLE NOT NULL,
   "BOOK_NAME" VARCHAR2(255 BYTE) VISIBLE,

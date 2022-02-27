@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for MEMBER_OTHERS
 -- ----------------------------
-DROP TABLE "C##INSLIB"."MEMBER_OTHERS";
+--DROP TABLE "C##INSLIB"."MEMBER_OTHERS";
 CREATE TABLE "C##INSLIB"."MEMBER_OTHERS" (
   "MEMBER_ID" NUMBER(10,0) VISIBLE NOT NULL,
   "ADDRESS" VARCHAR2(255 BYTE) VISIBLE,

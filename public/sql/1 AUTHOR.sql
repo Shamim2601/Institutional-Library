@@ -18,7 +18,7 @@
 -- ----------------------------
 -- Table structure for AUTHOR
 -- ----------------------------
-DROP TABLE "C##INSLIB"."AUTHOR";
+--DROP TABLE "C##INSLIB"."AUTHOR";
 CREATE TABLE "C##INSLIB"."AUTHOR" (
   "AUTHOR_ID" VARCHAR2(5 BYTE) VISIBLE NOT NULL,
   "AUTHOR_NAME" VARCHAR2(255 BYTE) VISIBLE NOT NULL,
